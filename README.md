@@ -1,4 +1,4 @@
-# B-CLEAN - Professional Window & Carpet Cleaning
+# B CLEAN - Professional Window & Carpet Cleaning
 
 Professional window washing and carpet cleaning services in Northern Utah.
 
@@ -44,4 +44,4 @@ For questions or service inquiries, please use the quote form on the website.
 
 ---
 
-© 2026 B-CLEAN. All rights reserved.
+© 2026 B CLEAN. All rights reserved.

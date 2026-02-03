@@ -1,4 +1,4 @@
-// B-CLEAN Website JavaScript
+// B CLEAN Website JavaScript
 
 // Display last updated timestamp in MST (Mountain Standard Time - Blackfoot, Idaho)
 document.addEventListener('DOMContentLoaded', function() {

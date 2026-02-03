@@ -1,5 +1,5 @@
 /* ==============================================
-   B-CLEAN - Professional Cleaning Services
+   B CLEAN - Professional Cleaning Services
    ============================================== */
 
 /* Reset & Base Styles */
@@ -30,6 +30,54 @@ body {
     color: var(--text-color);
     background-color: var(--white);
     overflow-x: hidden;
+}
+
+/* Company Name Header */
+.company-name-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    text-align: center;
+    padding: 2rem 1rem;
+    box-shadow: var(--shadow);
+}
+
+.company-name-header h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: 8px;
+    margin: 0;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: fadeInScale 0.8s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .company-name-header {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .company-name-header h1 {
+        font-size: 2.5rem;
+        letter-spacing: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .company-name-header h1 {
+        font-size: 2rem;
+        letter-spacing: 3px;
+    }
 }
 
 img {
