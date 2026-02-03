@@ -862,6 +862,12 @@ img {
     color: rgba(255, 255, 255, 0.6);
 }
 
+.last-updated {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .mobile-menu-toggle {

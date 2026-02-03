@@ -1,5 +1,23 @@
 // B-CLEAN Website JavaScript
 
+// Display last updated timestamp in MST (Mountain Standard Time - Blackfoot, Idaho)
+document.addEventListener('DOMContentLoaded', function() {
+    const lastUpdatedElement = document.getElementById('lastUpdated');
+    if (lastUpdatedElement) {
+        const now = new Date();
+        const options = {
+            timeZone: 'America/Boise',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZoneName: 'short'
+        };
+        lastUpdatedElement.textContent = now.toLocaleString('en-US', options);
+    }
+});
+
 // Mobile Menu Toggle
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
