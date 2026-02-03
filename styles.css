@@ -79,6 +79,20 @@ img {
     color: var(--primary-color);
 }
 
+.logo {
+    height: 60px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+@media (max-width: 480px) {
+    .logo {
+        height: 50px;
+        max-width: 150px;
+    }
+}
+
 .nav-menu {
     display: flex;
     list-style: none;
@@ -392,6 +406,18 @@ img {
     margin-top: 3rem;
 }
 
+@media (min-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 @media (max-width: 640px) {
     .gallery-grid {
         grid-template-columns: 1fr;
@@ -423,6 +449,61 @@ img {
 
 .gallery-item:hover img {
     transform: scale(1.1);
+}
+
+/* Work Showcase Section */
+.work-showcase {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.work-showcase h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--dark-color);
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.showcase-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.showcase-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.showcase-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.showcase-item:hover img {
+    transform: scale(1.05);
+}
+
+@media (max-width: 640px) {
+    .showcase-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .showcase-item img {
+        height: 200px;
+    }
 }
 
 @media (max-width: 768px) {
