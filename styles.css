@@ -260,6 +260,20 @@ body {
     text-align: center;
     box-shadow: var(--shadow);
     transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.service-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-image {
+    transform: scale(1.05);
 }
 
 .service-card:hover {
@@ -321,6 +335,44 @@ body {
 
 .feature p {
     color: var(--text-light);
+}
+
+/* Gallery Section */
+.gallery-section {
+    padding: 5rem 0;
+    background-color: var(--light-color);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
 }
 
 /* Process Steps */
@@ -435,6 +487,15 @@ body {
     color: var(--white);
     font-size: 1.2rem;
     font-weight: 600;
+    border: 3px solid var(--primary-color);
+}
+
+.owner-photo {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
     border: 3px solid var(--primary-color);
 }
 
