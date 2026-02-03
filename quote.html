@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get a Free Quote - B-CLEAN</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>B-CLEAN</h1>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="window-washing.html">Window Washing</a></li>
+                <li><a href="carpet-cleaning.html">Carpet Cleaning</a></li>
+                <li><a href="about.html">About Danzen</a></li>
+                <li><a href="quote.html" class="btn-primary active">Get a Free Quote</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Get a Free Quote</h1>
+            <p>Fill out the form below and I'll get back to you soon!</p>
+        </div>
+    </section>
+
+    <!-- Quote Form -->
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <form id="quoteForm" class="quote-form">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address *</label>
+                        <input type="text" id="address" name="address" placeholder="So I can look you up on Google Maps for a quick estimate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service">Service Needed *</label>
+                        <select id="service" name="service" required>
+                            <option value="">Select a service</option>
+                            <option value="window-washing">Window Washing</option>
+                            <option value="carpet-cleaning">Carpet Cleaning</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="count">Estimated Count</label>
+                        <input type="text" id="count" name="count" placeholder="Roughly how many windows or rooms are we looking at?">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Preferred Date</label>
+                        <input type="date" id="date" name="date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Any specific stains or hard water issues I should know about?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Send My Quote Request</button>
+                </form>
+
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <h3>Thank you!</h3>
+                    <p>Your quote request has been received. I'll get back to you shortly!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>B-CLEAN</h3>
+                    <p>Professional window and carpet cleaning services in Northern Utah</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="window-washing.html">Window Washing</a></li>
+                        <li><a href="carpet-cleaning.html">Carpet Cleaning</a></li>
+                        <li><a href="about.html">About Danzen</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Get In Touch</h4>
+                    <p>Serving Logan and Northern Utah</p>
+                    <a href="quote.html" class="btn-footer">Get a Free Quote</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 B-CLEAN. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
