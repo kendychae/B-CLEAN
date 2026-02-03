@@ -773,6 +773,20 @@ img {
     box-shadow: var(--shadow-lg);
 }
 
+.google-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+}
+
+.google-form-container iframe {
+    border-radius: 10px;
+    min-height: 1200px;
+}
+
 .quote-form {
     display: flex;
     flex-direction: column;
