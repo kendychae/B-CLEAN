@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.insertAdjacentHTML('beforeend', lightboxHTML);
     
     // Get all clickable images
-    const images = document.querySelectorAll('.service-image, .gallery-item img, .owner-photo, .photo-grid img');
+    const images = document.querySelectorAll('.service-image, .gallery-item img, .owner-photo, .photo-grid img, .showcase-item img');
     const imageArray = Array.from(images);
     let currentIndex = 0;
     
