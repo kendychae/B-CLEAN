@@ -937,6 +937,8 @@ img {
 @media (max-width: 768px) {
     .mobile-menu-toggle {
         display: flex;
+        z-index: 2147483648;
+        position: relative;
     }
 
     .nav-menu {
@@ -951,7 +953,7 @@ img {
         display: none;
         max-height: calc(100vh - 150px);
         overflow-y: auto;
-        z-index: 9998;
+        z-index: 2147483648;
     }
 
     .nav-menu.active {
@@ -1206,6 +1208,51 @@ body {
     background: rgba(0, 0, 0, 0.6);
     padding: 10px 20px;
     border-radius: 20px;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 2147483646;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+}
+
+.back-to-top:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.back-to-top:active {
+    transform: translateY(-1px);
+}
+
+@media (min-width: 769px) {
+    .back-to-top {
+        display: none !important;
+    }
 }
 
 /* Make images clickable */

@@ -255,3 +255,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Back to Top Button (Mobile Only)
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopButton = document.getElementById('backToTop');
+    
+    if (backToTopButton) {
+        // Show/hide button based on scroll position (mobile only)
+        window.addEventListener('scroll', function() {
+            // Only show on mobile devices (max-width: 768px)
+            if (window.innerWidth <= 768) {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        // Scroll to top when button is clicked
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+    }
+});
