@@ -152,3 +152,106 @@ if (dateInput) {
     const today = new Date().toISOString().split('T')[0];
     dateInput.setAttribute('min', today);
 }
+
+// Image Lightbox / Carousel Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Create lightbox HTML structure
+    const lightboxHTML = `
+        <div class="lightbox" id="lightbox">
+            <button class="lightbox-close" id="lightbox-close">&times;</button>
+            <button class="lightbox-prev" id="lightbox-prev">&#10094;</button>
+            <div class="lightbox-content">
+                <img class="lightbox-image" id="lightbox-image" src="" alt="Enlarged view">
+            </div>
+            <button class="lightbox-next" id="lightbox-next">&#10095;</button>
+            <div class="lightbox-counter" id="lightbox-counter"></div>
+        </div>
+    `;
+    
+    // Add lightbox to body
+    document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+    
+    // Get all clickable images
+    const images = document.querySelectorAll('.service-image, .gallery-item img, .owner-photo, .photo-grid img');
+    const imageArray = Array.from(images);
+    let currentIndex = 0;
+    
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+    
+    // Function to open lightbox
+    function openLightbox(index) {
+        currentIndex = index;
+        updateLightbox();
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+    
+    // Function to close lightbox
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+    
+    // Function to update lightbox image
+    function updateLightbox() {
+        if (imageArray.length > 0) {
+            lightboxImage.src = imageArray[currentIndex].src;
+            lightboxImage.alt = imageArray[currentIndex].alt;
+            lightboxCounter.textContent = `${currentIndex + 1} / ${imageArray.length}`;
+        }
+    }
+    
+    // Function to show next image
+    function showNext() {
+        currentIndex = (currentIndex + 1) % imageArray.length;
+        updateLightbox();
+    }
+    
+    // Function to show previous image
+    function showPrev() {
+        currentIndex = (currentIndex - 1 + imageArray.length) % imageArray.length;
+        updateLightbox();
+    }
+    
+    // Add click event to all images
+    images.forEach((img, index) => {
+        img.addEventListener('click', () => openLightbox(index));
+    });
+    
+    // Close lightbox events
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+    
+    // Navigation events
+    lightboxNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+    });
+    
+    lightboxPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                showNext();
+            } else if (e.key === 'ArrowLeft') {
+                showPrev();
+            }
+        }
+    });
+});
