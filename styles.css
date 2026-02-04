@@ -1303,3 +1303,13 @@ body {
         padding: 8px 16px;
     }
 }
+
+/* UserWay Accessibility Widget Positioning for Mobile */
+@media (max-width: 768px) {
+    /* Move UserWay widget down to avoid covering hamburger menu */
+    #userway-s1,
+    [data-uw-feature-id],
+    .userway_buttons_wrapper {
+        top: 120px !important;
+    }
+}
