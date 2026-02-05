@@ -425,6 +425,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Reviews Page - Star Rating animation
+    const brandTextReviews = document.getElementById('brand-text-reviews');
+    if (brandTextReviews) {
+        brandTextReviews.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('animating');
+                const letters = this.querySelectorAll('.brand-letter');
+                
+                // Create star elements
+                for (let i = 0; i < 5; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star-rating';
+                    star.textContent = '⭐';
+                    star.style.left = `${20 + i * 15}%`;
+                    star.style.animationDelay = `${i * 0.15}s`;
+                    this.appendChild(star);
+                    
+                    // Remove star after animation
+                    setTimeout(() => star.remove(), 2500);
+                }
+                
+                // Pop letters with star effect
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.classList.add('pop');
+                        setTimeout(() => letter.classList.remove('pop'), 600);
+                    }, index * 200);
+                });
+                
+                setTimeout(() => {
+                    this.classList.remove('animating');
+                }, 2500);
+            }
+        });
+    }
 });
 
 // Blog Post Modal/Carousel
@@ -590,3 +626,219 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Reviews Page - Modal Carousel Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const reviewsGrid = document.getElementById('reviews-grid');
+    if (!reviewsGrid) return; // Exit if not on reviews page
+    
+    const reviewModal = document.getElementById('review-modal');
+    const reviewModalClose = document.getElementById('review-modal-close');
+    const reviewModalBody = document.getElementById('review-modal-body');
+    const reviewModalCounter = document.getElementById('review-modal-counter');
+    const reviewModalNext = document.getElementById('review-next-btn');
+    const reviewModalPrev = document.getElementById('review-prev-btn');
+    
+    let currentReviewIndex = 0;
+    
+    // Reviews data from Google
+    const reviews = [
+        {
+            author: "Chip Midkiff",
+            initials: "CM",
+            rating: 5,
+            date: "7 months ago",
+            text: "Danzen does impeccable work and knows what he's doing. We get horrible hard water scale from our sprinkler system and B Clean makes our windows look like new. We've hired Danzen for multiple properties for a couple years now and can't recommend him enough. Incredible work and a great price.",
+            response: "Thank you so much, I appreciate the review 😊",
+            badge: "Local Guide"
+        },
+        {
+            author: "Elisa Patterson",
+            initials: "EP",
+            rating: 5,
+            date: "a year ago",
+            text: "Danzen knocked on my door and told me about his 4-step window cleaning process. He also gave a reasonable bid so it was easy for me to make the decision to have him clean my windows. He did a great job and they are sparkling clean. So clean that my humming bird ran into one! I love clean windows!",
+            response: "Elisa! So glad you chose B Clean. Thank you for the review and I hope your humming bird will forgive me :)",
+            badge: null
+        },
+        {
+            author: "Wendy Martinez",
+            initials: "WM",
+            rating: 5,
+            date: "a year ago",
+            text: "B Clean knocked on my door last spring and I gave it a chance. What an amazing service! They are back this summer and did a great job! I know other homes in the neighborhood use B Clean also. The gentleman is on time, works hard, and sends updates on progress. Great value and highly recommend B Clean!",
+            response: "Thanks Wendy! Love taking care of your windows!",
+            badge: null
+        },
+        {
+            author: "DaJon Bingham",
+            initials: "DB",
+            rating: 5,
+            date: "a year ago",
+            text: "Awesome service! Sparkling clean! Excellent value. Highly recommend",
+            response: null,
+            badge: null
+        },
+        {
+            author: "Elisabeth Yancey",
+            initials: "EY",
+            rating: 5,
+            date: "a year ago",
+            text: "Very hard working, high quality, reliable service! Would use again.",
+            response: null,
+            badge: null
+        },
+        {
+            author: "Conner",
+            initials: "C",
+            rating: 5,
+            date: "a year ago",
+            text: "Works hard and gets the job done.",
+            response: null,
+            badge: "Local Guide"
+        },
+        {
+            author: "K B",
+            initials: "KB",
+            rating: 5,
+            date: "a year ago",
+            text: "Gets the job done right.",
+            response: null,
+            badge: null
+        }
+    ];
+    
+    // Function to generate star rating HTML
+    function generateStars(rating) {
+        return '⭐'.repeat(rating);
+    }
+    
+    // Function to generate review cards
+    function generateReviewCards() {
+        reviewsGrid.innerHTML = reviews.map((review, index) => `
+            <div class="review-card" data-index="${index}">
+                <div class="review-header">
+                    <div class="review-avatar">${review.initials}</div>
+                    <div class="review-author-info">
+                        <div class="review-author">${review.author}</div>
+                        <div class="review-meta">
+                            <span class="review-rating">${generateStars(review.rating)}</span>
+                            <span class="review-date">${review.date}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-text">
+                    ${review.text.length > 150 ? review.text.substring(0, 150) + '...' : review.text}
+                </div>
+                ${review.text.length > 150 ? '<span class="review-read-more">Read more</span>' : ''}
+            </div>
+        `).join('');
+        
+        // Add click events to review cards
+        const reviewCards = document.querySelectorAll('.review-card');
+        reviewCards.forEach((card, index) => {
+            card.addEventListener('click', () => openReviewModal(index));
+        });
+    }
+    
+    // Function to open review modal
+    function openReviewModal(index) {
+        currentReviewIndex = index;
+        updateReviewModal();
+        reviewModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Function to close review modal
+    function closeReviewModal() {
+        reviewModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Function to update modal content
+    function updateReviewModal() {
+        const review = reviews[currentReviewIndex];
+        
+        reviewModalBody.innerHTML = `
+            <div class="review-modal-header">
+                <div class="review-modal-avatar">${review.initials}</div>
+                <div class="review-modal-author-info">
+                    <div class="review-modal-author">
+                        ${review.author}
+                        ${review.badge ? `<span style="color: var(--text-light); font-size: 0.85rem; font-weight: 400;"> • ${review.badge}</span>` : ''}
+                    </div>
+                    <div class="review-modal-meta">
+                        <span class="review-modal-rating">${generateStars(review.rating)}</span>
+                        <span class="review-modal-date">${review.date}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="review-modal-text">${review.text}</div>
+            
+            ${review.response ? `
+                <div class="review-modal-response">
+                    <div class="review-response-header">
+                        💬 Response from the owner ${review.date}
+                    </div>
+                    <div class="review-response-text">${review.response}</div>
+                </div>
+            ` : ''}
+        `;
+        
+        // Update counter
+        reviewModalCounter.textContent = `${currentReviewIndex + 1} of ${reviews.length}`;
+        
+        // Update navigation buttons
+        reviewModalPrev.disabled = currentReviewIndex === 0;
+        reviewModalNext.disabled = currentReviewIndex === reviews.length - 1;
+    }
+    
+    // Function to show next review
+    function showNextReview() {
+        currentReviewIndex = (currentReviewIndex + 1) % reviews.length;
+        updateReviewModal();
+    }
+    
+    // Function to show previous review
+    function showPrevReview() {
+        currentReviewIndex = (currentReviewIndex - 1 + reviews.length) % reviews.length;
+        updateReviewModal();
+    }
+    
+    // Initialize review cards
+    generateReviewCards();
+    
+    // Close modal events
+    reviewModalClose.addEventListener('click', closeReviewModal);
+    reviewModal.addEventListener('click', (e) => {
+        if (e.target === reviewModal) {
+            closeReviewModal();
+        }
+    });
+    
+    // Navigation events
+    reviewModalNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNextReview();
+    });
+    
+    reviewModalPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrevReview();
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (reviewModal.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeReviewModal();
+            } else if (e.key === 'ArrowRight') {
+                showNextReview();
+            } else if (e.key === 'ArrowLeft') {
+                showPrevReview();
+            }
+        }
+    });
+});
+
