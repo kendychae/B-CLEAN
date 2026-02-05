@@ -402,4 +402,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Blog Page - Bubble animation
+    const brandTextBlog = document.getElementById('brand-text-blog');
+    if (brandTextBlog) {
+        brandTextBlog.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('animating');
+                const letters = this.querySelectorAll('.brand-letter');
+                
+                // Pop letters as bubbles float up
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.classList.add('pop');
+                        setTimeout(() => letter.classList.remove('pop'), 600);
+                    }, index * 200);
+                });
+                
+                setTimeout(() => {
+                    this.classList.remove('animating');
+                }, 2500);
+            }
+        });
+    }
 });
