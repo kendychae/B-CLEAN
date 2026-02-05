@@ -134,10 +134,62 @@ img {
     object-fit: contain;
 }
 
+/* Brand Text in Navbar */
+.brand-text-container {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.brand-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--dark-color);
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    display: flex;
+    gap: 2px;
+    transition: all 0.3s ease;
+}
+
+.brand-text:hover {
+    color: var(--primary-color);
+}
+
+.brand-letter {
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.brand-text.dirty .brand-letter {
+    opacity: 0.3;
+    color: var(--grey-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.brand-text.cleaning .brand-letter {
+    animation: letterClean 0.5s ease forwards;
+}
+
 @media (max-width: 480px) {
     .logo {
         height: 50px;
         max-width: 150px;
+    }
+    
+    .brand-text {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+    }
+}
+
+@media (max-width: 768px) {
+    .brand-text {
+        font-size: 1.3rem;
+        letter-spacing: 2px;
     }
 }
 
@@ -1309,3 +1361,354 @@ body {
         z-index: 9999 !important;
     }
 }
+
+/* Blog Page Styles */
+.blog-section {
+    background-color: var(--light-color);
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.blog-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.blog-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-image img {
+    transform: scale(1.05);
+}
+
+.blog-content {
+    padding: 1.5rem;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.blog-date,
+.blog-category {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.blog-category {
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+.blog-content h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.blog-content p {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.blog-footer {
+    padding-top: 1rem;
+    border-top: 1px solid var(--grey-light);
+}
+
+.blog-author {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.testimonial-card {
+    background: linear-gradient(135deg, var(--accent-color), var(--white));
+    border-left: 4px solid var(--primary-color);
+}
+
+.blog-cta {
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.blog-cta h2 {
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.blog-cta p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .blog-content h2 {
+        font-size: 1.25rem;
+    }
+    
+    .blog-cta {
+        padding: 2rem 1rem;
+    }
+}
+
+/* Easter Egg Animations for Each Page */
+
+/* Home Page - Squeegee Animation */
+.squeegee {
+    position: absolute;
+    width: 40px;
+    height: 8px;
+    background: linear-gradient(90deg, var(--grey-color) 0%, var(--grey-color) 80%, var(--primary-color) 80%);
+    border-radius: 2px;
+    top: 50%;
+    left: -50px;
+    transform: translateY(-50%);
+    opacity: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.squeegee::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(180deg, transparent 0%, rgba(76, 187, 23, 0.3) 100%);
+    top: 100%;
+    left: 0;
+}
+
+.brand-text.animating .squeegee {
+    animation: squeegeeWipe 2s ease-in-out forwards;
+}
+
+@keyframes squeegeeWipe {
+    0% {
+        left: -50px;
+        opacity: 1;
+    }
+    100% {
+        left: calc(100% + 10px);
+        opacity: 1;
+    }
+}
+
+@keyframes letterClean {
+    0% {
+        opacity: 0.3;
+        color: var(--grey-color);
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        color: var(--primary-color);
+        transform: scale(1);
+        text-shadow: 0 0 10px rgba(76, 187, 23, 0.3);
+    }
+}
+
+/* Window Washing Page - Water Drop Animation */
+.water-drop {
+    position: absolute;
+    font-size: 1.5rem;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+}
+
+.brand-text.animating .water-drop {
+    animation: waterDropFall 1.5s ease-in forwards;
+}
+
+@keyframes waterDropFall {
+    0% {
+        top: -30px;
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        top: 50%;
+        transform: translateX(-50%) scale(1.2);
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.5);
+    }
+}
+
+/* Carpet Cleaning Page - Vacuum Animation */
+.vacuum {
+    position: absolute;
+    font-size: 1.8rem;
+    top: 50%;
+    left: -50px;
+    transform: translateY(-50%) rotate(-45deg);
+    opacity: 0;
+}
+
+.brand-text.animating .vacuum {
+    animation: vacuumMove 2s ease-in-out forwards;
+}
+
+@keyframes vacuumMove {
+    0% {
+        left: -50px;
+        opacity: 1;
+        transform: translateY(-50%) rotate(-45deg);
+    }
+    50% {
+        transform: translateY(-50%) rotate(-45deg) scale(1.1);
+    }
+    100% {
+        left: calc(100% + 10px);
+        opacity: 1;
+        transform: translateY(-50%) rotate(-45deg);
+    }
+}
+
+/* About Page - Sparkle Animation */
+.sparkle {
+    position: absolute;
+    font-size: 1.2rem;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.brand-text.animating .sparkle {
+    animation: sparkleAppear 2s ease-in-out forwards;
+}
+
+@keyframes sparkleAppear {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+    }
+    10% {
+        opacity: 1;
+        transform: scale(1.5) rotate(180deg);
+        top: -20px;
+        left: 10%;
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.2) rotate(360deg);
+        top: 50%;
+        left: 30%;
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.8) rotate(540deg);
+        top: -10px;
+        left: 50%;
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1.3) rotate(720deg);
+        top: 40%;
+        left: 70%;
+    }
+    90% {
+        opacity: 1;
+        transform: scale(1.6) rotate(900deg);
+        top: -15px;
+        left: 90%;
+    }
+}
+
+/* Quote Page - Shine Animation */
+.shine {
+    position: absolute;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    top: 0;
+    left: -30px;
+    opacity: 0;
+    transform: skewX(-20deg);
+}
+
+.brand-text.animating .shine {
+    animation: shinePass 1.5s ease-in-out forwards;
+}
+
+@keyframes shinePass {
+    0% {
+        left: -30px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        left: calc(100% + 30px);
+        opacity: 0;
+    }
+}
+
+/* Letter pop animation for all pages */
+.brand-letter.pop {
+    animation: letterPop 0.6s ease forwards;
+}
+
+@keyframes letterPop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3) rotate(5deg);
+        color: var(--primary-color);
+    }
+    100% {
+        transform: scale(1);
+        color: var(--primary-color);
+    }
+}
+

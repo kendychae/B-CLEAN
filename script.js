@@ -279,3 +279,127 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Brand Text Easter Egg Animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all brand text elements
+    const brandTextHome = document.getElementById('brand-text-home');
+    const brandTextWindow = document.getElementById('brand-text-window');
+    const brandTextCarpet = document.getElementById('brand-text-carpet');
+    const brandTextAbout = document.getElementById('brand-text-about');
+    const brandTextQuote = document.getElementById('brand-text-quote');
+    
+    // Home Page - Squeegee animation
+    if (brandTextHome) {
+        brandTextHome.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('dirty', 'animating');
+                const letters = this.querySelectorAll('.brand-letter');
+                
+                // Clean each letter sequentially
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.style.animation = 'letterClean 0.5s ease forwards';
+                    }, index * 300);
+                });
+                
+                setTimeout(() => {
+                    this.classList.remove('dirty', 'animating');
+                    letters.forEach(letter => {
+                        letter.style.animation = '';
+                    });
+                }, 2500);
+            }
+        });
+    }
+    
+    // Window Washing Page - Water drop animation
+    if (brandTextWindow) {
+        brandTextWindow.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('animating');
+                const letters = this.querySelectorAll('.brand-letter');
+                
+                // Make letters shine as water passes
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.classList.add('pop');
+                        setTimeout(() => letter.classList.remove('pop'), 600);
+                    }, index * 200);
+                });
+                
+                setTimeout(() => {
+                    this.classList.remove('animating');
+                }, 2000);
+            }
+        });
+    }
+    
+    // Carpet Cleaning Page - Vacuum animation
+    if (brandTextCarpet) {
+        brandTextCarpet.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('dirty', 'animating');
+                const letters = this.querySelectorAll('.brand-letter');
+                
+                // Clean letters as vacuum passes
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.style.animation = 'letterClean 0.5s ease forwards';
+                    }, index * 300);
+                });
+                
+                setTimeout(() => {
+                    this.classList.remove('dirty', 'animating');
+                    letters.forEach(letter => {
+                        letter.style.animation = '';
+                    });
+                }, 2500);
+            }
+        });
+    }
+    
+    // About Page - Sparkle animation
+    if (brandTextAbout) {
+        brandTextAbout.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('animating');
+                const letters = this.querySelectorAll('.brand-letter');
+                
+                // Pop letters with sparkle
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.classList.add('pop');
+                        setTimeout(() => letter.classList.remove('pop'), 600);
+                    }, index * 150);
+                });
+                
+                setTimeout(() => {
+                    this.classList.remove('animating');
+                }, 2500);
+            }
+        });
+    }
+    
+    // Quote Page - Shine animation
+    if (brandTextQuote) {
+        brandTextQuote.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('animating');
+                const letters = this.querySelectorAll('.brand-letter');
+                
+                // Light up letters as shine passes
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.classList.add('pop');
+                        setTimeout(() => letter.classList.remove('pop'), 600);
+                    }, index * 200);
+                });
+                
+                setTimeout(() => {
+                    this.classList.remove('animating');
+                }, 2000);
+            }
+        });
+    }
+});
