@@ -150,7 +150,6 @@ img {
     user-select: none;
     position: relative;
     display: flex;
-    gap: 2px;
     transition: all 0.3s ease;
 }
 
@@ -1391,6 +1390,11 @@ body {
     width: 100%;
     height: 220px;
     overflow: hidden;
+    display: none;
+}
+
+.blog-image:has(img:not([style*="display: none"])) {
+    display: block;
 }
 
 .blog-image img {
