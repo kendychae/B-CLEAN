@@ -1,11 +1,11 @@
 # B CLEAN - Professional Window & Carpet Cleaning
 
-Professional window washing and carpet cleaning services in Northern Utah.
+Professional window washing and carpet cleaning services in Cache Valley, UT.
 
 ## Website Features
 
 - **Responsive Design**: Looks great on all devices
-- **5 Pages**: Home, Window Washing, Carpet Cleaning, About, Quote Form
+- **6 Pages**: Home, Window Washing, Carpet Cleaning, About, Quote Form, Blog
 - **Professional Layout**: Modern design with smooth animations
 - **Quote Request Form**: Easy-to-use form for customer inquiries
 - **SEO Optimized**: Proper meta tags and semantic HTML
@@ -17,6 +17,7 @@ Professional window washing and carpet cleaning services in Northern Utah.
 3. **Carpet Cleaning** - Information about carpet and upholstery cleaning
 4. **About Danzen** - Owner biography and business values
 5. **Get a Quote** - Contact form for quote requests
+6. **Blog** - Customer stories and cleaning tips
 
 ## Technologies Used
 
@@ -44,4 +45,4 @@ For questions or service inquiries, please use the quote form on the website.
 
 ---
 
-© 2026 B CLEAN. All rights reserved.
+© 2026 B CLEAN 4 Step Window Washing LLC. All Rights Reserved.
