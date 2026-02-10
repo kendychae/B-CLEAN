@@ -2371,3 +2371,21 @@ body {
         filter: brightness(1.3);
     }
 }
+
+@keyframes bubble-float {
+    0% {
+        bottom: -100px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        bottom: 100%;
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}

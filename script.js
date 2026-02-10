@@ -1606,16 +1606,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
     
-    // QUOTE.HTML - Sparkles → Speed Quote Challenge Game
+    // QUOTE.HTML - Sparkles → Bubble Pop Cleaning Game
     function quoteEasterEgg(clickCount) {
         if (clickCount <= 5) {
             createSparkles(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
         } else {
-            startSpeedQuoteGame();
+            startBubblePopGame();
         }
     }
     
-    function startSpeedQuoteGame() {
+    function startBubblePopGame() {
         const gameContainer = document.createElement('div');
         gameContainer.style.cssText = `
             position: fixed;
@@ -1623,40 +1623,39 @@ document.addEventListener('DOMContentLoaded', function() {
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90vw;
-            max-width: 450px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            max-width: 500px;
+            height: 85vh;
+            max-height: 600px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
+            padding: 20px;
             z-index: 10001;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
         `;
         
         const title = document.createElement('div');
-        title.textContent = '⚡ Speed Quote Challenge!';
-        title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 15px;';
+        title.textContent = '🫧 Bubble Pop Cleaning!';
+        title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 10px;';
         
         const instruction = document.createElement('div');
-        instruction.textContent = 'Click the correct service price as fast as you can!';
-        instruction.style.cssText = 'color: white; font-size: 16px; text-align: center; margin-bottom: 20px;';
+        instruction.textContent = 'Pop the soap bubbles before they escape!';
+        instruction.style.cssText = 'color: white; font-size: 16px; text-align: center; margin-bottom: 10px;';
         
-        const questionDiv = document.createElement('div');
-        questionDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; min-height: 60px;';
-        
-        const optionsContainer = document.createElement('div');
-        optionsContainer.style.cssText = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;';
+        const gameArea = document.createElement('div');
+        gameArea.style.cssText = 'width: 100%; height: calc(100% - 140px); position: relative; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;';
         
         const scoreDiv = document.createElement('div');
-        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
+        scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
         
         const timerDiv = document.createElement('div');
-        timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 10px;';
+        timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 5px;';
         
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '\u2715';
         closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => {
+            if (spawnInterval) clearInterval(spawnInterval);
             if (timerInterval) clearInterval(timerInterval);
             gameContainer.remove();
         });
@@ -1664,105 +1663,137 @@ document.addEventListener('DOMContentLoaded', function() {
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
         gameContainer.appendChild(instruction);
-        gameContainer.appendChild(questionDiv);
-        gameContainer.appendChild(optionsContainer);
+        gameContainer.appendChild(gameArea);
         gameContainer.appendChild(scoreDiv);
         gameContainer.appendChild(timerDiv);
         document.body.appendChild(gameContainer);
         
-        const services = [
-            { name: 'Window Cleaning', prices: [50, 75, 100, 125, 150] },
-            { name: 'Carpet Cleaning', prices: [80, 100, 120, 150, 200] },
-            { name: 'Inside + Outside Windows', prices: [100, 125, 150, 175, 200] },
-            { name: 'Full House Clean', prices: [150, 200, 250, 300, 350] },
-            { name: 'Office Cleaning', prices: [100, 150, 200, 250, 300] }
-        ];
-        
         let score = 0;
-        let timeLeft = 30;
+        let missed = 0;
+        let timeLeft = 40;
+        let spawnInterval;
         let timerInterval;
         
-        function newQuestion() {
-            const service = services[Math.floor(Math.random() * services.length)];
-            const correctPrice = service.prices[Math.floor(Math.random() * service.prices.length)];
-            const allPrices = [...service.prices];
+        const bubbleColors = [
+            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(135,206,250,0.6), rgba(100,149,237,0.4))',
+            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(144,238,144,0.6), rgba(60,179,113,0.4))',
+            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,182,193,0.6), rgba(255,105,180,0.4))',
+            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(221,160,221,0.6), rgba(186,85,211,0.4))'
+        ];
+        
+        function spawnBubble() {
+            const bubble = document.createElement('div');
+            const size = Math.random() * 40 + 40;
+            const leftPos = Math.random() * (gameArea.offsetWidth - size);
+            const floatDuration = Math.random() * 3 + 3; // 3-6 seconds
+            const color = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
             
-            // Generate options
-            const options = [correctPrice];
-            while (options.length < 4) {
-                const randomPrice = allPrices[Math.floor(Math.random() * allPrices.length)];
-                if (!options.includes(randomPrice)) {
-                    options.push(randomPrice);
-                }
-            }
-            options.sort(() => Math.random() - 0.5);
+            bubble.style.cssText = `
+                position: absolute;
+                left: ${leftPos}px;
+                bottom: -${size}px;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                border-radius: 50%;
+                border: 2px solid rgba(255,255,255,0.5);
+                cursor: pointer;
+                transition: all 0.1s;
+                box-shadow: inset -10px -10px 20px rgba(255,255,255,0.5),
+                            inset 5px 5px 10px rgba(0,0,0,0.1),
+                            0 8px 15px rgba(0,0,0,0.2);
+                animation: bubble-float ${floatDuration}s linear forwards;
+            `;
             
-            questionDiv.textContent = `${service.name}: $?`;
-            optionsContainer.innerHTML = '';
+            let popped = false;
             
-            options.forEach(price => {
-                const btn = document.createElement('button');
-                btn.textContent = `$${price}`;
-                btn.style.cssText = `
-                    background: white;
-                    color: #11998e;
-                    border: none;
-                    padding: 20px;
-                    font-size: 22px;
-                    font-weight: bold;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                `;
-                btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.95)');
-                btn.addEventListener('mouseup', () => btn.style.transform = 'scale(1)');
-                btn.addEventListener('click', () => {
-                    if (price === correctPrice) {
-                        score++;
-                        scoreDiv.textContent = `Score: ${score} 🎯`;
-                        btn.style.background = '#38ef7d';
-                        btn.style.color = 'white';
-                        createSparkles(btn.getBoundingClientRect().left + 50, btn.getBoundingClientRect().top + 20);
-                        
-                        if (score >= 15) {
-                            clearInterval(timerInterval);
-                            title.textContent = '🏆 Quote Expert!';
-                            instruction.textContent = `Perfect! Score: ${score}`;
-                            createConfetti();
-                            setTimeout(() => gameContainer.remove(), 3000);
-                        } else {
-                            setTimeout(newQuestion, 500);
-                        }
-                    } else {
-                        btn.style.background = '#ff6b6b';
-                        btn.style.color = 'white';
+            bubble.addEventListener('click', function() {
+                if (!popped) {
+                    popped = true;
+                    score++;
+                    scoreDiv.textContent = `Popped: ${score} 🫧 | Missed: ${missed}`;
+                    
+                    // Pop animation
+                    this.style.transform = 'scale(1.3)';
+                    this.style.opacity = '0';
+                    
+                    // Create pop sparkles
+                    for (let i = 0; i < 3; i++) {
                         setTimeout(() => {
-                            btn.style.background = 'white';
-                            btn.style.color = '#11998e';
-                        }, 300);
+                            const sparkle = document.createElement('div');
+                            sparkle.textContent = '✨';
+                            sparkle.style.cssText = `
+                                position: absolute;
+                                left: ${leftPos + size/2}px;
+                                bottom: ${this.offsetTop}px;
+                                font-size: 20px;
+                                animation: sparkle-float 1s ease-out forwards;
+                            `;
+                            gameArea.appendChild(sparkle);
+                            setTimeout(() => sparkle.remove(), 1000);
+                        }, i * 100);
                     }
-                });
-                optionsContainer.appendChild(btn);
+                    
+                    setTimeout(() => this.remove(), 200);
+                    
+                    if (score >= 40) {
+                        clearInterval(spawnInterval);
+                        clearInterval(timerInterval);
+                        title.textContent = '🏆 Bubble Master!';
+                        instruction.textContent = `Incredible! ${score} bubbles popped!`;
+                        createConfetti();
+                        setTimeout(() => gameContainer.remove(), 3000);
+                    }
+                }
             });
+            
+            gameArea.appendChild(bubble);
+            
+            // Check if bubble escaped
+            setTimeout(() => {
+                if (!popped && bubble.parentNode) {
+                    missed++;
+                    scoreDiv.textContent = `Popped: ${score} 🫧 | Missed: ${missed}`;
+                    bubble.remove();
+                    
+                    if (missed >= 15) {
+                        clearInterval(spawnInterval);
+                        clearInterval(timerInterval);
+                        title.textContent = 'Too Many Escaped!';
+                        instruction.textContent = `Final Score: ${score} bubbles popped`;
+                        if (score >= 25) createConfetti();
+                        setTimeout(() => gameContainer.remove(), 3000);
+                    }
+                }
+            }, floatDuration * 1000);
         }
         
-        scoreDiv.textContent = 'Score: 0/15';
+        scoreDiv.textContent = 'Popped: 0 🫧 | Missed: 0';
         timerDiv.textContent = `Time: ${timeLeft}s`;
+        
+        // Spawn bubbles at increasing rate
+        spawnInterval = setInterval(() => {
+            if (missed < 15 && score < 40 && timeLeft > 0) {
+                spawnBubble();
+                // Occasionally spawn double bubbles for challenge
+                if (Math.random() > 0.7) {
+                    setTimeout(() => spawnBubble(), 200);
+                }
+            }
+        }, 800);
         
         timerInterval = setInterval(() => {
             timeLeft--;
             timerDiv.textContent = `Time: ${timeLeft}s`;
             if (timeLeft <= 0) {
+                clearInterval(spawnInterval);
                 clearInterval(timerInterval);
                 title.textContent = 'Time Up!';
-                instruction.textContent = `Final Score: ${score}/15`;
-                optionsContainer.innerHTML = '';
-                if (score >= 10) createConfetti();
+                instruction.textContent = `You popped ${score} bubbles!`;
+                if (score >= 25) createConfetti();
                 setTimeout(() => gameContainer.remove(), 3000);
             }
         }, 1000);
-        
-        newQuestion();
     }
     
     // Helper functions
