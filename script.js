@@ -989,30 +989,105 @@ document.addEventListener('DOMContentLoaded', function() {
         newRound();
     }
     
-    // ABOUT.HTML - Gentle Fade → Dinosaur Catch Game
+    // ABOUT.HTML - Prehistoric Atmosphere → Dinosaur Catch Game
     function aboutEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            createGentleFade();
+            createPrehistoricEffect(clickCount);
         } else {
             startDinosaurGame();
         }
     }
     
-    function createGentleFade() {
-        const fade = document.createElement('div');
-        fade.style.cssText = `
+    function createPrehistoricEffect(intensity) {
+        // Create volcanic glow effect
+        const glow = document.createElement('div');
+        glow.style.cssText = `
             position: fixed;
             left: 50%;
-            bottom: 50px;
+            bottom: -20%;
             transform: translateX(-50%);
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(147,112,219,0.4), transparent);
-            animation: gentle-fade 2s ease-out forwards;
+            width: ${80 + intensity * 20}%;
+            height: ${60 + intensity * 15}%;
+            background: radial-gradient(ellipse at center bottom,
+                rgba(255, 69, 0, ${0.2 + intensity * 0.05}) 0%,
+                rgba(255, 140, 0, ${0.15 + intensity * 0.03}) 30%,
+                rgba(139, 69, 19, ${0.1 + intensity * 0.02}) 60%,
+                transparent 100%);
+            pointer-events: none;
+            z-index: 9998;
+            animation: volcanic-pulse ${2 - intensity * 0.1}s ease-out forwards;
         `;
-        effectContainer.appendChild(fade);
-        setTimeout(() => fade.remove(), 2000);
+        effectContainer.appendChild(glow);
+        setTimeout(() => glow.remove(), 2000);
+        
+        // Add prehistoric plant silhouettes
+        const plantCount = 3 + intensity;
+        for (let i = 0; i < plantCount; i++) {
+            setTimeout(() => {
+                const plant = document.createElement('div');
+                const leftPos = Math.random() * 90 + 5;
+                const height = Math.random() * 30 + 20;
+                
+                plant.style.cssText = `
+                    position: fixed;
+                    left: ${leftPos}%;
+                    bottom: 0;
+                    width: ${8 + Math.random() * 6}px;
+                    height: ${height}vh;
+                    background: linear-gradient(180deg,
+                        transparent 0%,
+                        rgba(34, 139, 34, 0.6) 20%,
+                        rgba(34, 139, 34, 0.8) 100%);
+                    clip-path: polygon(
+                        50% 0%, 
+                        ${30 + Math.random() * 20}% 30%, 
+                        45% 50%, 
+                        ${25 + Math.random() * 15}% 70%, 
+                        40% 100%, 
+                        60% 100%, 
+                        ${75 + Math.random() * 10}% 70%, 
+                        55% 50%, 
+                        ${70 + Math.random() * 20}% 30%
+                    );
+                    pointer-events: none;
+                    animation: plant-grow 1.2s ease-out forwards;
+                    transform-origin: bottom center;
+                `;
+                effectContainer.appendChild(plant);
+                setTimeout(() => {
+                    plant.style.animation = 'plant-fade 0.8s ease-out forwards';
+                    setTimeout(() => plant.remove(), 800);
+                }, 1200);
+            }, i * 200);
+        }
+        
+        // Add meteor streaks at higher intensities
+        if (intensity >= 3) {
+            for (let i = 0; i < intensity - 2; i++) {
+                setTimeout(() => {
+                    const meteor = document.createElement('div');
+                    const startX = Math.random() * 100;
+                    
+                    meteor.style.cssText = `
+                        position: fixed;
+                        left: ${startX}%;
+                        top: -10%;
+                        width: 3px;
+                        height: ${Math.random() * 50 + 30}px;
+                        background: linear-gradient(180deg,
+                            rgba(255, 255, 255, 0) 0%,
+                            rgba(255, 200, 100, 0.9) 30%,
+                            rgba(255, 100, 0, 0.8) 100%);
+                        box-shadow: 0 0 10px rgba(255, 150, 50, 0.8);
+                        transform: rotate(25deg);
+                        pointer-events: none;
+                        animation: meteor-fall 1.5s linear forwards;
+                    `;
+                    effectContainer.appendChild(meteor);
+                    setTimeout(() => meteor.remove(), 1500);
+                }, Math.random() * 1000);
+            }
+        }
     }
     
     function startDinosaurGame() {
@@ -1026,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', function() {
             max-width: 500px;
             height: 85vh;
             max-height: 600px;
-            background: linear-gradient(135deg, #43a047 0%, #1de9b6 100%);
+            background: linear-gradient(135deg, #2d5016 0%, #3d6e1f 50%, #4a7c2d 100%);
             border-radius: 20px;
             padding: 20px;
             z-index: 10001;
@@ -1036,21 +1111,69 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const title = document.createElement('div');
         title.textContent = 'Dinosaur Collector';
-        title.style.cssText = 'color: white; font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 10px;';
+        title.style.cssText = 'color: white; font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);';
         
         const instruction = document.createElement('div');
         instruction.textContent = 'Catch the dinosaurs!';
         instruction.style.cssText = 'color: rgba(255,255,255,0.9); font-size: 16px; text-align: center; margin-bottom: 10px;';
         
         const gameArea = document.createElement('div');
-        gameArea.style.cssText = 'width: 100%; height: 420px; position: relative; background: linear-gradient(to bottom, rgba(135,206,235,0.3), rgba(34,139,34,0.3)); border-radius: 10px; overflow: hidden; border: 3px solid rgba(255,255,255,0.3);';
+        gameArea.style.cssText = `
+            width: 100%;
+            height: 420px;
+            position: relative;
+            background: linear-gradient(to bottom, 
+                rgba(135, 206, 235, 0.2) 0%,
+                rgba(100, 149, 237, 0.15) 40%,
+                rgba(139, 69, 19, 0.3) 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 3px solid rgba(139, 69, 19, 0.5);
+            box-shadow: inset 0 -50px 50px rgba(139, 69, 19, 0.3);
+        `;
         
         const catcher = document.createElement('div');
-        catcher.innerHTML = '🦖';
-        catcher.style.cssText = 'position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 55px; transition: left 0.1s; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));';
+        catcher.style.cssText = `
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 50px;
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+            border-radius: 10px 10px 0 0;
+            border: 3px solid #654321;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: left 0.1s;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 15px;
+                background: #654321;
+                border-radius: 5px;
+            }
+        `;
+        catcher.innerHTML = `
+            <div style="
+                position: absolute;
+                top: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 70%;
+                height: 70%;
+                background: rgba(139, 69, 19, 0.6);
+                border-radius: 5px;
+                border: 2px solid rgba(101, 67, 33, 0.8);
+            "></div>
+        `;
         
         const scoreDiv = document.createElement('div');
-        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center; margin-top: 10px;';
+        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center; margin-top: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);';
         
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
@@ -1069,7 +1192,13 @@ document.addEventListener('DOMContentLoaded', function() {
         gameContainer.appendChild(scoreDiv);
         document.body.appendChild(gameContainer);
         
-        const dinosaurs = ['🦕', '🦖', '🦴', '🥚'];
+        const dinoTypes = [
+            { color: '#228b22', size: 45, shape: 'trex' },
+            { color: '#32cd32', size: 40, shape: 'long' },
+            { color: '#3cb371', size: 35, shape: 'stego' },
+            { color: '#00ff7f', size: 38, shape: 'raptor' }
+        ];
+        
         let score = 0;
         let missed = 0;
         const maxMissed = 5;
@@ -1091,26 +1220,83 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('mousemove', moveCatcher);
         document.addEventListener('touchmove', moveCatcherTouch, { passive: false });
         
+        function createDinoShape(type) {
+            const dino = document.createElement('div');
+            dino.style.cssText = `
+                position: absolute;
+                left: ${Math.random() * 85}%;
+                top: -50px;
+                width: ${type.size}px;
+                height: ${type.size}px;
+                animation: drop-fall 3.5s linear forwards;
+                filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
+            `;
+            
+            if (type.shape === 'trex') {
+                dino.innerHTML = `
+                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
+                        <ellipse cx="20" cy="30" rx="15" ry="20" fill="${type.color}"/>
+                        <circle cx="20" cy="15" r="12" fill="${type.color}"/>
+                        <rect x="15" y="45" width="5" height="10" fill="${type.color}" rx="2"/>
+                        <rect x="25" y="45" width="5" height="10" fill="${type.color}" rx="2"/>
+                        <path d="M 32 28 L 45 25 L 42 32 Z" fill="${type.color}"/>
+                        <circle cx="17" cy="12" r="2" fill="#ffffff"/>
+                        <circle cx="17" cy="12" r="1" fill="#000000"/>
+                    </svg>
+                `;
+            } else if (type.shape === 'long') {
+                dino.innerHTML = `
+                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
+                        <ellipse cx="25" cy="35" rx="18" ry="12" fill="${type.color}"/>
+                        <circle cx="15" cy="15" r="8" fill="${type.color}"/>
+                        <rect x="15" y="15" width="4" height="20" fill="${type.color}" rx="2"/>
+                        <rect x="15" y="45" width="4" height="8" fill="${type.color}" rx="2"/>
+                        <rect x="30" y="40" width="4" height="10" fill="${type.color}" rx="2"/>
+                        <circle cx="13" cy="12" r="1.5" fill="#000000"/>
+                    </svg>
+                `;
+            } else if (type.shape === 'stego') {
+                dino.innerHTML = `
+                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
+                        <ellipse cx="25" cy="35" rx="20" ry="10" fill="${type.color}"/>
+                        <circle cx="15" cy="25" r="8" fill="${type.color}"/>
+                        <polygon points="15,18 20,5 25,18" fill="${type.color}"/>
+                        <polygon points="25,18 30,8 35,18" fill="${type.color}"/>
+                        <rect x="15" y="40" width="4" height="8" fill="${type.color}" rx="2"/>
+                        <rect x="30" y="40" width="4" height="8" fill="${type.color}" rx="2"/>
+                        <circle cx="13" cy="23" r="1.5" fill="#000000"/>
+                    </svg>
+                `;
+            } else {
+                dino.innerHTML = `
+                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
+                        <ellipse cx="25" cy="30" rx="12" ry="15" fill="${type.color}"/>
+                        <circle cx="22" cy="18" r="9" fill="${type.color}"/>
+                        <path d="M 35 28 L 48 26 L 45 35 L 38 32 Z" fill="${type.color}"/>
+                        <rect x="18" y="42" width="4" height="10" fill="${type.color}" rx="2"/>
+                        <rect x="28" y="42" width="4" height="10" fill="${type.color}" rx="2"/>
+                        <circle cx="20" cy="15" r="2" fill="#ffffff"/>
+                        <circle cx="20" cy="15" r="1" fill="#000000"/>
+                    </svg>
+                `;
+            }
+            
+            return dino;
+        }
+        
         function dropDinosaur() {
             if (missed >= maxMissed) {
                 title.textContent = 'Dinosaurs Escaped!';
                 instruction.textContent = `Final Score: ${score}`;
                 document.removeEventListener('mousemove', moveCatcher);
                 document.removeEventListener('touchmove', moveCatcherTouch);
+                createAboutCelebration();
                 setTimeout(() => gameContainer.remove(), 3000);
                 return;
             }
             
-            const dino = document.createElement('div');
-            dino.textContent = dinosaurs[Math.floor(Math.random() * dinosaurs.length)];
-            dino.style.cssText = `
-                position: absolute;
-                left: ${Math.random() * 85}%;
-                top: -50px;
-                font-size: 45px;
-                animation: drop-fall 3.5s linear forwards;
-                filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
-            `;
+            const type = dinoTypes[Math.floor(Math.random() * dinoTypes.length)];
+            const dino = createDinoShape(type);
             gameArea.appendChild(dino);
             
             const checkInterval = setInterval(() => {
@@ -1125,21 +1311,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     dino.remove();
                     clearInterval(checkInterval);
                     
-                    // Create small dino sparkle effect
-                    for (let i = 0; i < 3; i++) {
+                    // Create professional sparkle effect
+                    for (let i = 0; i < 5; i++) {
                         setTimeout(() => {
                             const sparkle = document.createElement('div');
-                            sparkle.textContent = '⭐';
                             sparkle.style.cssText = `
-                                position: absolute;
-                                left: ${catcherRect.left}px;
-                                top: ${catcherRect.top}px;
-                                font-size: 20px;
+                                position: fixed;
+                                left: ${catcherRect.left + Math.random() * catcherRect.width}px;
+                                top: ${catcherRect.top + Math.random() * catcherRect.height}px;
+                                width: 8px;
+                                height: 8px;
+                                background: radial-gradient(circle, #ffd700 0%, transparent 100%);
+                                border-radius: 50%;
+                                box-shadow: 0 0 10px #ffd700;
                                 animation: sparkle-float 1s ease-out forwards;
+                                pointer-events: none;
                             `;
                             effectContainer.appendChild(sparkle);
                             setTimeout(() => sparkle.remove(), 1000);
-                        }, i * 100);
+                        }, i * 80);
                     }
                     
                     if (score >= 20) {
@@ -1174,30 +1364,79 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 900);
     }
     
-    // BLOG.HTML - Shimmer Effect → Word Association Game
+    // BLOG.HTML - Immersive Aurora Wave → Word Association Game
     function blogEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            createShimmerEffect();
+            createAuroraWave(clickCount);
         } else {
             startWordGame();
         }
     }
     
-    function createShimmerEffect() {
-        const shimmer = document.createElement('div');
-        shimmer.style.cssText = `
-            position: fixed;
-            left: 50%;
-            bottom: 50px;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,215,0,0.3), transparent);
-            animation: shimmer-pulse 2s ease-out forwards;
-        `;
-        effectContainer.appendChild(shimmer);
-        setTimeout(() => shimmer.remove(), 2000);
+    function createAuroraWave(intensity) {
+        // Create multiple wave layers for depth
+        const waveCount = 3 + intensity;
+        const colors = [
+            ['rgba(255, 0, 150, 0.4)', 'rgba(255, 100, 200, 0.3)', 'rgba(148, 0, 211, 0.2)'],
+            ['rgba(0, 191, 255, 0.4)', 'rgba(30, 144, 255, 0.3)', 'rgba(65, 105, 225, 0.2)'],
+            ['rgba(255, 215, 0, 0.4)', 'rgba(255, 165, 0, 0.3)', 'rgba(255, 140, 0, 0.2)'],
+            ['rgba(0, 255, 127, 0.4)', 'rgba(50, 205, 50, 0.3)', 'rgba(34, 139, 34, 0.2)'],
+            ['rgba(186, 85, 211, 0.4)', 'rgba(138, 43, 226, 0.3)', 'rgba(147, 112, 219, 0.2)']
+        ];
+        
+        for (let i = 0; i < waveCount; i++) {
+            setTimeout(() => {
+                const wave = document.createElement('div');
+                const colorSet = colors[i % colors.length];
+                const startSide = Math.random() > 0.5 ? 'left' : 'right';
+                const verticalPos = Math.random() * 100;
+                
+                wave.style.cssText = `
+                    position: fixed;
+                    ${startSide}: -100%;
+                    top: ${verticalPos}%;
+                    width: 200%;
+                    height: ${40 + intensity * 10}vh;
+                    background: linear-gradient(${startSide === 'left' ? '90' : '270'}deg,
+                        ${colorSet[0]} 0%,
+                        ${colorSet[1]} 50%,
+                        ${colorSet[2]} 100%);
+                    transform: translateY(-50%) skewY(${Math.random() * 6 - 3}deg);
+                    border-radius: 50%;
+                    filter: blur(40px);
+                    pointer-events: none;
+                    z-index: 9998;
+                    animation: aurora-sweep-${startSide} ${3 - intensity * 0.3}s ease-out forwards;
+                    opacity: 0;
+                `;
+                effectContainer.appendChild(wave);
+                setTimeout(() => wave.remove(), 3000);
+            }, i * (400 - intensity * 40));
+        }
+        
+        // Add particle burst
+        for (let i = 0; i < 20 + (intensity * 5); i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                const size = Math.random() * 6 + 3;
+                const color = colors[Math.floor(Math.random() * colors.length)][0];
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    border-radius: 50%;
+                    box-shadow: 0 0 ${size * 3}px ${color};
+                    pointer-events: none;
+                    animation: particle-burst ${1 + Math.random()}s ease-out forwards;
+                `;
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }, i * 30);
+        }
     }
     
     function startWordGame() {
@@ -1463,7 +1702,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (playerSequence[currentStep] !== sequence[currentStep]) {
                 instruction.textContent = 'Wrong! Game Over';
                 scoreDiv.textContent = `Final Level: ${level - 1}`;
-                setTimeout(() => gameContainer.remove(), 2000);
+                createCarpetCelebration();
+                setTimeout(() => gameContainer.remove(), 3000);
                 return;
             }
             
@@ -1491,31 +1731,150 @@ document.addEventListener('DOMContentLoaded', function() {
         nextRound();
     }
     
-    // WINDOW-WASHING.HTML - Water Droplets → Window Cleaning Game
+    // WINDOW-WASHING.HTML - Realistic Storm Progression → Window Cleaning Game
+    let stormIntensity = 0;
     function windowEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            createWaterDroplets();
+            stormIntensity = clickCount;
+            createRealisticStorm(clickCount);
         } else {
             startWindowCleaningGame();
         }
     }
     
-    function createWaterDroplets() {
-        for (let i = 0; i < 15; i++) {
+    function createRealisticStorm(intensity) {
+        // Add darkening overlay as storm intensifies
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 30, 48, ${intensity * 0.12});
+            pointer-events: none;
+            z-index: 9998;
+            transition: opacity 0.8s ease;
+        `;
+        effectContainer.appendChild(overlay);
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.remove(), 800);
+        }, 2000);
+        
+        // Create realistic water droplets with increasing intensity
+        const dropCount = 10 + (intensity * 8);
+        for (let i = 0; i < dropCount; i++) {
             setTimeout(() => {
                 const drop = document.createElement('div');
-                drop.textContent = '💧';
+                const size = Math.random() * 8 + 4;
+                const xPos = Math.random() * 100;
+                
                 drop.style.cssText = `
                     position: fixed;
-                    left: ${Math.random() * 100}%;
+                    left: ${xPos}%;
                     top: -20px;
-                    font-size: ${Math.random() * 20 + 15}px;
-                    animation: drop-fall ${Math.random() + 1.5}s linear forwards;
+                    width: ${size}px;
+                    height: ${size * 2.5}px;
+                    background: linear-gradient(180deg, 
+                        rgba(255, 255, 255, 0.9) 0%,
+                        rgba(135, 206, 250, 0.7) 50%,
+                        rgba(135, 206, 250, 0.9) 100%);
+                    border-radius: ${size}px ${size}px ${size * 1.5}px ${size * 1.5}px;
+                    box-shadow: 
+                        inset 0 -2px 4px rgba(255, 255, 255, 0.6),
+                        0 2px 8px rgba(0, 0, 0, 0.2),
+                        0 0 3px rgba(135, 206, 250, 0.8);
+                    animation: realistic-drop-fall ${2 - (intensity * 0.2) + Math.random() * 0.5}s linear forwards;
+                    filter: blur(0.3px);
+                    pointer-events: none;
                 `;
                 effectContainer.appendChild(drop);
+                
+                // Add splash effect on impact
+                setTimeout(() => {
+                    const splash = document.createElement('div');
+                    splash.style.cssText = `
+                        position: fixed;
+                        left: ${xPos}%;
+                        bottom: 0;
+                        width: ${size * 3}px;
+                        height: ${size * 2}px;
+                        background: radial-gradient(ellipse at center, 
+                            rgba(255, 255, 255, 0.6) 0%,
+                            rgba(135, 206, 250, 0.3) 50%,
+                            transparent 100%);
+                        border-radius: 50%;
+                        animation: splash-expand 0.4s ease-out forwards;
+                        pointer-events: none;
+                    `;
+                    effectContainer.appendChild(splash);
+                    setTimeout(() => splash.remove(), 400);
+                }, (2 - (intensity * 0.2) + Math.random() * 0.5) * 1000);
+                
                 setTimeout(() => drop.remove(), 2500);
-            }, i * 100);
+            }, i * (80 - intensity * 10));
         }
+        
+        // Add lightning effects at higher intensities
+        if (intensity >= 3) {
+            const lightningCount = intensity - 2;
+            for (let i = 0; i < lightningCount; i++) {
+                setTimeout(() => {
+                    createLightning();
+                }, Math.random() * 2000);
+            }
+        }
+    }
+    
+    function createLightning() {
+        // Full screen lightning flash
+        const flash = document.createElement('div');
+        flash.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at ${Math.random() * 100}% 20%, 
+                rgba(255, 255, 255, 0.9) 0%,
+                rgba(200, 220, 255, 0.5) 30%,
+                transparent 70%);
+            pointer-events: none;
+            z-index: 9999;
+            animation: lightning-flash 0.15s ease-out;
+        `;
+        effectContainer.appendChild(flash);
+        
+        // Lightning bolt
+        const bolt = document.createElement('div');
+        const startX = Math.random() * 80 + 10;
+        bolt.style.cssText = `
+            position: fixed;
+            left: ${startX}%;
+            top: 0;
+            width: 3px;
+            height: ${Math.random() * 40 + 30}%;
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(200, 220, 255, 0.9) 50%,
+                rgba(135, 206, 250, 0) 100%);
+            box-shadow: 
+                0 0 10px rgba(255, 255, 255, 1),
+                0 0 20px rgba(200, 220, 255, 0.8),
+                0 0 30px rgba(135, 206, 250, 0.6);
+            transform: translateX(-50%) skewX(${Math.random() * 6 - 3}deg);
+            filter: blur(1px);
+            pointer-events: none;
+            z-index: 9999;
+            animation: lightning-bolt 0.15s ease-out;
+        `;
+        effectContainer.appendChild(bolt);
+        
+        setTimeout(() => {
+            flash.remove();
+            bolt.remove();
+        }, 150);
     }
     
     // REVIEWS.HTML - Falling Stars → Star Burst Tap Game
@@ -1655,7 +2014,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         clearInterval(timerInterval);
                         title.textContent = 'Game Over!';
                         instruction.textContent = `Final Score: ${score} stars`;
-                        if (score >= 20) createConfetti();
+                        createWindowCelebration();
                         setTimeout(() => gameContainer.remove(), 3000);
                     }
                 }
@@ -1896,21 +2255,189 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Page-Specific Celebration Effects
     function createCarpetCelebration() {
-        // Blue wave celebration for carpet page
-        const colors = ['#4169e1', '#1e90ff', '#00bfff', '#87ceeb', '#4682b4'];
-        for (let i = 0; i < 60; i++) {
+        // Blue wave celebration for carpet page - Professional cascade
+        const colors = ['#4169e1', '#1e90ff', '#00bfff', '#87ceeb', '#4682b4', '#5f9ea0'];
+        
+        // Create wave effects
+        for (let w = 0; w < 5; w++) {
+            setTimeout(() => {
+                const wave = document.createElement('div');
+                wave.style.cssText = `
+                    position: fixed;
+                    left: -10%;
+                    top: ${w * 20}%;
+                    width: 120%;
+                    height: 25vh;
+                    background: linear-gradient(90deg,
+                        transparent 0%,
+                        ${colors[w % colors.length]} 50%,
+                        transparent 100%);
+                    opacity: 0;
+                    pointer-events: none;
+                    animation: wave-sweep 2s ease-out forwards;
+                    transform: skewY(-2deg);
+                    filter: blur(20px);
+                `;
+                effectContainer.appendChild(wave);
+                setTimeout(() => wave.remove(), 2000);
+            }, w * 200);
+        }
+        
+        // Add particle burst
+        for (let i = 0; i < 80; i++) {
             setTimeout(() => {
                 const particle = document.createElement('div');
                 particle.style.cssText = `
                     position: fixed;
                     left: ${Math.random() * 100}%;
                     top: -10px;
-                    width: ${Math.random() * 12 + 6}px;
-                    height: ${Math.random() * 12 + 6}px;
+                    width: ${Math.random() * 10 + 4}px;
+                    height: ${Math.random() * 10 + 4}px;
                     background: ${colors[Math.floor(Math.random() * colors.length)]};
                     border-radius: 50%;
-                    box-shadow: 0 0 10px ${colors[Math.floor(Math.random() * colors.length)]};
+                    box-shadow: 0 0 15px ${colors[Math.floor(Math.random() * colors.length)]};
                     animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
+                `;
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 5000);
+            }, i * 20);
+        }
+    }
+    
+    function createBlogCelebration() {
+        // Vibrant spectrum celebration for blog page
+        const colors = ['#ff0080', '#ff69b4', '#ffd700', '#00ff7f', '#00bfff', '#9370db', '#ff1493'];
+        
+        // Create radial bursts from multiple points
+        const burstPoints = [
+            {x: 25, y: 25}, {x: 75, y: 25}, {x: 50, y: 50}, {x: 25, y: 75}, {x: 75, y: 75}
+        ];
+        
+        burstPoints.forEach((point, index) => {
+            setTimeout(() => {
+                for (let i = 0; i < 15; i++) {
+                    const beam = document.createElement('div');
+                    const angle = (360 / 15) * i;
+                    beam.style.cssText = `
+                        position: fixed;
+                        left: ${point.x}%;
+                        top: ${point.y}%;
+                        width: 4px;
+                        height: 0;
+                        background: linear-gradient(180deg,
+                            ${colors[index % colors.length]} 0%,
+                            ${colors[(index + 1) % colors.length]} 100%);
+                        transform-origin: top center;
+                        transform: rotate(${angle}deg);
+                        box-shadow: 0 0 10px ${colors[index % colors.length]};
+                        animation: beam-extend 1.5s ease-out forwards;
+                        pointer-events: none;
+                    `;
+                    effectContainer.appendChild(beam);
+                    setTimeout(() => beam.remove(), 1500);
+                }
+            }, index * 150);
+        });
+        
+        // Add color wash overlay
+        const wash = document.createElement('div');
+        wash.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                rgba(255, 0, 128, 0.2) 0%,
+                rgba(255, 215, 0, 0.2) 25%,
+                rgba(0, 255, 127, 0.2) 50%,
+                rgba(0, 191, 255, 0.2) 75%,
+                rgba(147, 112, 219, 0.2) 100%);
+            pointer-events: none;
+            animation: color-pulse 2s ease-in-out;
+        `;
+        effectContainer.appendChild(wash);
+        setTimeout(() => wash.remove(), 2000);
+    }
+    
+    function createAboutCelebration() {
+        // Prehistoric volcanic celebration with professional effects
+        const volcanicColors = ['#ff4500', '#ff6347', '#ffa500', '#ff8c00', '#cd5c5c'];
+        const plantColors = ['#228b22', '#32cd32', '#00ff7f', '#3cb371'];
+        
+        // Volcanic eruption effect from bottom
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const burst = document.createElement('div');
+                const xPos = 40 + Math.random() * 20;
+                burst.style.cssText = `
+                    position: fixed;
+                    left: ${xPos}%;
+                    bottom: 0;
+                    width: ${Math.random() * 60 + 40}px;
+                    height: 0;
+                    background: radial-gradient(ellipse at center,
+                        ${volcanicColors[i % volcanicColors.length]} 0%,
+                        transparent 70%);
+                    filter: blur(10px);
+                    pointer-events: none;
+                    animation: volcanic-burst 2s ease-out forwards;
+                    opacity: 0.8;
+                `;
+                effectContainer.appendChild(burst);
+                setTimeout(() => burst.remove(), 2000);
+            }, i * 100);
+        }
+        
+        // Growing vegetation from sides
+        for (let i = 0; i < 12; i++) {
+            setTimeout(() => {
+                const plant = document.createElement('div');
+                const isLeft = i % 2 === 0;
+                plant.style.cssText = `
+                    position: fixed;
+                    ${isLeft ? 'left' : 'right'}: 0;
+                    bottom: ${Math.random() * 40}%;
+                    width: ${Math.random() * 100 + 50}px;
+                    height: ${Math.random() * 15 + 10}vh;
+                    background: linear-gradient(${isLeft ? '45' : '135'}deg,
+                        transparent 0%,
+                        ${plantColors[i % plantColors.length]} 50%,
+                        transparent 100%);
+                    clip-path: polygon(
+                        ${isLeft ? '100%' : '0%'} 0%,
+                        ${isLeft ? '70%' : '30%'} 25%,
+                        ${isLeft ? '80%' : '20%'} 50%,
+                        ${isLeft ? '60%' : '40%'} 75%,
+                        ${isLeft ? '50%' : '50%'} 100%,
+                        ${isLeft ? '100%' : '0%'} 100%
+                    );
+                    pointer-events: none;
+                    transform-origin: ${isLeft ? 'left' : 'right'} bottom;
+                    animation: plant-sweep 1.5s ease-out forwards;
+                    opacity: 0;
+                `;
+                effectContainer.appendChild(plant);
+                setTimeout(() => plant.remove(), 1500);
+            }, i * 80);
+        }
+        
+        // Particle shower
+        for (let i = 0; i < 60; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                const color = [...volcanicColors, ...plantColors][Math.floor(Math.random() * 9)];
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    width: ${Math.random() * 8 + 3}px;
+                    height: ${Math.random() * 8 + 3}px;
+                    background: ${color};
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '0%'};
+                    box-shadow: 0 0 10px ${color};
+                    animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
+                    transform: rotate(${Math.random() * 360}deg);
                 `;
                 effectContainer.appendChild(particle);
                 setTimeout(() => particle.remove(), 5000);
@@ -1918,52 +2445,60 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function createBlogCelebration() {
-        // Golden shimmer celebration for blog page
-        const colors = ['#ffd700', '#ffed4e', '#ffa500', '#ffb347', '#f4c430'];
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                const particle = document.createElement('div');
-                particle.style.cssText = `
-                    position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: -10px;
-                    width: ${Math.random() * 8 + 4}px;
-                    height: ${Math.random() * 8 + 4}px;
-                    background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    border-radius: 50%;
-                    box-shadow: 0 0 15px ${colors[Math.floor(Math.random() * colors.length)]};
-                    animation: confetti-fall ${Math.random() * 2.5 + 2}s linear forwards;
-                    opacity: 0.9;
-                `;
-                effectContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 4500);
-            }, i * 30);
+    function createWindowCelebration() {
+        // Crystal clear sparkle celebration for window washing page
+        const sparkleColors = ['#ffffff', '#e0f7ff', '#b0e0e6', '#add8e6', '#87ceeb'];
+        
+        // Create diamond sparkle pattern
+        for (let row = 0; row < 5; row++) {
+            for (let col = 0; col < 8; col++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.style.cssText = `
+                        position: fixed;
+                        left: ${col * 12.5 + 6.25}%;
+                        top: ${row * 20 + 10}%;
+                        width: 30px;
+                        height: 30px;
+                        background: radial-gradient(circle,
+                            ${sparkleColors[0]} 0%,
+                            ${sparkleColors[2]} 50%,
+                            transparent 100%);
+                        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                        pointer-events: none;
+                        animation: sparkle-shine 1.5s ease-out forwards;
+                        opacity: 0;
+                        filter: blur(1px);
+                        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+                    `;
+                    effectContainer.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 1500);
+                }, (row * 8 + col) * 30);
+            }
         }
-    }
-    
-    function createAboutCelebration() {
-        // Green nature celebration for about/dinosaur page
-        const colors = ['#32cd32', '#00ff7f', '#98fb98', '#90ee90', '#00fa9a'];
-        for (let i = 0; i < 55; i++) {
+        
+        // Add sweeping glass reflection
+        for (let i = 0; i < 3; i++) {
             setTimeout(() => {
-                const particle = document.createElement('div');
-                const isLeaf = Math.random() > 0.7;
-                particle.style.cssText = `
+                const sweep = document.createElement('div');
+                sweep.style.cssText = `
                     position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: -10px;
-                    width: ${Math.random() * 10 + 5}px;
-                    height: ${Math.random() * 10 + 5}px;
-                    background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    border-radius: ${isLeaf ? '50% 0' : '50%'};
-                    transform: rotate(${Math.random() * 360}deg);
-                    box-shadow: 0 0 8px ${colors[Math.floor(Math.random() * colors.length)]};
-                    animation: confetti-fall ${Math.random() * 3 + 2.5}s linear forwards;
+                    left: -20%;
+                    top: ${i * 33}%;
+                    width: 25%;
+                    height: 35vh;
+                    background: linear-gradient(90deg,
+                        transparent 0%,
+                        rgba(255, 255, 255, 0.6) 50%,
+                        transparent 100%);
+                    pointer-events: none;
+                    animation: glass-sweep 2s ease-in-out forwards;
+                    transform: skewX(-20deg);
+                    filter: blur(5px);
                 `;
-                effectContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 5500);
-            }, i * 28);
+                effectContainer.appendChild(sweep);
+                setTimeout(() => sweep.remove(), 2000);
+            }, i * 300);
         }
     }
     
@@ -2112,8 +2647,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (score === totalSpots) {
                     setTimeout(() => {
                         windowPane.style.background = 'linear-gradient(135deg, rgba(135,206,250,0.8), rgba(255,255,255,0.9))';
-                        gameTitle.textContent = '🎉 PERFECTLY CLEAN! 🎉';
-                        createConfetti();
+                        gameTitle.textContent = 'PERFECTLY CLEAN!';
+                        createWindowCelebration();
                         
                         setTimeout(() => {
                             gameContainer.style.opacity = '0';
@@ -2263,6 +2798,143 @@ style.textContent = `
         }
     }
     
+    @keyframes realistic-drop-fall {
+        0% {
+            transform: translateY(0) scaleY(1);
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh) scaleY(1.2);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes splash-expand {
+        0% {
+            transform: scale(0);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes lightning-flash {
+        0%, 100% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes lightning-bolt {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) skewX(0deg) scaleY(0);
+        }
+        30% {
+            opacity: 1;
+            transform: translateX(-50%) skewX(var(--skew, 0deg)) scaleY(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(-50%) skewX(var(--skew, 0deg)) scaleY(1);
+        }
+    }
+    
+    @keyframes aurora-sweep-left {
+        0% {
+            left: -100%;
+            opacity: 0;
+        }
+        30% {
+            opacity: 0.9;
+        }
+        100% {
+            left: 100%;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes aurora-sweep-right {
+        0% {
+            right: -100%;
+            opacity: 0;
+        }
+        30% {
+            opacity: 0.9;
+        }
+        100% {
+            right: 100%;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes particle-burst {
+        0% {
+            transform: scale(0) translate(0, 0);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(2) translate(
+                ${Math.random() * 200 - 100}px,
+                ${Math.random() * 200 - 100}px
+            );
+            opacity: 0;
+        }
+    }
+    
+    @keyframes volcanic-pulse {
+        0% {
+            transform: translateX(-50%) scale(0.8);
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-50%) scale(1.2);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes plant-grow {
+        0% {
+            transform: scaleY(0);
+            opacity: 0;
+        }
+        100% {
+            transform: scaleY(1);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes plant-fade {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: scaleY(0.8);
+        }
+    }
+    
+    @keyframes meteor-fall {
+        0% {
+            transform: translate(0, -100px) rotate(25deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(150px, 100vh) rotate(25deg);
+            opacity: 0;
+        }
+    }
+    
     @keyframes bounce-fall {
         0% {
             top: -50px;
@@ -2346,6 +3018,102 @@ style.textContent = `
         }
         100% {
             bottom: 120%;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes wave-sweep {
+        0% {
+            left: -120%;
+            opacity: 0;
+        }
+        30% {
+            opacity: 0.7;
+        }
+        100% {
+            left: 100%;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes beam-extend {
+        0% {
+            height: 0;
+            opacity: 1;
+        }
+        70% {
+            height: 150vh;
+            opacity: 0.8;
+        }
+        100% {
+            height: 150vh;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes color-pulse {
+        0%, 100% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes volcanic-burst {
+        0% {
+            height: 0;
+            opacity: 0;
+        }
+        50% {
+            height: 80vh;
+            opacity: 1;
+        }
+        100% {
+            height: 100vh;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes plant-sweep {
+        0% {
+            transform: scaleX(0);
+            opacity: 0;
+        }
+        50% {
+            opacity: 0.9;
+        }
+        100% {
+            transform: scaleX(1);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes sparkle-shine {
+        0% {
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.2) rotate(180deg);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.8) rotate(360deg);
+        }
+    }
+    
+    @keyframes glass-sweep {
+        0% {
+            left: -25%;
+            opacity: 0;
+        }
+        30% {
+            opacity: 0.8;
+        }
+        100% {
+            left: 120%;
             opacity: 0;
         }
     }
