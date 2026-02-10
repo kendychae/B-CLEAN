@@ -670,7 +670,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rating: 5,
             date: "7 months ago",
             text: "Danzen does impeccable work and knows what he's doing. We get horrible hard water scale from our sprinkler system and B Clean makes our windows look like new. We've hired Danzen for multiple properties for a couple years now and can't recommend him enough. Incredible work and a great price.",
-            response: "Thank you so much, I appreciate the review 😊",
+            response: "Thank you so much, I appreciate the review",
             badge: "Local Guide"
         },
         {
@@ -818,7 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ${review.response ? `
                 <div class="review-modal-response">
                     <div class="review-response-header">
-                        💬 Response from the owner ${review.date}
+                        Response from the owner ${review.date}
                     </div>
                     <div class="review-response-text">${review.response}</div>
                 </div>
@@ -953,7 +953,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const title = document.createElement('div');
-        title.textContent = '🌈 Match the Colors!';
+        title.textContent = 'Match the Colors';
         title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px;';
         
         const colorDisplay = document.createElement('div');
@@ -1275,120 +1275,70 @@ document.addEventListener('DOMContentLoaded', function() {
                 width: ${type.size}px;
                 height: ${type.size}px;
                 animation: drop-fall 3.5s linear forwards;
-                filter: drop-shadow(5px 8px 12px rgba(0,0,0,0.5));
+                filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.4));
             `;
             
-            const shadowColor = type.color;
+            const dinoColor = type.color;
             
             if (type.shape === 'trex') {
-                // T-Rex Shadow Silhouette - powerful and imposing
+                // Simple T-Rex silhouette
                 dino.innerHTML = `
-                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                        <!-- Shadow silhouette of T-Rex -->
+                    <svg viewBox="0 0 100 120" style="width: 100%; height: 100%;">
                         <path d="
-                            M 35 75 
-                            L 32 62 L 30 50 L 32 38 L 35 30 
-                            L 38 25 L 40 18 L 42 12 
-                            L 45 8 L 50 6 L 55 8 
-                            L 58 12 L 60 18 L 62 25 
-                            L 65 30 L 68 38 L 70 50 
-                            L 68 62 L 65 72 
-                            L 62 78 L 65 88 L 68 96 
-                            L 62 96 L 60 85 L 58 75 
-                            L 55 70 L 52 75 L 50 85 L 48 96 
-                            L 42 96 L 44 88 L 46 78 
-                            L 48 72 L 45 70 
-                            L 40 75 L 38 82 L 36 90 L 34 96 
-                            L 28 96 L 30 88 
-                            Z
-                            M 40 28 
-                            L 38 32 L 35 35 L 32 36 L 30 34 L 32 32 
-                            Z
-                            M 62 18 
-                            L 68 16 L 72 18 L 75 22 L 72 24 L 68 22 L 65 20 
-                            Z
-                        " fill="${shadowColor}" opacity="0.9"/>
+                            M 40 100 L 38 80 L 36 70 L 35 60 L 36 50 L 38 40
+                            L 40 30 L 42 22 L 44 18 L 46 15 L 50 13 L 54 15
+                            L 56 18 L 58 22 L 60 30 L 62 40 L 64 50 L 65 60
+                            L 64 70 L 62 80 L 60 100 L 56 100 L 56 85 L 55 75
+                            L 54 70 L 50 70 L 49 75 L 48 85 L 48 100 L 44 100
+                            L 44 85 L 43 75 L 42 70 L 40 72 Z
+                            M 38 40 L 36 42 L 32 44 L 30 43 L 32 40 L 35 38 Z
+                            M 58 22 L 62 20 L 66 20 L 68 22 L 66 24 L 62 24 Z
+                            M 53 18 Q 54 17 55 18
+                        " fill="${dinoColor}"/>
                     </svg>
                 `;
             } else if (type.shape === 'stego') {
-                // Stegosaurus Shadow Silhouette - distinctive back plates
+                // Simple Stegosaurus silhouette with plates
                 dino.innerHTML = `
-                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                        <!-- Shadow silhouette of Stegosaurus -->
+                    <svg viewBox="0 0 120 100" style="width: 100%; height: 100%;">
                         <path d="
-                            M 15 72 
-                            L 12 65 L 12 58 L 15 52 
-                            L 20 48 L 25 46 L 30 45 
-                            L 35 45 L 40 45 L 45 45 
-                            L 50 45 L 55 45 L 60 46 
-                            L 65 47 L 70 49 L 75 52 
-                            L 78 56 L 80 62 L 78 68 
-                            L 75 72 L 72 76 
-                            L 70 82 L 68 90 L 66 96 
-                            L 60 96 L 62 88 L 64 80 L 65 75 
-                            L 58 75 L 56 82 L 54 90 L 52 96 
-                            L 46 96 L 48 88 L 50 80 L 51 75 
-                            L 44 75 L 42 82 L 40 90 L 38 96 
-                            L 32 96 L 34 88 L 36 80 L 37 75 
-                            L 30 75 L 28 82 L 26 90 L 24 96 
-                            L 18 96 L 20 88 L 22 80 L 23 75 
-                            L 18 72 
-                            Z
-                            M 30 45 L 32 20 L 34 10 L 36 20 L 38 45 Z
-                            M 38 45 L 40 18 L 42 8 L 44 18 L 46 45 Z
-                            M 46 45 L 48 15 L 50 5 L 52 15 L 54 45 Z
-                            M 54 45 L 56 18 L 58 8 L 60 18 L 62 45 Z
-                            M 62 45 L 64 22 L 66 12 L 68 22 L 70 45 Z
-                            M 12 60 
-                            L 8 55 L 6 50 L 8 48 L 12 50 
-                            Z
-                            M 75 55 
-                            L 80 52 L 85 52 L 88 55 L 85 58 L 80 58 
-                            Z
-                        " fill="${shadowColor}" opacity="0.9"/>
+                            M 20 70 L 18 65 L 18 60 L 20 55 L 25 52 L 35 50
+                            L 50 50 L 65 50 L 80 52 L 90 55 L 92 60 L 92 65
+                            L 90 70 L 88 75 L 85 82 L 83 90 L 80 95 L 75 95
+                            L 77 88 L 78 80 L 78 75 L 68 75 L 68 80 L 68 88
+                            L 66 95 L 61 95 L 63 88 L 64 80 L 64 75 L 54 75
+                            L 54 80 L 54 88 L 52 95 L 47 95 L 49 88 L 50 80
+                            L 50 75 L 40 75 L 40 80 L 40 88 L 38 95 L 33 95
+                            L 35 88 L 36 80 L 36 75 L 26 75 L 26 82 L 25 90
+                            L 23 95 L 18 95 L 20 88 L 22 80 L 23 75 Z
+                            M 30 50 L 32 35 L 34 30 L 36 35 L 38 50 Z
+                            M 42 50 L 44 30 L 46 25 L 48 30 L 50 50 Z
+                            M 54 50 L 56 32 L 58 27 L 60 32 L 62 50 Z
+                            M 66 50 L 68 34 L 70 29 L 72 34 L 74 50 Z
+                            M 78 50 L 80 36 L 82 31 L 84 36 L 86 50 Z
+                            M 18 62 L 14 58 L 12 55 L 14 53 L 18 55 Z
+                            M 91 60 L 95 58 L 98 60 L 95 63 Z
+                        " fill="${dinoColor}"/>
                     </svg>
                 `;
             } else {
-                // Velociraptor Shadow Silhouette - sleek and predatory
+                // Simple Velociraptor silhouette
                 dino.innerHTML = `
-                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                        <!-- Shadow silhouette of Velociraptor -->
+                    <svg viewBox="0 0 100 120" style="width: 100%; height: 100%;">
                         <path d="
-                            M 38 70 
-                            L 35 58 L 33 48 L 32 38 
-                            L 33 30 L 35 24 L 38 20 
-                            L 40 15 L 42 10 L 45 7 
-                            L 50 5 L 55 7 L 58 10 
-                            L 60 14 L 62 18 L 64 22 
-                            L 66 26 L 68 32 L 70 40 
-                            L 71 48 L 70 56 L 68 64 
-                            L 65 70 L 62 74 
-                            L 60 80 L 58 88 L 56 96 
-                            L 50 96 L 52 86 L 54 78 L 55 72 
-                            L 48 72 L 46 80 L 44 88 L 42 96 
-                            L 36 96 L 38 86 L 40 78 L 41 72 
-                            Z
-                            M 38 35 
-                            L 35 38 L 30 42 L 26 45 
-                            L 22 47 L 18 48 L 15 46 
-                            L 17 43 L 20 41 L 24 38 
-                            L 28 35 L 32 33 
-                            Z
-                            M 60 18 
-                            L 65 15 L 70 14 L 75 15 
-                            L 78 18 L 76 20 L 72 20 
-                            L 68 19 L 64 19 
-                            Z
-                            M 68 45 
-                            L 73 43 L 78 42 L 82 43 
-                            L 85 46 L 83 48 L 78 48 
-                            L 73 47 L 70 46 
-                            Z
-                            M 36 92 
-                            L 32 88 L 28 86 L 26 88 
-                            L 28 92 L 32 94 
-                            Z
-                        " fill="${shadowColor}" opacity="0.9"/>
+                            M 42 95 L 40 82 L 38 70 L 37 60 L 38 50 L 40 40
+                            L 42 32 L 44 25 L 46 20 L 48 16 L 52 14 L 56 16
+                            L 58 20 L 60 25 L 62 30 L 64 36 L 66 44 L 67 52
+                            L 66 62 L 64 72 L 62 82 L 60 95 L 56 95 L 57 85
+                            L 58 75 L 58 70 L 54 70 L 53 75 L 52 85 L 51 95
+                            L 47 95 L 48 85 L 49 75 L 48 70 L 44 72 Z
+                            M 40 45 L 36 48 L 32 50 L 28 50 L 25 48 L 27 45
+                            L 30 43 L 34 42 L 38 42 Z
+                            M 58 20 L 62 18 L 66 18 L 70 20 L 68 22 L 64 22 Z
+                            M 63 50 L 68 48 L 73 48 L 76 50 L 73 52 L 68 52 Z
+                            M 42 92 L 38 88 L 36 86 L 38 84 L 40 86 Z
+                            M 53 17 Q 54 16 55 17
+                        " fill="${dinoColor}"/>
                     </svg>
                 `;
             }
@@ -2257,163 +2207,226 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function startStarBurstGame() {
         const gameContainer = document.createElement('div');
-       gameContainer.style.cssText = `
+        gameContainer.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90vw;
-            max-width: 500px;
-            height: 85vh;
-            max-height: 600px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            max-width: 450px;
+            padding: 30px;
+            background: linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%);
             border-radius: 20px;
-            padding: 20px;
             z-index: 10001;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         `;
         
         const title = document.createElement('div');
-        title.textContent = 'Star Burst Challenge';
-        title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 10px;';
+        title.textContent = 'Celestial Tic-Tac-Toe';
+        title.style.cssText = 'color: #FFD700; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255,215,0,0.5);';
         
-        const instruction = document.createElement('div');
-        instruction.textContent = 'Tap the stars before they disappear!';
-        instruction.style.cssText = 'color: white; font-size: 16px; text-align: center; margin-bottom: 10px;';
+        const board = document.createElement('div');
+        board.style.cssText = `
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 350px;
+            margin: 0 auto 20px auto;
+            aspect-ratio: 1;
+        `;
         
-        const gameArea = document.createElement('div');
-        gameArea.style.cssText = 'width: 100%; height: calc(100% - 140px); position: relative; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;';
-        
-        const scoreDiv = document.createElement('div');
-        scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
-        
-        const timerDiv = document.createElement('div');
-        timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 5px;';
+        const statusDiv = document.createElement('div');
+        statusDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 15px; height: 25px;';
         
         const closeBtn = document.createElement('button');
-        closeBtn.textContent = '\u2715';
-        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => {
-            if (spawnInterval) clearInterval(spawnInterval);
-            if (timerInterval) clearInterval(timerInterval);
             createQuickCelebration();
             setTimeout(() => gameContainer.remove(), 800);
         });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
-        gameContainer.appendChild(instruction);
-        gameContainer.appendChild(gameArea);
-        gameContainer.appendChild(scoreDiv);
-        gameContainer.appendChild(timerDiv);
+        gameContainer.appendChild(board);
+        gameContainer.appendChild(statusDiv);
         document.body.appendChild(gameContainer);
         
-        let score = 0;
-        let missed = 0;
-        let timeLeft = 30;
-        let spawnInterval;
-        let timerInterval;
+        let currentPlayer = 'star';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
         
-        function spawnStar() {
-            const star = document.createElement('div');
-            const size = Math.random() * 20 + 40;
-            const starId = Math.floor(Math.random() * 10000);
-            const colors = [['#FFD700', '#FFA500'], ['#FFFFFF', '#E0E0E0'], ['#FF69B4', '#FFB6C1']];
-            const color = colors[Math.floor(Math.random() * colors.length)];
+        function createStar() {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 100 100');
+            svg.style.cssText = 'width: 70%; height: 70%;';
             
-            star.innerHTML = `
-                <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                    <defs>
-                        <linearGradient id="starG${starId}" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:${color[0]};stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:${color[1]};stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M 50 10 L 61 40 L 93 40 L 67 58 L 78 88 L 50 70 L 22 88 L 33 58 L 7 40 L 39 40 Z" 
-                          fill="url(#starG${starId})" 
-                          stroke="#FFFFFF" 
-                          stroke-width="2"
-                          filter="drop-shadow(0 0 8px ${color[0]})" />
-                </svg>
-            `;
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+            gradient.setAttribute('id', `starGrad${Math.random()}`);
+            gradient.setAttribute('x1', '0%');
+            gradient.setAttribute('y1', '0%');
+            gradient.setAttribute('x2', '100%');
+            gradient.setAttribute('y2', '100%');
             
-            star.style.cssText = `
-                position: absolute;
-                left: ${Math.random() * 85}%;
-                top: ${Math.random() * 85}%;
-                width: ${size}px;
-                height: ${size}px;
+            const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop1.setAttribute('offset', '0%');
+            stop1.setAttribute('style', 'stop-color:#FFD700;stop-opacity:1');
+            
+            const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop2.setAttribute('offset', '100%');
+            stop2.setAttribute('style', 'stop-color:#FFA500;stop-opacity:1');
+            
+            gradient.appendChild(stop1);
+            gradient.appendChild(stop2);
+            defs.appendChild(gradient);
+            svg.appendChild(defs);
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M 50 10 L 61 40 L 93 40 L 67 58 L 78 88 L 50 70 L 22 88 L 33 58 L 7 40 L 39 40 Z');
+            path.setAttribute('fill', `url(#${gradient.getAttribute('id')})`);
+            path.setAttribute('stroke', '#FFFFFF');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('filter', 'drop-shadow(0 0 10px #FFD700)');
+            svg.appendChild(path);
+            
+            return svg;
+        }
+        
+        function createMoon() {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 100 100');
+            svg.style.cssText = 'width: 70%; height: 70%;';
+            
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
+            gradient.setAttribute('id', `moonGrad${Math.random()}`);
+            
+            const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop1.setAttribute('offset', '0%');
+            stop1.setAttribute('style', 'stop-color:#FFFFFF;stop-opacity:1');
+            
+            const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop2.setAttribute('offset', '100%');
+            stop2.setAttribute('style', 'stop-color:#D3D3D3;stop-opacity:1');
+            
+            gradient.appendChild(stop1);
+            gradient.appendChild(stop2);
+            defs.appendChild(gradient);
+            svg.appendChild(defs);
+            
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', '50');
+            circle.setAttribute('cy', '50');
+            circle.setAttribute('r', '40');
+            circle.setAttribute('fill', `url(#${gradient.getAttribute('id')})`);
+            circle.setAttribute('stroke', '#E0E0E0');
+            circle.setAttribute('stroke-width', '2');
+            circle.setAttribute('filter', 'drop-shadow(0 0 10px rgba(255,255,255,0.7))');
+            svg.appendChild(circle);
+            
+            // Add craters
+            const crater1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            crater1.setAttribute('cx', '40');
+            crater1.setAttribute('cy', '40');
+            crater1.setAttribute('r', '8');
+            crater1.setAttribute('fill', 'rgba(180,180,180,0.5)');
+            svg.appendChild(crater1);
+            
+            const crater2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            crater2.setAttribute('cx', '60');
+            crater2.setAttribute('cy', '55');
+            crater2.setAttribute('r', '6');
+            crater2.setAttribute('fill', 'rgba(180,180,180,0.5)');
+            svg.appendChild(crater2);
+            
+            return svg;
+        }
+        
+        function checkWinner() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    return gameBoard[a];
+                }
+            }
+            
+            if (!gameBoard.includes('')) {
+                return 'tie';
+            }
+            
+            return null;
+        }
+        
+        function handleCellClick(index, cell) {
+            if (!gameActive || gameBoard[index] !== '') return;
+            
+            gameBoard[index] = currentPlayer;
+            cell.innerHTML = '';
+            cell.appendChild(currentPlayer === 'star' ? createStar() : createMoon());
+            cell.style.pointerEvents = 'none';
+            
+            const winner = checkWinner();
+            if (winner) {
+                gameActive = false;
+                if (winner === 'star') {
+                    statusDiv.textContent = 'Stars Win!';
+                    createConfetti();
+                } else if (winner === 'moon') {
+                    statusDiv.textContent = 'Moon Wins!';
+                    createConfetti();
+                } else {
+                    statusDiv.textContent = \"It's a Tie!\";\n                }
+                setTimeout(() => {
+                    gameContainer.style.opacity = '0';
+                    gameContainer.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => gameContainer.remove(), 500);
+                }, 3000);
+            } else {
+                currentPlayer = currentPlayer === 'star' ? 'moon' : 'star';
+                statusDiv.textContent = `${currentPlayer === 'star' ? 'Star' : 'Moon'}'s turn`;
+            }
+        }
+        
+        // Create board cells
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.style.cssText = `
+                background: rgba(255,255,255,0.1);
+                border: 3px solid rgba(255,255,255,0.3);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 cursor: pointer;
-                animation: pulse-glow 0.5s ease-in-out infinite alternate;
-                transition: transform 0.2s;
+                transition: all 0.3s ease;
             `;
             
-            let clicked = false;
-            
-            star.addEventListener('click', function() {
-                if (!clicked) {
-                    clicked = true;
-                    score++;
-                    scoreDiv.textContent = `Stars: ${score} | Missed: ${missed}`;
-                    this.style.transform = 'scale(1.5) rotate(360deg)';
-                    this.style.opacity = '0';
-                    createSparkles(this.getBoundingClientRect().left + size/2, this.getBoundingClientRect().top + size/2);
-                    setTimeout(() => this.remove(), 300);
-                    
-                    if (score >= 30) {
-                        clearInterval(spawnInterval);
-                        clearInterval(timerInterval);
-                        title.textContent = '5-Star Champion!';
-                        instruction.textContent = `Perfect score: ${score}!`;
-                        createConfetti();
-                        setTimeout(() => gameContainer.remove(), 3000);
-                    }
+            cell.addEventListener('mouseenter', () => {
+                if (gameActive && gameBoard[i] === '') {
+                    cell.style.background = 'rgba(255,255,255,0.2)';
+                    cell.style.borderColor = 'rgba(255,255,255,0.5)';
                 }
             });
             
-            gameArea.appendChild(star);
-            
-            setTimeout(() => {
-                if (!clicked && star.parentNode) {
-                    star.style.opacity = '0';
-                    missed++;
-                    scoreDiv.textContent = `Stars: ${score} | Missed: ${missed}`;
-                    setTimeout(() => star.remove(), 300);
-                    
-                    if (missed >= 10) {
-                        clearInterval(spawnInterval);
-                        clearInterval(timerInterval);
-                        title.textContent = 'Game Over!';
-                        instruction.textContent = `Final Score: ${score} stars`;
-                        createWindowCelebration();
-                        setTimeout(() => gameContainer.remove(), 3000);
-                    }
+            cell.addEventListener('mouseleave', () => {
+                if (gameActive && gameBoard[i] === '') {
+                    cell.style.background = 'rgba(255,255,255,0.1)';
+                    cell.style.borderColor = 'rgba(255,255,255,0.3)';
                 }
-            }, 1500);
+            });
+            
+            cell.addEventListener('click', () => handleCellClick(i, cell));
+            board.appendChild(cell);
         }
         
-        scoreDiv.textContent = 'Stars: 0 | Missed: 0';
-        timerDiv.textContent = `Time: ${timeLeft}s`;
-        
-        spawnInterval = setInterval(() => {
-            if (missed < 10 && score < 30 && timeLeft > 0) {
-                spawnStar();
-            }
-        }, 800);
-        
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            timerDiv.textContent = `Time: ${timeLeft}s`;
-            if (timeLeft <= 0) {
-                clearInterval(spawnInterval);
-                clearInterval(timerInterval);
-                title.textContent = 'Time Up!';
-                instruction.textContent = `Final Score: ${score} stars!`;
-                if (score >= 20) createConfetti();
-                setTimeout(() => gameContainer.remove(), 3000);
-            }
-        }, 1000);
+        statusDiv.textContent = \"Star's turn\";
     }
     
     // QUOTE.HTML - Light Sparkles → Bubble Pop Cleaning Game
@@ -2436,7 +2449,7 @@ document.addEventListener('DOMContentLoaded', function() {
             max-width: 500px;
             height: 85vh;
             max-height: 600px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7CB342 0%, #558B2F 100%);
             border-radius: 20px;
             padding: 20px;
             z-index: 10001;
@@ -2445,18 +2458,18 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const title = document.createElement('div');
-        title.textContent = 'Bubble Pop Cleaning';
-        title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 10px;';
+        title.textContent = 'Dino Blocks';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 10px; text-shadow: 3px 3px 0 rgba(0,0,0,0.3);';
         
         const instruction = document.createElement('div');
-        instruction.textContent = 'Pop the soap bubbles before they escape!';
+        instruction.textContent = 'Mine the dino blocks!';
         instruction.style.cssText = 'color: white; font-size: 16px; text-align: center; margin-bottom: 10px;';
         
         const gameArea = document.createElement('div');
-        gameArea.style.cssText = 'width: 100%; height: calc(100% - 140px); position: relative; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;';
+        gameArea.style.cssText = 'width: 100%; height: calc(100% - 140px); position: relative; background: linear-gradient(180deg, #87CEEB 0%, #7CB342 50%, #6D5C4D 100%); border-radius: 10px; overflow: hidden; box-shadow: inset 0 5px 15px rgba(0,0,0,0.3);';
         
         const scoreDiv = document.createElement('div');
-        scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
+        scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px; text-shadow: 2px 2px 0 rgba(0,0,0,0.3);';
         
         const timerDiv = document.createElement('div');
         timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 5px;';
@@ -2481,126 +2494,139 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let score = 0;
         let missed = 0;
-        let timeLeft = 40;
+        let timeLeft = 50;
         let spawnInterval;
         let timerInterval;
         
-        const bubbleColors = [
-            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(135,206,250,0.6), rgba(100,149,237,0.4))',
-            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(144,238,144,0.6), rgba(60,179,113,0.4))',
-            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,182,193,0.6), rgba(255,105,180,0.4))',
-            'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(221,160,221,0.6), rgba(186,85,211,0.4))'
+        const dinoBlocks = [
+            { color: '#8B7355', shadow: '#6D5C4D', name: 'brown' },
+            { color: '#A0826D', shadow: '#8B7355', name: 'tan' },
+            { color: '#9E9E9E', shadow: '#757575', name: 'grey' },
+            { color: '#6D4C41', shadow: '#5D4037', name: 'dark' }
         ];
         
-        function spawnBubble() {
-            const bubble = document.createElement('div');
-            const size = Math.random() * 40 + 40;
+        function createDinoBlock() {
+            const block = document.createElement('div');
+            const size = 50;
             const leftPos = Math.random() * (gameArea.offsetWidth - size);
-            const floatDuration = Math.random() * 3 + 3; // 3-6 seconds
-            const color = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
+            const fallDuration = Math.random() * 2 + 3;
+            const blockType = dinoBlocks[Math.floor(Math.random() * dinoBlocks.length)];
             
-            bubble.style.cssText = `
+            block.style.cssText = `
                 position: absolute;
                 left: ${leftPos}px;
-                bottom: -${size}px;
+                top: -${size}px;
                 width: ${size}px;
                 height: ${size}px;
-                background: ${color};
-                border-radius: 50%;
-                border: 2px solid rgba(255,255,255,0.5);
+                background: ${blockType.color};
+                border: 3px solid ${blockType.shadow};
+                box-shadow: inset -5px -5px 0 ${blockType.shadow},
+ inset 5px 5px 0 rgba(255,255,255,0.3),
+                            5px 5px 10px rgba(0,0,0,0.4);
                 cursor: pointer;
                 transition: all 0.1s;
-                box-shadow: inset -10px -10px 20px rgba(255,255,255,0.5),
-                            inset 5px 5px 10px rgba(0,0,0,0.1),
-                            0 8px 15px rgba(0,0,0,0.2);
-                animation: bubble-float ${floatDuration}s linear forwards;
+                animation: drop-fall ${fallDuration}s linear forwards;
+                image-rendering: pixelated;
             `;
             
-            let popped = false;
+            const dinoIcon = document.createElement('div');
+            dinoIcon.style.cssText = `
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                opacity: 0.6;
+            `;
+            dinoIcon.innerHTML = `
+                <svg viewBox="0 0 20 20" style="width: 70%; height: 70%; opacity: 0.4;">
+                    <rect x="5" y="8" width="10" height="8" fill="black"/>
+                    <rect x="6" y="6" width="3" height="2" fill="black"/>
+                    <rect x="11" y="6" width="3" height="2" fill="black"/>
+                    <rect x="4" y="14" width="2" height="4" fill="black"/>
+                    <rect x="8" y="14" width="2" height="4" fill="black"/>
+                    <rect x="12" y="14" width="2" height="4" fill="black"/>
+                </svg>
+            `;
+            block.appendChild(dinoIcon);
             
-            bubble.addEventListener('click', function() {
-                if (!popped) {
-                    popped = true;
+            let mined = false;
+            
+            block.addEventListener('click', function() {
+                if (!mined) {
+                    mined = true;
                     score++;
-                    scoreDiv.textContent = `Popped: ${score} | Missed: ${missed}`;
+                    scoreDiv.textContent = `Mined: ${score}`;
                     
-                    // Pop animation
-                    this.style.transform = 'scale(1.3)';
+                    this.style.transform = 'scale(0) rotate(45deg)';
                     this.style.opacity = '0';
                     
-                    // Create pop sparkles
-                    for (let i = 0; i < 6; i++) {
+                    for (let i = 0; i < 8; i++) {
                         setTimeout(() => {
-                            const sparkle = document.createElement('div');
-                            const angle = (i / 6) * Math.PI * 2;
+                            const particle = document.createElement('div');
+                            const angle = (i / 8) * Math.PI * 2;
                             const distance = 30;
-                            const offsetX = Math.cos(angle) * distance;
-                            const offsetY = Math.sin(angle) * distance;
                             
-                            sparkle.style.cssText = `
+                            particle.style.cssText = `
                                 position: absolute;
-                                left: ${leftPos + size/2 + offsetX}px;
-                                bottom: ${this.offsetTop + offsetY}px;
-                                width: 8px;
-                                height: 8px;
-                                background: radial-gradient(circle, #ffffff, #87CEEB);
-                                border-radius: 50%;
-                                box-shadow: 0 0 10px #ffffff;
+                                left: ${leftPos + size/2 + Math.cos(angle) * distance}px;
+                                top: ${parseInt(this.style.top) + size/2 + Math.sin(angle) * distance}px;
+                                width: 6px;
+                                height: 6px;
+                                background: ${blockType.color};
+                                border: 1px solid ${blockType.shadow};
                                 opacity: 1;
-                                animation: sparkle-float 1s ease-out forwards;
+                                animation: sparkle-fade-out 0.6s ease-out forwards;
                             `;
-                            gameArea.appendChild(sparkle);
-                            setTimeout(() => sparkle.remove(), 1000);
-                        }, i * 50);
+                            gameArea.appendChild(particle);
+                            setTimeout(() => particle.remove(), 600);
+                        }, i * 40);
                     }
                     
                     setTimeout(() => this.remove(), 200);
                     
-                    if (score >= 40) {
+                    if (score >= 50) {
                         clearInterval(spawnInterval);
                         clearInterval(timerInterval);
-                        title.textContent = 'Bubble Master!';
-                        instruction.textContent = `Incredible! ${score} bubbles popped!`;
+                        title.textContent = 'Master Miner!';
+                        instruction.textContent = `${score} blocks mined!`;
                         createConfetti();
                         setTimeout(() => gameContainer.remove(), 3000);
                     }
                 }
             });
             
-            gameArea.appendChild(bubble);
+            gameArea.appendChild(block);
             
-            // Check if bubble escaped
             setTimeout(() => {
-                if (!popped && bubble.parentNode) {
+                if (!mined && block.parentNode) {
                     missed++;
-                    scoreDiv.textContent = `Popped: ${score} | Missed: ${missed}`;
-                    bubble.remove();
+                    block.remove();
                     
-                    if (missed >= 15) {
+                    if (missed >= 20) {
                         clearInterval(spawnInterval);
                         clearInterval(timerInterval);
-                        title.textContent = 'Too Many Escaped!';
-                        instruction.textContent = `Final Score: ${score} bubbles popped`;
-                        if (score >= 25) createConfetti();
+                        title.textContent = 'Out of Time!';
+                        instruction.textContent = `Final Score: ${score} blocks`;
+                        if (score >= 30) createConfetti();
                         setTimeout(() => gameContainer.remove(), 3000);
                     }
                 }
-            }, floatDuration * 1000);
+            }, fallDuration * 1000);
         }
         
-        scoreDiv.textContent = 'Popped: 0 | Missed: 0';
+        scoreDiv.textContent = 'Mined: 0';
         timerDiv.textContent = `Time: ${timeLeft}s`;
         
-        // Spawn bubbles at increasing rate
         spawnInterval = setInterval(() => {
-            if (missed < 15 && score < 40 && timeLeft > 0) {
-                spawnBubble();
-                // Occasionally spawn double bubbles for challenge
-                if (Math.random() > 0.7) {
-                    setTimeout(() => spawnBubble(), 200);
+            if (missed < 20 && score < 50 && timeLeft > 0) {
+                createDinoBlock();
+                if (Math.random() > 0.6) {
+                    setTimeout(() => createDinoBlock(), 300);
                 }
             }
-        }, 800);
+        }, 700);
         
         timerInterval = setInterval(() => {
             timeLeft--;
@@ -2608,9 +2634,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (timeLeft <= 0) {
                 clearInterval(spawnInterval);
                 clearInterval(timerInterval);
-                title.textContent = 'Time Up!';
-                instruction.textContent = `You popped ${score} bubbles!`;
-                if (score >= 25) createConfetti();
+                title.textContent = 'Times Up!';
+                instruction.textContent = `You mined ${score} blocks!`;
+                if (score >= 30) createConfetti();
                 setTimeout(() => gameContainer.remove(), 3000);
             }
         }, 1000);
@@ -2997,51 +3023,51 @@ document.addEventListener('DOMContentLoaded', function() {
     // Window Cleaning Game (Window-Washing page)
     function startWindowCleaningGame() {
         const gameContainer = document.createElement('div');
-        gameContainer.id = 'window-game-container';
+        gameContainer.id = 'chess-game-container';
         gameContainer.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90vw;
-            max-width: 400px;
-            height: 85vh;
-            max-height: 500px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
+            max-width: 460px;
             padding: 20px;
+            background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            border-radius: 20px;
             z-index: 10001;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         `;
         
         const gameTitle = document.createElement('div');
-        gameTitle.textContent = '🪟 Clean the Window! 🧼';
+        gameTitle.textContent = 'Dinosaur Chess';
         gameTitle.style.cssText = `
             color: white;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         `;
         
-        const windowPane = document.createElement('div');
-        windowPane.style.cssText = `
+        const chessBoard = document.createElement('div');
+        chessBoard.style.cssText = `
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 0;
             width: 100%;
-            height: 350px;
-            background: rgba(255,255,255,0.3);
-            border: 8px solid #8B4513;
-            border-radius: 10px;
-            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+            aspect-ratio: 1;
+            border: 4px solid #1C2833;
+            border-radius: 8px;
             overflow: hidden;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><text y="20" font-size="20">🧽</text></svg>') 12 12, auto;
         `;
         
-        const scoreBoard = document.createElement('div');
-        scoreBoard.style.cssText = `
+        const statusDiv = document.createElement('div');
+        statusDiv.style.cssText = `
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
         `;
         
@@ -3069,81 +3095,150 @@ document.addEventListener('DOMContentLoaded', function() {
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(gameTitle);
-        gameContainer.appendChild(windowPane);
-        gameContainer.appendChild(scoreBoard);
+        gameContainer.appendChild(chessBoard);
+        gameContainer.appendChild(statusDiv);
         document.body.appendChild(gameContainer);
         
-        let score = 0;
-        const totalSpots = 15;
+        let selectedPiece = null;
+        let selectedSquare = null;
+        let currentPlayer = 'light';
+        let moveCount = 0;
         
-        for (let i = 0; i < totalSpots; i++) {
-            const spot = document.createElement('div');
-            const size = Math.random() * 40 + 30;
-            spot.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                background: radial-gradient(circle, rgba(139,69,19,0.7), rgba(139,69,19,0.3));
-                border-radius: 50%;
-                left: ${Math.random() * 80 + 5}%;
-                top: ${Math.random() * 80 + 5}%;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            `;
+        // Dinosaur chess pieces as SVG
+        function createDinoPiece(type, color) {
+            const fillColor = color === 'light' ? '#D4AF37' : '#5D4E37';
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 60 60');
+            svg.style.cssText = 'width: 100%; height: 100%; pointer-events: none;';
             
-            spot.addEventListener('click', function(e) {
-                e.stopPropagation();
-                this.style.transform = 'scale(1.3)';
-                this.style.opacity = '0';
-                
-                score++;
-                scoreBoard.textContent = `Cleaned: ${score}/${totalSpots} spots!`;
-                
-                for (let j = 0; j < 6; j++) {
-                    setTimeout(() => {
-                        const sparkle = document.createElement('div');
-                        const angle = (j / 6) * Math.PI * 2;
-                        const distance = 25;
-                        
-                        sparkle.style.cssText = `
-                            position: absolute;
-                            left: ${e.offsetX + Math.cos(angle) * distance}px;
-                            top: ${e.offsetY + Math.sin(angle) * distance}px;
-                            width: 8px;
-                            height: 8px;
-                            background: radial-gradient(circle, #ffffff, #87CEEB);
-                            border-radius: 50%;
-                            box-shadow: 0 0 12px #ffffff;
-                            pointer-events: none;
-                            opacity: 1;
-                            animation: sparkle-fade-out 0.8s ease-out forwards;
-                        `;
-                        windowPane.appendChild(sparkle);
-                        setTimeout(() => sparkle.remove(), 800);
-                    }, j * 60);
+            let path = '';
+            if (type === 'pawn') {
+                path = 'M 30 10 L 25 15 L 25 25 L 20 30 L 20 40 L 22 45 L 25 50 L 35 50 L 38 45 L 40 40 L 40 30 L 35 25 L 35 15 Z M 28 12 Q 30 11 32 12';
+            } else if (type === 'rook') {
+                path = 'M 20 15 L 20 20 L 23 20 L 23 18 L 27 18 L 27 20 L 30 20 L 30 18 L 33 18 L 33 20 L 37 20 L 37 18 L 40 18 L 40 25 L 38 30 L 38 45 L 22 45 L 22 30 L 20 25 Z M 18 45 L 18 50 L 42 50 L 42 45 Z';
+            } else if (type === 'knight') {
+                path = 'M 35 12 L 32 10 L 28 10 L 25 12 L 23 15 L 22 20 L 22 25 L 24 30 L 26 32 L 26 40 L 24 45 L 24 48 L 36 48 L 36 45 L 34 40 L 34 32 L 38 28 L 40 22 L 40 18 L 38 14 Z M 32 14 Q 33 13 34 14';
+            } else if (type === 'bishop') {
+                path = 'M 30 8 L 27 12 L 26 16 L 26 22 L 24 28 L 22 35 L 22 45 L 38 45 L 38 35 L 36 28 L 34 22 L 34 16 L 33 12 Z M 20 45 L 20 50 L 40 50 L 40 45 Z M 29 10 Q 30 9 31 10';
+            } else if (type === 'queen') {
+                path = 'M 30 6 L 28 10 L 26 14 L 24 18 L 22 24 L 21 32 L 22 40 L 24 46 L 36 46 L 38 40 L 39 32 L 38 24 L 36 18 L 34 14 L 32 10 Z M 19 46 L 19 50 L 41 50 L 41 46 Z M 28 8 L 26 8 L 26 10 L 28 10 Z M 32 8 L 34 8 L 34 10 L 32 10 Z';
+            } else if (type === 'king') {
+                path = 'M 30 6 L 28 8 L 28 12 L 26 12 L 26 16 L 24 20 L 22 26 L 21 34 L 22 42 L 24 47 L 36 47 L 38 42 L 39 34 L 38 26 L 36 20 L 34 16 L 34 12 L 32 12 L 32 8 Z M 19 47 L 19 52 L 41 52 L 41 47 Z M 28 6 L 32 6 L 32 8 L 28 8 Z';
+            }
+            
+            const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathElement.setAttribute('d', path);
+            pathElement.setAttribute('fill', fillColor);
+            pathElement.setAttribute('stroke', '#1C2833');
+            pathElement.setAttribute('stroke-width', '1.5');
+            svg.appendChild(pathElement);
+            
+            return svg;
+        }
+        
+        // Initialize board
+        const board = [
+            ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'],
+            ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
+            ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
+        ];
+        
+        const pieceColors = [];
+        for (let row = 0; row < 8; row++) {
+            pieceColors[row] = [];
+            for (let col = 0; col < 8; col++) {
+                if (row < 2) pieceColors[row][col] = 'dark';
+                else if (row > 5) pieceColors[row][col] = 'light';
+                else pieceColors[row][col] = null;
+            }
+        }
+        
+        function renderBoard() {
+            chessBoard.innerHTML = '';
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const square = document.createElement('div');
+                    const isLight = (row + col) % 2 === 0;
+                    square.style.cssText = `
+                        background: ${isLight ? '#E8DCC4' : '#86654A'};
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: background 0.2s;
+                        position: relative;
+                    `;
+                    
+                    if (selectedSquare && selectedSquare.row === row && selectedSquare.col === col) {
+                        square.style.background = '#7FB3D5';
+                    }
+                    
+                    if (board[row][col]) {
+                        const piece = createDinoPiece(board[row][col], pieceColors[row][col]);
+                        square.appendChild(piece);
+                    }
+                    
+                    square.addEventListener('click', () => handleSquareClick(row, col, square));
+                    chessBoard.appendChild(square);
                 }
-                
-                setTimeout(() => this.remove(), 300);
-                
-                if (score === totalSpots) {
-                    setTimeout(() => {
-                        windowPane.style.background = 'linear-gradient(135deg, rgba(135,206,250,0.8), rgba(255,255,255,0.9))';
-                        gameTitle.textContent = 'PERFECTLY CLEAN!';
+            }
+        }
+        
+        function handleSquareClick(row, col, square) {
+            if (selectedPiece) {
+                // Move piece
+                if (board[row][col] === null || pieceColors[row][col] !== currentPlayer) {
+                    board[row][col] = selectedPiece.type;
+                    pieceColors[row][col] = currentPlayer;
+                    board[selectedSquare.row][selectedSquare.col] = null;
+                    pieceColors[selectedSquare.row][selectedSquare.col] = null;
+                    
+                    selectedPiece = null;
+                    selectedSquare = null;
+                    currentPlayer = currentPlayer === 'light' ? 'dark' : 'light';
+                    moveCount++;
+                    statusDiv.textContent = `Move ${moveCount} - ${currentPlayer === 'light' ? 'Gold' : 'Brown'}'s turn`;
+                    
+                    // Check for win condition (simplified - king captured)
+                    let lightKing = false, darkKing = false;
+                    for (let r = 0; r < 8; r++) {
+                        for (let c = 0; c < 8; c++) {
+                            if (board[r][c] === 'king') {
+                                if (pieceColors[r][c] === 'light') lightKing = true;
+                                if (pieceColors[r][c] === 'dark') darkKing = true;
+                            }
+                        }
+                    }
+                    
+                    if (!lightKing || !darkKing) {
+                        const winner = lightKing ? 'Gold' : 'Brown';
+                        statusDiv.textContent = `${winner} wins!`;
                         createWindowCelebration();
-                        
                         setTimeout(() => {
                             gameContainer.style.opacity = '0';
                             gameContainer.style.transition = 'opacity 0.5s ease';
                             setTimeout(() => gameContainer.remove(), 500);
                         }, 3000);
-                    }, 500);
+                    }
+                } else {
+                    selectedPiece = null;
+                    selectedSquare = null;
                 }
-            });
-            
-            windowPane.appendChild(spot);
+                renderBoard();
+            } else if (board[row][col] && pieceColors[row][col] === currentPlayer) {
+                selectedPiece = { type: board[row][col], color: pieceColors[row][col] };
+                selectedSquare = { row, col };
+                renderBoard();
+            }
         }
         
-        scoreBoard.textContent = `Cleaned: 0/${totalSpots} spots!`;
+        statusDiv.textContent = `Move ${moveCount} - ${currentPlayer === 'light' ? 'Gold' : 'Brown'}'s turn`;
+        renderBoard();
     }
     
     // Main click handler
