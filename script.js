@@ -434,7 +434,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 for (let i = 0; i < 5; i++) {
                     const star = document.createElement('div');
                     star.className = 'star-rating';
-                    star.textContent = '⭐';
+                    
+                    const starId = `brandStar${i}${Date.now()}`;
+                    const colors = [
+                        ['#FFD700', '#FFA500'],
+                        ['#FFDF00', '#FFB700'],
+                        ['#FFE44D', '#FFC700'],
+                        ['#FFEA00', '#FF9500'],
+                        ['#FFF44F', '#FFB900']
+                    ];
+                    const color = colors[i % colors.length];
+                    
+                    star.innerHTML = `
+                        <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="${starId}" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:${color[0]};stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:${color[1]};stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M 50 10 L 61 40 L 93 40 L 67 58 L 78 88 L 50 70 L 22 88 L 33 58 L 7 40 L 39 40 Z" 
+                                  fill="url(#${starId})" 
+                                  stroke="#FFFFFF" 
+                                  stroke-width="2"
+                                  filter="drop-shadow(0 0 8px ${color[0]})" />
+                        </svg>
+                    `;
                     star.style.left = `${20 + i * 15}%`;
                     star.style.animationDelay = `${i * 0.15}s`;
                     this.appendChild(star);
@@ -706,7 +731,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to generate star rating HTML
     function generateStars(rating) {
-        return '⭐'.repeat(rating);
+        let starsHTML = '';
+        for (let i = 0; i < rating; i++) {
+            const starId = `reviewStar${i}${Math.random().toString(36).substr(2, 9)}`;
+            starsHTML += `
+                <svg width="20" height="20" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; margin-right:2px;">
+                    <defs>
+                        <linearGradient id="${starId}" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 50 10 L 61 40 L 93 40 L 67 58 L 78 88 L 50 70 L 22 88 L 33 58 L 7 40 L 39 40 Z" 
+                          fill="url(#${starId})" 
+                          stroke="#FFFFFF" 
+                          stroke-width="2" />
+                </svg>
+            `;
+        }
+        return starsHTML;
     }
     
     // Function to generate review cards
@@ -931,7 +974,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
         closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
-        closeBtn.addEventListener('click', () => gameContainer.remove());
+        closeBtn.addEventListener('click', () => {
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 800);
+        });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
@@ -968,9 +1014,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.addEventListener('click', () => {
                     if (color === targetColor) {
                         score++;
-                        scoreDiv.textContent = `Score: ${score} 🎉`;
+                        scoreDiv.textContent = `Score: ${score}`;
                         if (score >= 10) {
-                            title.textContent = '🏆 Color Master!';
+                            title.textContent = 'Color Master!';
                             createConfetti();
                             setTimeout(() => gameContainer.remove(), 3000);
                         } else {
@@ -1181,7 +1227,8 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.addEventListener('click', () => {
             document.removeEventListener('mousemove', moveCatcher);
             document.removeEventListener('touchmove', moveCatcherTouch);
-            gameContainer.remove();
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 800);
         });
         
         gameContainer.appendChild(closeBtn);
@@ -1229,180 +1276,204 @@ document.addEventListener('DOMContentLoaded', function() {
                 width: ${type.size}px;
                 height: ${type.size}px;
                 animation: drop-fall 3.5s linear forwards;
-                filter: drop-shadow(2px 6px 10px rgba(0,0,0,0.5));
+                filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.7));
             `;
             
-            // Color gradient calculations for depth
+            // Aztec-style colors with earthy tones
             const baseColor = type.color;
-            const darkerShade = type.color === '#8B4513' ? '#5D2E0C' : 
-                                type.color === '#556B2F' ? '#3A4A21' :
-                                type.color === '#A0522D' ? '#6B3619' : '#4A5A3A';
-            const highlightShade = type.color === '#8B4513' ? '#B8651F' : 
-                                   type.color === '#556B2F' ? '#6B8B3D' :
-                                   type.color === '#A0522D' ? '#CD853F' : '#7A9A52';
+            const accentColor = type.color === '#8B4513' ? '#D2691E' : 
+                                type.color === '#556B2F' ? '#8B7355' :
+                                type.color === '#A0522D' ? '#CD8500' : '#C19A6B';
+            const outline = '#2C1810';
             
             if (type.shape === 'trex') {
+                // Aztec T-Rex with geometric patterns
                 dino.innerHTML = `
-                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
                         <defs>
-                            <linearGradient id="trexBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
-                            </linearGradient>
-                            <radialGradient id="trexMuscle">
-                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:0.6" />
-                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:0" />
-                            </radialGradient>
+                            <pattern id="aztecPattern1" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+                                <rect width="6" height="6" fill="${baseColor}"/>
+                                <path d="M 0 3 L 3 0 L 6 3 L 3 6 Z" fill="${accentColor}"/>
+                            </pattern>
                         </defs>
-                        <!-- Body with gradient and depth -->
-                        <ellipse cx="22" cy="35" rx="16" ry="22" fill="url(#trexBodyGrad)"/>
-                        <!-- Muscle definition -->
-                        <ellipse cx="18" cy="32" rx="8" ry="10" fill="url(#trexMuscle)"/>
-                        <!-- Head with depth -->
-                        <ellipse cx="22" cy="17" rx="13" ry="14" fill="url(#trexBodyGrad)"/>
-                        <!-- Jaw detail -->
-                        <path d="M 22 24 Q 28 25 30 22 Q 28 24 22 24 Z" fill="${darkerShade}" opacity="0.7"/>
-                        <!-- Strong legs -->
-                        <ellipse cx="16" cy="52" rx="5" ry="11" fill="url(#trexBodyGrad)"/>
-                        <ellipse cx="27" cy="52" rx="5" ry="11" fill="url(#trexBodyGrad)"/>
-                        <!-- Feet -->
-                        <ellipse cx="16" cy="56" rx="6" ry="3" fill="${darkerShade}"/>
-                        <ellipse cx="27" cy="56" rx="6" ry="3" fill="${darkerShade}"/>
-                        <!-- Tiny arms -->
-                        <ellipse cx="20" cy="28" rx="2" ry="5" fill="url(#trexBodyGrad)" transform="rotate(-20 20 28)"/>
-                        <ellipse cx="24" cy="28" rx="2" ry="5" fill="url(#trexBodyGrad)" transform="rotate(20 24 28)"/>
-                        <!-- Powerful tail -->
-                        <path d="M 34 35 Q 48 32 52 28 Q 48 34 34 37 Z" fill="url(#trexBodyGrad)"/>
-                        <!-- Eye with depth -->
-                        <circle cx="19" cy="14" r="2.5" fill="${darkerShade}"/>
-                        <circle cx="19" cy="14" r="2" fill="#FFF"/>
-                        <circle cx="19.5" cy="13.5" r="1.2" fill="#000"/>
-                        <circle cx="19.8" cy="13.3" r="0.4" fill="#FFF" opacity="0.8"/>
-                        <!-- Scale texture -->
-                        <circle cx="22" cy="32" r="1.5" fill="${darkerShade}" opacity="0.3"/>
-                        <circle cx="18" cy="38" r="1.5" fill="${darkerShade}" opacity="0.3"/>
-                        <circle cx="26" cy="36" r="1.5" fill="${darkerShade}" opacity="0.3"/>
+                        <!-- Body - angular, stamped design -->
+                        <path d="M 28 45 L 20 38 L 18 28 L 22 20 L 30 18 L 36 22 L 38 32 L 35 42 Z" 
+                              fill="url(#aztecPattern1)" stroke="${outline}" stroke-width="3"/>
+                        <!-- Head - geometric and angular -->
+                        <path d="M 22 20 L 18 16 L 16 10 L 20 6 L 30 8 L 34 12 L 32 18 L 28 20 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="3"/>
+                        <!-- Jaw pattern -->
+                        <path d="M 30 12 L 36 10 L 38 13 L 34 15 Z" 
+                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
+                        <!-- Geometric teeth -->
+                        <path d="M 30 14 L 32 14 L 31 16 Z M 33 14 L 35 14 L 34 16 Z" 
+                              fill="${outline}"/>
+                        <!-- Eye - geometric stamp -->
+                        <rect x="24" y="10" width="4" height="4" fill="${outline}"/>
+                        <rect x="25" y="11" width="2" height="2" fill="#FFF"/>
+                        <!-- Legs - angular Aztec style -->
+                        <path d="M 24 42 L 22 52 L 20 58 L 24 58 L 26 52 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <path d="M 32 42 L 30 52 L 28 58 L 32 58 L 34 52 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <!-- Leg patterns -->
+                        <rect x="22" y="48" width="2" height="3" fill="${accentColor}"/>
+                        <rect x="30" y="48" width="2" height="3" fill="${accentColor}"/>
+                        <!-- Arms - small angular -->
+                        <path d="M 24 28 L 20 30 L 18 32 L 20 34 Z" 
+                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
+                        <!-- Tail - geometric segments -->
+                        <path d="M 36 36 L 42 34 L 48 30 L 46 36 L 40 38 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <path d="M 42 32 L 46 32 L 44 34 Z" fill="${accentColor}"/>
+                        <!-- Body patterns -->
+                        <circle cx="28" cy="32" r="2" fill="${accentColor}"/>
+                        <rect x="30" y="28" width="3" height="3" fill="${accentColor}"/>
+                        <path d="M 26 36 L 28 36 L 27 38 Z" fill="${accentColor}"/>
                     </svg>
                 `;
             } else if (type.shape === 'long') {
+                // Aztec Long-neck with stepped patterns
                 dino.innerHTML = `
-                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
                         <defs>
-                            <linearGradient id="longBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
-                            </linearGradient>
+                            <pattern id="aztecPattern2" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+                                <rect width="8" height="8" fill="${baseColor}"/>
+                                <rect x="2" y="2" width="4" height="4" fill="${accentColor}"/>
+                            </pattern>
                         </defs>
-                        <!-- Large body -->
-                        <ellipse cx="30" cy="40" rx="20" ry="14" fill="url(#longBodyGrad)"/>
-                        <!-- Belly highlight -->
-                        <ellipse cx="30" cy="43" rx="16" ry="9" fill="${highlightShade}" opacity="0.3"/>
-                        <!-- Long graceful neck -->
-                        <path d="M 18 35 Q 12 25 12 15 Q 14 25 20 33 Z" fill="url(#longBodyGrad)"/>
-                        <ellipse cx="15" cy="30" rx="4" ry="14" fill="url(#longBodyGrad)" transform="rotate(-15 15 30)"/>
-                        <!-- Head with soft features -->
-                        <ellipse cx="12" cy="15" rx="7" ry="9" fill="url(#longBodyGrad)"/>
-                        <!-- Snout -->
-                        <ellipse cx="10" cy="17" rx="4" ry="3" fill="${baseColor}"/>
-                        <!-- Nostril -->
-                        <circle cx="9" cy="16" r="0.8" fill="${darkerShade}"/>
-                        <!-- Eye -->
-                        <circle cx="12" cy="13" r="2" fill="${darkerShade}"/>
-                        <circle cx="12" cy="13" r="1.5" fill="#000"/>
-                        <circle cx="12.5" cy="12.5" r="0.5" fill="#FFF" opacity="0.9"/>
-                        <!-- Front legs -->
-                        <ellipse cx="20" cy="52" rx="4" ry="10" fill="url(#longBodyGrad)"/>
-                        <ellipse cx="28" cy="52" rx="4" ry="10" fill="url(#longBodyGrad)"/>
-                        <!-- Back legs -->
-                        <ellipse cx="36" cy="51" rx="5" ry="11" fill="url(#longBodyGrad)"/>
-                        <!-- Tail -->
-                        <path d="M 48 40 Q 58 38 60 35 Q 56 40 48 42 Z" fill="url(#longBodyGrad)"/>
-                        <!-- Subtle spots -->
-                        <ellipse cx="28" cy="38" rx="2" ry="3" fill="${darkerShade}" opacity="0.2"/>
-                        <ellipse cx="34" cy="42" rx="2.5" ry="3" fill="${darkerShade}" opacity="0.2"/>
+                        <!-- Body - rectangular Aztec form -->
+                        <path d="M 38 48 L 30 44 L 26 38 L 30 32 L 44 32 L 52 36 L 54 44 L 48 50 Z" 
+                              fill="url(#aztecPattern2)" stroke="${outline}" stroke-width="3"/>
+                        <!-- Long neck - stepped geometric -->
+                        <path d="M 30 38 L 26 32 L 24 24 L 22 16 L 20 12 L 18 10 L 20 8 L 24 10 L 26 14 L 28 22 L 30 30 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <!-- Neck patterns - stepped design -->
+                        <rect x="24" y="14" width="3" height="3" fill="${accentColor}"/>
+                        <rect x="25" y="22" width="3" height="3" fill="${accentColor}"/>
+                        <rect x="26" y="30" width="3" height="3" fill="${accentColor}"/>
+                        <!-- Head - angular geometric -->
+                        <path d="M 18 10 L 14 8 L 10 8 L 8 10 L 10 14 L 14 14 L 18 12 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <!-- Eye stamp -->
+                        <circle cx="14" cy="10" r="2" fill="${outline}"/>
+                        <circle cx="14" cy="10" r="1" fill="#FFF"/>
+                        <!-- Legs - geometric columns -->
+                        <path d="M 34 46 L 32 54 L 30 60 L 34 60 L 36 54 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
+                        <path d="M 44 46 L 42 54 L 40 60 L 44 60 L 46 54 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
+                        <path d="M 50 46 L 48 54 L 46 60 L 50 60 L 52 54 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
+                        <!-- Leg decoration -->
+                        <rect x="32" y="50" width="2" height="4" fill="${accentColor}"/>
+                        <rect x="42" y="50" width="2" height="4" fill="${accentColor}"/>
+                        <rect x="48" y="50" width="2" height="4" fill="${accentColor}"/>
+                        <!-- Tail - geometric segments -->
+                        <path d="M 52 40 L 58 38 L 62 36 L 60 40 L 54 42 Z" 
+                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
+                        <!-- Body patterns -->
+                        <rect x="36" y="38" width="4" height="4" fill="${accentColor}"/>
+                        <circle cx="44" cy="40" r="2" fill="${accentColor}"/>
                     </svg>
                 `;
             } else if (type.shape === 'stego') {
+                // Aztec Stegosaurus with plate patterns
                 dino.innerHTML = `
-                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
                         <defs>
-                            <linearGradient id="stegoBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="plateGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-                                <stop offset="0%" style="stop-color:${baseColor};stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:${highlightShade};stop-opacity:1" />
-                            </linearGradient>
+                            <pattern id="aztecPattern3" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+                                <rect width="6" height="6" fill="${baseColor}"/>
+                                <path d="M 3 0 L 6 3 L 3 6 L 0 3 Z" fill="${accentColor}"/>
+                            </pattern>
                         </defs>
-                        <!-- Robust body -->
-                        <ellipse cx="30" cy="42" rx="22" ry="12" fill="url(#stegoBodyGrad)"/>
-                        <!-- Back contour -->
-                        <path d="M 12 38 Q 30 32 48 38 Q 30 40 12 38 Z" fill="${highlightShade}" opacity="0.4"/>
-                        <!-- Head -->
-                        <ellipse cx="16" cy="30" rx="8" ry="10" fill="url(#stegoBodyGrad)"/>
-                        <!-- Eye -->
-                        <circle cx="14" cy="28" r="2" fill="${darkerShade}"/>
-                        <circle cx="14" cy="28" r="1.3" fill="#000"/>
-                        <circle cx="14.4" cy="27.7" r="0.4" fill="#FFF"/>
-                        <!-- Iconic back plates with depth -->
-                        <path d="M 18 28 L 22 10 L 26 28 Z" fill="url(#plateGrad)" stroke="${darkerShade}" stroke-width="0.5"/>
-                        <ellipse cx="22" cy="22" rx="2" ry="6" fill="${highlightShade}" opacity="0.3"/>
-                        <path d="M 26 28 L 30 14 L 34 28 Z" fill="url(#plateGrad)" stroke="${darkerShade}" stroke-width="0.5"/>
-                        <ellipse cx="30" cy="22" rx="2" ry="6" fill="${highlightShade}" opacity="0.3"/>
-                        <path d="M 34 30 L 38 16 L 42 30 Z" fill="url(#plateGrad)" stroke="${darkerShade}" stroke-width="0.5"/>
-                        <ellipse cx="38" cy="24" rx="2" ry="6" fill="${highlightShade}" opacity="0.3"/>
-                        <!-- Legs with muscle definition -->
-                        <ellipse cx="20" cy="52" rx="4" ry="9" fill="url(#stegoBodyGrad)"/>
-                        <ellipse cx="30" cy="52" rx="4" ry="9" fill="url(#stegoBodyGrad)"/>
-                        <ellipse cx="40" cy="52" rx="5" ry="10" fill="url(#stegoBodyGrad)"/>
-                        <!-- Tail with spikes -->
-                        <path d="M 50 42 Q 56 40 58 38" fill="none" stroke="url(#stegoBodyGrad)" stroke-width="6" stroke-linecap="round"/>
-                        <path d="M 54 38 L 56 34 L 58 38 Z" fill="${darkerShade}"/>
+                        <!-- Body - geometric and angular -->
+                        <path d="M 20 46 L 18 40 L 20 34 L 28 32 L 42 32 L 52 36 L 54 44 L 48 48 Z" 
+                              fill="url(#aztecPattern3)" stroke="${outline}" stroke-width="3"/>
+                        <!-- Head - blocky geometric -->
+                        <path d="M 20 40 L 16 34 L 14 28 L 16 24 L 22 26 L 24 32 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <!-- Eye stamp -->
+                        <rect x="17" y="28" width="3" height="3" fill="${outline}"/>
+                        <rect x="18" y="29" width="1" height="1" fill="#FFF"/>
+                        <!-- Iconic back plates - angular Aztec triangles -->
+                        <path d="M 24 32 L 26 14 L 28 32 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <rect x="26" y="20" width="1" height="6" fill="${accentColor}"/>
+                        <path d="M 28 32 L 30 12 L 32 32 Z" 
+                              fill="${accentColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <path d="M 30 18 L 32 18 L 31 22 Z" fill="${baseColor}"/>
+                        <path d="M 32 32 L 34 14 L 36 32 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <rect x="34" y="20" width="1" height="6" fill="${accentColor}"/>
+                        <path d="M 36 32 L 38 16 L 40 32 Z" 
+                              fill="${accentColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <path d="M 38 22 L 40 22 L 39 26 Z" fill="${baseColor}"/>
+                        <path d="M 40 32 L 42 18 L 44 32 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <!-- Legs - geometric columns -->
+                        <path d="M 26 46 L 24 54 L 22 60 L 26 60 L 28 54 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
+                        <path d="M 36 46 L 34 54 L 32 60 L 36 60 L 38 54 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
+                        <path d="M 46 46 L 44 54 L 42 60 L 46 60 L 48 54 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
+                        <!-- Leg patterns -->
+                        <rect x="24" y="50" width="2" height="3" fill="${accentColor}"/>
+                        <rect x="34" y="50" width="2" height="3" fill="${accentColor}"/>
+                        <rect x="44" y="50" width="2" height="3" fill="${accentColor}"/>
+                        <!-- Tail - geometric with spikes -->
+                        <path d="M 50 40 L 56 38 L 60 36 L 58 40 L 52 42 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <path d="M 56 36 L 58 32 L 60 36 Z" fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
                     </svg>
                 `;
             } else {
-                // Raptor - agile and fierce
+                // Aztec Raptor - angular and fierce
                 dino.innerHTML = `
-                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
                         <defs>
-                            <linearGradient id="raptorBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
-                            </linearGradient>
+                            <pattern id="aztecPattern4" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                                <rect width="5" height="5" fill="${baseColor}"/>
+                                <path d="M 0 0 L 5 0 L 2.5 5 Z" fill="${accentColor}"/>
+                            </pattern>
                         </defs>
-                        <!-- Lean athletic body -->
-                        <ellipse cx="28" cy="35" rx="14" ry="18" fill="url(#raptorBodyGrad)"/>
-                        <!-- Muscle definition -->
-                        <ellipse cx="24" cy="32" rx="6" ry="8" fill="${highlightShade}" opacity="0.3"/>
-                        <!-- Head with intelligent features -->
-                        <ellipse cx="25" cy="20" rx="10" ry="11" fill="url(#raptorBodyGrad)"/>
-                        <!-- Snout -->
-                        <path d="M 28 23 Q 35 22 37 20 Q 35 24 28 25 Z" fill="${baseColor}"/>
-                        <!-- Sharp jaw line -->
-                        <path d="M 28 25 L 34 24 L 32 26 Z" fill="${darkerShade}" opacity="0.6"/>
-                        <!-- Intelligent eye -->
-                        <circle cx="23" cy="17" r="2.5" fill="${darkerShade}"/>
-                        <circle cx="23" cy="17" r="2" fill="#FFD700"/>
-                        <circle cx="23.3" cy="17" r="1.2" fill="#000"/>
-                        <circle cx="23.6" cy="16.7" r="0.4" fill="#FFF"/>
+                        <!-- Body - sleek angular form -->
+                        <path d="M 30 44 L 24 38 L 22 30 L 26 22 L 32 20 L 38 24 L 40 34 L 36 42 Z" 
+                              fill="url(#aztecPattern4)" stroke="${outline}" stroke-width="3"/>
+                        <!-- Head - sharp and angular -->
+                        <path d="M 26 22 L 22 18 L 20 12 L 22 8 L 28 6 L 34 8 L 36 14 L 32 20 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <!-- Snout - aggressive angular -->
+                        <path d="M 32 12 L 38 10 L 42 12 L 38 14 L 34 14 Z" 
+                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
+                        <!-- Teeth marks -->
+                        <path d="M 36 12 L 38 12 L 37 14 Z M 38 12 L 40 12 L 39 14 Z" 
+                              fill="${outline}"/>
+                        <!-- Eye - fierce geometric -->
+                        <path d="M 26 12 L 30 10 L 30 14 Z" fill="${outline}"/>
+                        <circle cx="28" cy="12" r="1.5" fill="#FFD700"/>
+                        <circle cx="28" cy="12" r="0.8" fill="#000"/>
                         <!-- Strong arms with claws -->
-                        <path d="M 24 28 Q 18 30 16 34" fill="none" stroke="url(#raptorBodyGrad)" stroke-width="4" stroke-linecap="round"/>
-                        <path d="M 16 34 L 14 36 M 16 34 L 15 37" stroke="${darkerShade}" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M 28 28 L 24 30 L 20 34 L 22 36 L 26 32 Z" 
+                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
+                        <path d="M 20 34 L 18 36 M 20 34 L 18 32" 
+                              stroke="${outline}" stroke-width="2" stroke-linecap="square"/>
                         <!-- Powerful legs -->
-                        <ellipse cx="24" cy="50" rx="5" ry="13" fill="url(#raptorBodyGrad)"/>
-                        <ellipse cx="32" cy="50" rx="5" ry="13" fill="url(#raptorBodyGrad)"/>
-                        <!-- Deadly sickle claw -->
-                        <path d="M 24 56 Q 22 58 20 57" fill="none" stroke="${darkerShade}" stroke-width="2" stroke-linecap="round"/>
-                        <!-- Long balanced tail -->
-                        <path d="M 40 36 Q 52 32 56 28" fill="none" stroke="url(#raptorBodyGrad)" stroke-width="7" stroke-linecap="round"/>
-                        <!-- Stripes for pattern -->
-                        <path d="M 30 30 Q 32 32 30 34" fill="none" stroke="${darkerShade}" stroke-width="1.5" opacity="0.4"/>
-                        <path d="M 26 38 Q 28 40 26 42" fill="none" stroke="${darkerShade}" stroke-width="1.5" opacity="0.4"/>
+                        <path d="M 28 42 L 26 52 L 24 60 L 28 60 L 30 52 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <path d="M 36 42 L 34 52 L 32 60 L 36 60 L 38 52 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <!-- Sickle claw - angular and deadly -->
+                        <path d="M 24 58 L 20 60 L 19 58 L 22 56 Z" 
+                              fill="${outline}"/>
+                        <!-- Tail - geometric segments -->
+                        <path d="M 38 36 L 44 34 L 50 30 L 48 34 L 42 36 Z" 
+                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
+                        <path d="M 44 32 L 48 32 L 46 34 Z" fill="${accentColor}"/>
+                        <!-- Body patterns - angular stripes -->
+                        <path d="M 30 30 L 34 30 L 32 34 Z" fill="${accentColor}"/>
+                        <rect x="28" y="36" width="6" height="2" fill="${accentColor}"/>
                     </svg>
                 `;
             }
@@ -1600,7 +1671,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
         closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
-        closeBtn.addEventListener('click', () => gameContainer.remove());
+        closeBtn.addEventListener('click', () => {
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 800);
+        });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
@@ -2001,7 +2075,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
         closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
-        closeBtn.addEventListener('click', () => gameContainer.remove());
+        closeBtn.addEventListener('click', () => {
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 800);
+        });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
@@ -2097,265 +2174,113 @@ document.addEventListener('DOMContentLoaded', function() {
         nextRound();
     }
     
-    // WINDOW-WASHING.HTML - Realistic Storm Progression → Window Cleaning Game
-    let stormIntensity = 0;
+    // WINDOW-WASHING.HTML - Light Bursts → Window Cleaning Game
     function windowEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            stormIntensity = clickCount;
-            createRealisticStorm(clickCount);
+            createLightBursts(clickCount);
         } else {
             startWindowCleaningGame();
         }
     }
     
-    function createRealisticStorm(intensity) {
-        // Add darkening overlay as storm intensifies
-        const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(20, 30, 48, ${intensity * 0.12});
-            pointer-events: none;
-            z-index: 9998;
-            transition: opacity 0.8s ease;
-        `;
-        effectContainer.appendChild(overlay);
-        setTimeout(() => {
-            overlay.style.opacity = '0';
-            setTimeout(() => overlay.remove(), 800);
-        }, 2000);
+    function createLightBursts(intensity) {
+        // Create multiple light bursts radiating from footer
+        const centerX = 50;
+        const burstCount = 8 + (intensity * 4);
         
-        // Create ultra-realistic water droplets with depth and refraction
-        const dropCount = 12 + (intensity * 10);
-        for (let i = 0; i < dropCount; i++) {
+        // Create radial light burst pattern
+        for (let i = 0; i < burstCount; i++) {
             setTimeout(() => {
-                const drop = document.createElement('div');
-                const size = Math.random() * 12 + 6;
-                const xPos = Math.random() * 100;
-                const speed = 1.8 - (intensity * 0.15) + Math.random() * 0.6;
+                const burst = document.createElement('div');
+                const angle = (360 / burstCount) * i + Math.random() * 20;
+                const distance = 100 + Math.random() * 150;
+                const size = Math.random() * 30 + 20;
                 
-                // Create multi-layered droplet for depth
-                drop.style.cssText = `
+                burst.style.cssText = `
                     position: fixed;
-                    left: ${xPos}%;
-                    top: -30px;
+                    left: ${centerX}%;
+                    bottom: 50px;
                     width: ${size}px;
-                    height: ${size * 3}px;
-                    pointer-events: none;
-                    animation: realistic-drop-fall ${speed}s linear forwards;
-                    z-index: ${9900 + Math.floor(Math.random() * 50)};
-                `;
-                
-                // Main water body with realistic gradient
-                const dropBody = document.createElement('div');
-                dropBody.style.cssText = `
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(165deg, 
-                        rgba(255, 255, 255, 0.95) 0%,
-                        rgba(240, 248, 255, 0.9) 15%,
-                        rgba(176, 224, 230, 0.85) 35%,
-                        rgba(135, 206, 250, 0.9) 65%,
-                        rgba(100, 180, 220, 0.95) 100%);
-                    border-radius: ${size * 0.4}px ${size * 0.4}px ${size * 0.7}px ${size * 0.7}px;
+                    height: ${size}px;
+                    border-radius: 50%;
+                    background: radial-gradient(circle,
+                        rgba(255, 255, 255, 1) 0%,
+                        rgba(173, 216, 230, 0.8) 30%,
+                        rgba(135, 206, 250, 0.4) 70%,
+                        transparent 100%);
                     box-shadow: 
-                        inset -${size * 0.15}px ${size * 0.2}px ${size * 0.3}px rgba(255, 255, 255, 0.8),
-                        inset ${size * 0.1}px -${size * 0.15}px ${size * 0.25}px rgba(0, 100, 150, 0.4),
-                        ${size * 0.1}px ${size * 0.3}px ${size * 0.5}px rgba(0, 0, 0, 0.3),
-                        0 0 ${size * 0.4}px rgba(135, 206, 250, 0.6);
-                    filter: blur(0.2px);
+                        0 0 20px rgba(173, 216, 230, 0.8),
+                        0 0 40px rgba(135, 206, 250, 0.6),
+                        inset 0 0 15px rgba(255, 255, 255, 0.5);
+                    pointer-events: none;
+                    z-index: ${9900 + i};
                 `;
                 
-                // Light refraction highlight
-                const highlight = document.createElement('div');
-                highlight.style.cssText = `
-                    position: absolute;
-                    top: 10%;
-                    left: 25%;
-                    width: 40%;
-                    height: 25%;
-                    background: radial-gradient(ellipse at top left,
-                        rgba(255, 255, 255, 0.95) 0%,
-                        rgba(255, 255, 255, 0.6) 40%,
-                        transparent 70%);
-                    border-radius: 50%;
-                    filter: blur(0.5px);
-                `;
+                const endX = Math.cos(angle * Math.PI / 180) * distance;
+                const endY = Math.sin(angle * Math.PI / 180) * distance;
                 
-                // Secondary highlight for depth
-                const highlight2 = document.createElement('div');
-                highlight2.style.cssText = `
-                    position: absolute;
-                    top: 35%;
-                    right: 20%;
-                    width: 25%;
-                    height: 15%;
-                    background: radial-gradient(ellipse,
-                        rgba(255, 255, 255, 0.7) 0%,
-                        transparent 60%);
-                    border-radius: 50%;
-                    filter: blur(0.4px);
-                `;
-                
-                // Refraction distortion edge
-                const refraction = document.createElement('div');
-                refraction.style.cssText = `
-                    position: absolute;
-                    right: 5%;
-                    top: 20%;
-                    width: 15%;
-                    height: 50%;
-                    background: linear-gradient(to right,
-                        transparent 0%,
-                        rgba(180, 220, 240, 0.5) 50%,
-                        rgba(200, 230, 255, 0.3) 100%);
-                    border-radius: 0 50% 50% 0;
-                    filter: blur(0.3px);
-                `;
-                
-                drop.appendChild(dropBody);
-                dropBody.appendChild(highlight);
-                dropBody.appendChild(highlight2);
-                dropBody.appendChild(refraction);
-                effectContainer.appendChild(drop);
-                
-                // Enhanced splash effect with realistic spread
-                setTimeout(() => {
-                    const splash = document.createElement('div');
-                    splash.style.cssText = `
-                        position: fixed;
-                        left: ${xPos}%;
-                        bottom: 0;
-                        width: ${size * 4}px;
-                        height: ${size * 2.5}px;
-                        pointer-events: none;
-                    `;
-                    
-                    // Main splash ring
-                    const splashRing = document.createElement('div');
-                    splashRing.style.cssText = `
-                        position: absolute;
-                        width: 100%;
-                        height: 100%;
-                        background: radial-gradient(ellipse at center, 
-                            rgba(255, 255, 255, 0.8) 0%,
-                            rgba(200, 230, 255, 0.6) 25%,
-                            rgba(135, 206, 250, 0.4) 50%,
-                            transparent 75%);
-                        border-radius: 50%;
-                        animation: splash-expand 0.5s ease-out forwards;
-                    `;
-                    
-                    // Splash droplets
-                    for (let j = 0; j < 6; j++) {
-                        const droplet = document.createElement('div');
-                        const angle = (j * 60) + Math.random() * 30;
-                        const dist = size * 2;
-                        droplet.style.cssText = `
-                            position: absolute;
-                            left: 50%;
-                            top: 50%;
-                            width: ${size * 0.3}px;
-                            height: ${size * 0.5}px;
-                            background: linear-gradient(180deg,
-                                rgba(255, 255, 255, 0.9),
-                                rgba(135, 206, 250, 0.7));
-                            border-radius: 50%;
-                            opacity: 0.8;
-                            animation: splash-particle-${j} 0.4s ease-out forwards;
-                        `;
-                        splash.appendChild(droplet);
-                        
-                        // Add unique animation for each droplet
-                        const style = document.createElement('style');
-                        style.textContent = `
-                            @keyframes splash-particle-${j} {
-                                0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
-                                100% { 
-                                    transform: translate(
-                                        ${Math.cos(angle * Math.PI / 180) * dist}px,
-                                        ${-Math.abs(Math.sin(angle * Math.PI / 180) * dist * 0.8)}px
-                                    ) scale(0.3); 
-                                    opacity: 0; 
-                                }
-                            }
-                        `;
-                        document.head.appendChild(style);
-                        setTimeout(() => style.remove(), 500);
+                burst.animate([
+                    {
+                        transform: 'translate(-50%, -50%) scale(0.2)',
+                        opacity: 1
+                    },
+                    {
+                        transform: `translate(calc(-50% + ${endX}px), calc(-50% + ${endY}px)) scale(1.2)`,
+                        opacity: 0.8,
+                        offset: 0.6
+                    },
+                    {
+                        transform: `translate(calc(-50% + ${endX * 1.3}px), calc(-50% + ${endY * 1.3}px)) scale(0.4)`,
+                        opacity: 0
                     }
-                    
-                    splash.appendChild(splashRing);
-                    effectContainer.appendChild(splash);
-                    setTimeout(() => splash.remove(), 500);
-                }, speed * 1000);
+                ], {
+                    duration: 1500,
+                    easing: 'ease-out'
+                });
                 
-                setTimeout(() => drop.remove(), (speed + 0.5) * 1000);
-            }, i * (70 - intensity * 8));
+                effectContainer.appendChild(burst);
+                setTimeout(() => burst.remove(), 1500);
+            }, i * 40);
         }
         
-        // Add lightning effects at higher intensities
-        if (intensity >= 3) {
-            const lightningCount = intensity - 2;
-            for (let i = 0; i < lightningCount; i++) {
-                setTimeout(() => {
-                    createLightning();
-                }, Math.random() * 2000);
-            }
+        // Add sweeping light waves
+        for (let i = 0; i < 6; i++) {
+            setTimeout(() => {
+                const wave = document.createElement('div');
+                wave.style.cssText = `
+                    position: fixed;
+                    left: ${centerX}%;
+                    bottom: 50px;
+                    transform: translateX(-50%);
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    border: 3px solid rgba(173, 216, 230, 0.6);
+                    box-shadow: 
+                        0 0 20px rgba(173, 216, 230, 0.8),
+                        inset 0 0 20px rgba(255, 255, 255, 0.3);
+                    pointer-events: none;
+                    z-index: 9890;
+                `;
+                
+                wave.animate([
+                    {
+                        transform: 'translateX(-50%) scale(0.5)',
+                        opacity: 0.9
+                    },
+                    {
+                        transform: 'translateX(-50%) scale(8)',
+                        opacity: 0
+                    }
+                ], {
+                    duration: 2000,
+                    easing: 'ease-out'
+                });
+                
+                effectContainer.appendChild(wave);
+                setTimeout(() => wave.remove(), 2000);
+            }, i * 200);
         }
-    }
-    
-    function createLightning() {
-        // Full screen lightning flash
-        const flash = document.createElement('div');
-        flash.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at ${Math.random() * 100}% 20%, 
-                rgba(255, 255, 255, 0.9) 0%,
-                rgba(200, 220, 255, 0.5) 30%,
-                transparent 70%);
-            pointer-events: none;
-            z-index: 9999;
-            animation: lightning-flash 0.15s ease-out;
-        `;
-        effectContainer.appendChild(flash);
-        
-        // Lightning bolt
-        const bolt = document.createElement('div');
-        const startX = Math.random() * 80 + 10;
-        bolt.style.cssText = `
-            position: fixed;
-            left: ${startX}%;
-            top: 0;
-            width: 3px;
-            height: ${Math.random() * 40 + 30}%;
-            background: linear-gradient(180deg,
-                rgba(255, 255, 255, 1) 0%,
-                rgba(200, 220, 255, 0.9) 50%,
-                rgba(135, 206, 250, 0) 100%);
-            box-shadow: 
-                0 0 10px rgba(255, 255, 255, 1),
-                0 0 20px rgba(200, 220, 255, 0.8),
-                0 0 30px rgba(135, 206, 250, 0.6);
-            transform: translateX(-50%) skewX(${Math.random() * 6 - 3}deg);
-            filter: blur(1px);
-            pointer-events: none;
-            z-index: 9999;
-            animation: lightning-bolt 0.15s ease-out;
-        `;
-        effectContainer.appendChild(bolt);
-        
-        setTimeout(() => {
-            flash.remove();
-            bolt.remove();
-        }, 150);
     }
     
     // REVIEWS.HTML - Falling Stars → Star Burst Tap Game
@@ -2371,13 +2296,43 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < count; i++) {
             setTimeout(() => {
                 const star = document.createElement('div');
-                star.textContent = '⭐';
+                const size = Math.random() * 25 + 20;
+                const colors = [
+                    ['#FFD700', '#FFA500'],
+                    ['#FFFFFF', '#E0E0E0'],
+                    ['#87CEEB', '#4682B4'],
+                    ['#FFB6C1', '#FF69B4']
+                ];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                star.innerHTML = `
+                    <svg viewBox="0 0 100 100" style="width: ${size}px; height: ${size}px;">
+                        <defs>
+                            <linearGradient id="starGrad${i}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:${color[0]};stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:${color[1]};stop-opacity:1" />
+                            </linearGradient>
+                            <radialGradient id="starGlow${i}">
+                                <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:${color[0]};stop-opacity:0" />
+                            </radialGradient>
+                        </defs>
+                        <path d="M 50 10 L 61 40 L 93 40 L 67 58 L 78 88 L 50 70 L 22 88 L 33 58 L 7 40 L 39 40 Z" 
+                              fill="url(#starGrad${i})" 
+                              stroke="#FFFFFF" 
+                              stroke-width="2"
+                              filter="drop-shadow(0 0 8px ${color[0]})" />
+                        <circle cx="50" cy="50" r="35" fill="url(#starGlow${i})" opacity="0.3"/>
+                    </svg>
+                `;
+                
                 star.style.cssText = `
                     position: fixed;
                     left: ${Math.random() * 100}%;
-                    top: -30px;
-                    font-size: ${Math.random() * 25 + 20}px;
+                    top: -50px;
+                    pointer-events: none;
                     animation: star-fall ${Math.random() * 2 + 2}s linear forwards;
+                    z-index: ${9900 + i};
                 `;
                 effectContainer.appendChild(star);
                 setTimeout(() => star.remove(), 4000);
@@ -2405,7 +2360,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const title = document.createElement('div');
-        title.textContent = '⭐ Star Burst Challenge!';
+        title.textContent = 'Star Burst Challenge';
         title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 10px;';
         
         const instruction = document.createElement('div');
@@ -2427,7 +2382,8 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.addEventListener('click', () => {
             if (spawnInterval) clearInterval(spawnInterval);
             if (timerInterval) clearInterval(timerInterval);
-            gameContainer.remove();
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 800);
         });
         
         gameContainer.appendChild(closeBtn);
@@ -2447,12 +2403,32 @@ document.addEventListener('DOMContentLoaded', function() {
         function spawnStar() {
             const star = document.createElement('div');
             const size = Math.random() * 20 + 40;
-            star.textContent = '⭐';
+            const starId = Math.floor(Math.random() * 10000);
+            const colors = [['#FFD700', '#FFA500'], ['#FFFFFF', '#E0E0E0'], ['#FF69B4', '#FFB6C1']];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            star.innerHTML = `
+                <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                    <defs>
+                        <linearGradient id="starG${starId}" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:${color[0]};stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:${color[1]};stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 50 10 L 61 40 L 93 40 L 67 58 L 78 88 L 50 70 L 22 88 L 33 58 L 7 40 L 39 40 Z" 
+                          fill="url(#starG${starId})" 
+                          stroke="#FFFFFF" 
+                          stroke-width="2"
+                          filter="drop-shadow(0 0 8px ${color[0]})" />
+                </svg>
+            `;
+            
             star.style.cssText = `
                 position: absolute;
                 left: ${Math.random() * 85}%;
                 top: ${Math.random() * 85}%;
-                font-size: ${size}px;
+                width: ${size}px;
+                height: ${size}px;
                 cursor: pointer;
                 animation: pulse-glow 0.5s ease-in-out infinite alternate;
                 transition: transform 0.2s;
@@ -2464,7 +2440,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!clicked) {
                     clicked = true;
                     score++;
-                    scoreDiv.textContent = `⭐ Stars: ${score} | Missed: ${missed}`;
+                    scoreDiv.textContent = `Stars: ${score} | Missed: ${missed}`;
                     this.style.transform = 'scale(1.5) rotate(360deg)';
                     this.style.opacity = '0';
                     createSparkles(this.getBoundingClientRect().left + size/2, this.getBoundingClientRect().top + size/2);
@@ -2473,7 +2449,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (score >= 30) {
                         clearInterval(spawnInterval);
                         clearInterval(timerInterval);
-                        title.textContent = '🏆 5-Star Champion!';
+                        title.textContent = '5-Star Champion!';
                         instruction.textContent = `Perfect score: ${score}!`;
                         createConfetti();
                         setTimeout(() => gameContainer.remove(), 3000);
@@ -2487,7 +2463,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!clicked && star.parentNode) {
                     star.style.opacity = '0';
                     missed++;
-                    scoreDiv.textContent = `⭐ Stars: ${score} | Missed: ${missed}`;
+                    scoreDiv.textContent = `Stars: ${score} | Missed: ${missed}`;
                     setTimeout(() => star.remove(), 300);
                     
                     if (missed >= 10) {
@@ -2502,7 +2478,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 1500);
         }
         
-        scoreDiv.textContent = '⭐ Stars: 0 | Missed: 0';
+        scoreDiv.textContent = 'Stars: 0 | Missed: 0';
         timerDiv.textContent = `Time: ${timeLeft}s`;
         
         spawnInterval = setInterval(() => {
@@ -2525,10 +2501,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
     
-    // QUOTE.HTML - Sparkles → Bubble Pop Cleaning Game
+    // QUOTE.HTML - Light Sparkles → Bubble Pop Cleaning Game
     function quoteEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            createSparkles(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+            createProfessionalSparkles(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
         } else {
             startBubblePopGame();
         }
@@ -2554,7 +2530,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const title = document.createElement('div');
-        title.textContent = '🫧 Bubble Pop Cleaning!';
+        title.textContent = 'Bubble Pop Cleaning';
         title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 10px;';
         
         const instruction = document.createElement('div');
@@ -2576,7 +2552,8 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.addEventListener('click', () => {
             if (spawnInterval) clearInterval(spawnInterval);
             if (timerInterval) clearInterval(timerInterval);
-            gameContainer.remove();
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 800);
         });
         
         gameContainer.appendChild(closeBtn);
@@ -2630,27 +2607,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!popped) {
                     popped = true;
                     score++;
-                    scoreDiv.textContent = `Popped: ${score} 🫧 | Missed: ${missed}`;
+                    scoreDiv.textContent = `Popped: ${score} | Missed: ${missed}`;
                     
                     // Pop animation
                     this.style.transform = 'scale(1.3)';
                     this.style.opacity = '0';
                     
                     // Create pop sparkles
-                    for (let i = 0; i < 3; i++) {
+                    for (let i = 0; i < 6; i++) {
                         setTimeout(() => {
                             const sparkle = document.createElement('div');
-                            sparkle.textContent = '✨';
+                            const angle = (i / 6) * Math.PI * 2;
+                            const distance = 30;
+                            const offsetX = Math.cos(angle) * distance;
+                            const offsetY = Math.sin(angle) * distance;
+                            
                             sparkle.style.cssText = `
                                 position: absolute;
-                                left: ${leftPos + size/2}px;
-                                bottom: ${this.offsetTop}px;
-                                font-size: 20px;
+                                left: ${leftPos + size/2 + offsetX}px;
+                                bottom: ${this.offsetTop + offsetY}px;
+                                width: 8px;
+                                height: 8px;
+                                background: radial-gradient(circle, #ffffff, #87CEEB);
+                                border-radius: 50%;
+                                box-shadow: 0 0 10px #ffffff;
+                                opacity: 1;
                                 animation: sparkle-float 1s ease-out forwards;
                             `;
                             gameArea.appendChild(sparkle);
                             setTimeout(() => sparkle.remove(), 1000);
-                        }, i * 100);
+                        }, i * 50);
                     }
                     
                     setTimeout(() => this.remove(), 200);
@@ -2658,7 +2644,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (score >= 40) {
                         clearInterval(spawnInterval);
                         clearInterval(timerInterval);
-                        title.textContent = '🏆 Bubble Master!';
+                        title.textContent = 'Bubble Master!';
                         instruction.textContent = `Incredible! ${score} bubbles popped!`;
                         createConfetti();
                         setTimeout(() => gameContainer.remove(), 3000);
@@ -2672,7 +2658,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 if (!popped && bubble.parentNode) {
                     missed++;
-                    scoreDiv.textContent = `Popped: ${score} 🫧 | Missed: ${missed}`;
+                    scoreDiv.textContent = `Popped: ${score} | Missed: ${missed}`;
                     bubble.remove();
                     
                     if (missed >= 15) {
@@ -2687,7 +2673,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, floatDuration * 1000);
         }
         
-        scoreDiv.textContent = 'Popped: 0 🫧 | Missed: 0';
+        scoreDiv.textContent = 'Popped: 0 | Missed: 0';
         timerDiv.textContent = `Time: ${timeLeft}s`;
         
         // Spawn bubbles at increasing rate
@@ -2716,21 +2702,110 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Helper functions
-    function createSparkles(x, y) {
-        for (let i = 0; i < 5; i++) {
+    function createProfessionalSparkles(x, y) {
+        // Create radial burst of light particles
+        for (let i = 0; i < 8; i++) {
             setTimeout(() => {
                 const sparkle = document.createElement('div');
-                sparkle.textContent = ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)];
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = Math.random() * 60 + 40;
+                const size = Math.random() * 12 + 6;
+                
                 sparkle.style.cssText = `
                     position: fixed;
                     left: ${x}px;
                     top: ${y}px;
-                    font-size: ${Math.random() * 30 + 20}px;
-                    animation: sparkle-float 2s ease-out forwards;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: radial-gradient(circle, #ffffff, #ffd700, transparent);
+                    border-radius: 50%;
+                    box-shadow: 0 0 20px #ffd700;
+                    opacity: 1;
+                    transform: translate(-50%, -50%);
+                    pointer-events: none;
+                    animation: sparkle-burst-${i} 1.5s ease-out forwards;
                 `;
+                
+                // Create dynamic keyframe animation for each particle
+                const styleSheet = document.styleSheets[0];
+                const keyframes = `
+                    @keyframes sparkle-burst-${i} {
+                        0% {
+                            transform: translate(-50%, -50%) scale(1);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translate(calc(-50% + ${Math.cos(angle) * distance}px), calc(-50% + ${Math.sin(angle) * distance}px)) scale(0);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                
+                try {
+                    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                } catch (e) {
+                    // Rule might already exist
+                }
+                
                 effectContainer.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 2000);
-            }, i * 100);
+                setTimeout(() => sparkle.remove(), 1500);
+            }, i * 80);
+        }
+    }
+    
+    function createQuickCelebration() {
+        // Quick colorful particle burst for game close events
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];
+        
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                const angle = (Math.random() * Math.PI * 2);
+                const distance = Math.random() * 300 + 100;
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const startX = window.innerWidth / 2;
+                const startY = window.innerHeight / 2;
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${startX}px;
+                    top: ${startY}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: radial-gradient(circle, ${color}, transparent);
+                    border-radius: 50%;
+                    box-shadow: 0 0 15px ${color};
+                    opacity: 1;
+                    pointer-events: none;
+                    z-index: 10003;
+                    animation: quick-celebration-${i} 0.8s ease-out forwards;
+                `;
+                
+                // Create dynamic keyframe animation
+                const styleSheet = document.styleSheets[0];
+                const keyframes = `
+                    @keyframes quick-celebration-${i} {
+                        0% {
+                            transform: translate(-50%, -50%) scale(1);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translate(calc(-50% + ${Math.cos(angle) * distance}px), calc(-50% + ${Math.sin(angle) * distance}px)) scale(0);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                
+                try {
+                    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                } catch (e) {
+                    // Rule might already exist
+                }
+                
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 800);
+            }, i * 20);
         }
     }
     
@@ -3072,7 +3147,10 @@ document.addEventListener('DOMContentLoaded', function() {
             cursor: pointer;
             z-index: 10002;
         `;
-        closeBtn.addEventListener('click', () => gameContainer.remove());
+        closeBtn.addEventListener('click', () => {
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 800);
+        });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(gameTitle);
@@ -3106,21 +3184,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 score++;
                 scoreBoard.textContent = `Cleaned: ${score}/${totalSpots} spots!`;
                 
-                for (let j = 0; j < 3; j++) {
+                for (let j = 0; j < 6; j++) {
                     setTimeout(() => {
                         const sparkle = document.createElement('div');
-                        sparkle.textContent = '✨';
+                        const angle = (j / 6) * Math.PI * 2;
+                        const distance = 25;
+                        
                         sparkle.style.cssText = `
                             position: absolute;
-                            left: ${e.offsetX}px;
-                            top: ${e.offsetY}px;
-                            font-size: 20px;
+                            left: ${e.offsetX + Math.cos(angle) * distance}px;
+                            top: ${e.offsetY + Math.sin(angle) * distance}px;
+                            width: 8px;
+                            height: 8px;
+                            background: radial-gradient(circle, #ffffff, #87CEEB);
+                            border-radius: 50%;
+                            box-shadow: 0 0 12px #ffffff;
                             pointer-events: none;
-                            animation: sparkle-float 1s ease-out forwards;
+                            opacity: 1;
+                            animation: sparkle-fade-out 0.8s ease-out forwards;
                         `;
                         windowPane.appendChild(sparkle);
-                        setTimeout(() => sparkle.remove(), 1000);
-                    }, j * 100);
+                        setTimeout(() => sparkle.remove(), 800);
+                    }, j * 60);
                 }
                 
                 setTimeout(() => this.remove(), 300);
@@ -3596,6 +3681,17 @@ style.textContent = `
         100% {
             left: 120%;
             opacity: 0;
+        }
+    }
+    
+    @keyframes sparkle-fade-out {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.3);
         }
     }
     
