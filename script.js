@@ -1168,20 +1168,22 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const dinoSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        dinoSVG.setAttribute('viewBox', '0 0 200 180');
+        dinoSVG.setAttribute('viewBox', '0 0 240 160');
         dinoSVG.style.cssText = 'width: 100%; height: auto; display: block;';
         
-        // Dinosaur parts that can be painted
+        // Professional coloring-book-style dinosaur parts
         const dinoParts = [
-            { id: 'body', path: 'M 60 90 L 58 70 L 60 50 L 65 40 L 75 35 L 90 35 L 105 35 L 120 40 L 128 50 L 130 70 L 128 90 L 120 100 L 105 105 L 90 105 L 75 100 Z', color: '#95A5A6' },
-            { id: 'head', path: 'M 120 50 L 125 45 L 135 40 L 145 40 L 155 45 L 160 55 L 160 65 L 155 72 L 145 75 L 135 75 L 130 70 Z', color: '#95A5A6' },
-            { id: 'tail', path: 'M 60 70 L 50 75 L 40 78 L 30 80 L 20 80 L 15 78 L 20 75 L 30 72 L 40 70 L 50 68 Z', color: '#95A5A6' },
-            { id: 'leg1', path: 'M 80 105 L 78 120 L 78 135 L 80 150 L 85 155 L 90 150 L 92 135 L 90 120 L 88 105 Z', color: '#95A5A6' },
-            { id: 'leg2', path: 'M 110 105 L 108 120 L 108 135 L 110 150 L 115 155 L 120 150 L 122 135 L 120 120 L 118 105 Z', color: '#95A5A6' },
-            { id: 'arm', path: 'M 115 55 L 118 58 L 120 63 L 120 70 L 118 73 L 115 70 L 113 65 L 113 60 Z', color: '#95A5A6' },
-            { id: 'plates1', path: 'M 70 35 L 75 20 L 80 35 Z', color: '#7F8C8D' },
-            { id: 'plates2', path: 'M 85 35 L 90 18 L 95 35 Z', color: '#7F8C8D' },
-            { id: 'plates3', path: 'M 100 35 L 105 20 L 110 35 Z', color: '#7F8C8D' }
+            { id: 'body', path: 'M 40 80 Q 35 70 35 60 Q 35 50 40 45 L 60 40 L 100 38 L 140 40 L 160 45 Q 165 50 165 60 Q 165 70 160 80 L 155 95 Q 150 105 140 108 L 100 110 L 60 108 Q 50 105 45 95 Z', color: '#BDC3C7' },
+            { id: 'head', path: 'M 160 60 L 170 55 Q 180 50 190 50 Q 200 50 208 55 L 215 65 Q 218 75 215 85 L 208 92 Q 200 95 190 95 Q 180 95 172 92 L 165 85 Q 160 75 160 65 Z', color: '#BDC3C7' },
+            { id: 'neck', path: 'M 160 45 Q 165 40 170 42 L 175 50 L 170 58 Q 165 60 160 58 Z', color: '#BDC3C7' },
+            { id: 'tail', path: 'M 40 70 Q 30 70 20 72 Q 10 75 5 78 Q 2 80 5 82 Q 10 85 20 88 Q 30 90 40 90 L 45 80 Z', color: '#BDC3C7' },
+            { id: 'front_leg', path: 'M 140 108 L 138 125 L 137 140 Q 137 148 140 152 L 148 155 Q 152 152 152 148 L 151 140 L 150 125 L 148 108 Z', color: '#BDC3C7' },
+            { id: 'back_leg', path: 'M 70 108 L 68 125 L 67 140 Q 67 148 70 152 L 78 155 Q 82 152 82 148 L 81 140 L 80 125 L 78 108 Z', color: '#BDC3C7' },
+            { id: 'plate1', path: 'M 65 38 L 70 15 L 75 38 Z', color: '#95A5A6' },
+            { id: 'plate2', path: 'M 85 38 L 90 12 L 95 38 Z', color: '#95A5A6' },
+            { id: 'plate3', path: 'M 105 38 L 110 10 L 115 38 Z', color: '#95A5A6' },
+            { id: 'plate4', path: 'M 125 38 L 130 12 L 135 38 Z', color: '#95A5A6' },
+            { id: 'plate5', path: 'M 145 40 L 150 18 L 155 40 Z', color: '#95A5A6' }
         ];
         
         let paintedParts = new Set();
@@ -1191,8 +1193,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathElement.setAttribute('d', part.path);
             pathElement.setAttribute('fill', part.color);
-            pathElement.setAttribute('stroke', '#34495E');
-            pathElement.setAttribute('stroke-width', '2');
+            pathElement.setAttribute('stroke', '#2C3E50');
+            pathElement.setAttribute('stroke-width', '2.5');
+            pathElement.setAttribute('stroke-linejoin', 'round');
+            pathElement.setAttribute('stroke-linecap', 'round');
             pathElement.style.cssText = 'cursor: pointer; transition: fill 0.3s ease;';
             pathElement.dataset.partId = part.id;
             
@@ -1245,9 +1249,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add eye detail
         const eye = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        eye.setAttribute('cx', '150');
-        eye.setAttribute('cy', '55');
-        eye.setAttribute('r', '4');
+        eye.setAttribute('cx', '195');
+        eye.setAttribute('cy', '70');
+        eye.setAttribute('r', '5');
         eye.setAttribute('fill', '#2C3E50');
         dinoSVG.appendChild(eye);
         
