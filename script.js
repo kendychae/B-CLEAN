@@ -23,33 +23,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
 
-    if (mobileMenuToggle) {
+    if (mobileMenuToggle && navMenu) {
         mobileMenuToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             this.classList.toggle('active');
         });
-    }
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.navbar')) {
-            navMenu.classList.remove('active');
-            if (mobileMenuToggle) {
-                mobileMenuToggle.classList.remove('active');
-            }
-        }
-    });
-
-    // Close mobile menu when clicking a link
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            navMenu.classList.remove('active');
-            if (mobileMenuToggle) {
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.navbar')) {
+                navMenu.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
             }
         });
-    });
+
+        // Close mobile menu when clicking a link
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            });
+        });
+    }
 });
 
 // Quote Form Handling
@@ -1742,181 +1738,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         scoreBoard.textContent = `Cleaned: 0/${totalSpots} spots!`;
-    }
-    
-    // Helper functions
-    function createSparkles(x, y) {
-        for (let i = 0; i < 5; i++) {
-
-        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#ffd700'];
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                const confetti = document.createElement('div');
-                confetti.style.cssText = `
-                    position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: -10px;
-                    width: ${Math.random() * 10 + 5}px;
-                    height: ${Math.random() * 10 + 5}px;
-                    background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
-                    animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
-                `;
-                effectContainer.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }, i * 30);
-        }
-    }
-    
-    function createBouncingEmoji(emoji) {
-        const bouncer = document.createElement('div');
-        bouncer.textContent = emoji;
-        bouncer.style.cssText = `
-            position: fixed;
-            left: ${Math.random() * 80 + 10}%;
-            top: -50px;
-            font-size: 50px;
-            animation: bounce-fall 2s ease-out forwards;
-        `;
-        effectContainer.appendChild(bouncer);
-        setTimeout(() => bouncer.remove(), 2000);
-    }
-    
-    function createScrollingTip() {
-        const tip = document.createElement('div');
-        tip.textContent = '💡';
-        tip.style.cssText = `
-            position: fixed;
-            right: -50px;
-            top: ${Math.random() * 80 + 10}%;
-            font-size: 40px;
-            animation: scroll-left 3s linear forwards;
-        `;
-        effectContainer.appendChild(tip);
-        setTimeout(() => tip.remove(), 3000);
-    }
-    
-    function createDirtParticles() {
-        for (let i = 0; i < 20; i++) {
-            setTimeout(() => {
-                const dirt = document.createElement('div');
-                dirt.textContent = ['•', '◦', '∙'][Math.floor(Math.random() * 3)];
-                dirt.style.cssText = `
-                    position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    font-size: ${Math.random() * 15 + 10}px;
-                    color: #8b4513;
-                    animation: vacuum-away 1.5s ease-in forwards;
-                `;
-                effectContainer.appendChild(dirt);
-                setTimeout(() => dirt.remove(), 1500);
-            }, i * 50);
-        }
-    }
-    
-    function createVacuumEffect() {
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                const particle = document.createElement('div');
-                particle.textContent = '•';
-                particle.style.cssText = `
-                    position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    font-size: 20px;
-                    color: #8b4513;
-                    animation: spiral-in 2s ease-in forwards;
-                `;
-                effectContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 2000);
-            }, i * 20);
-        }
-    }
-    
-    function createWaterDroplets() {
-        for (let i = 0; i < 15; i++) {
-            setTimeout(() => {
-                const drop = document.createElement('div');
-                drop.textContent = '💧';
-                drop.style.cssText = `
-                    position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: -20px;
-                    font-size: ${Math.random() * 20 + 15}px;
-                    animation: drop-fall ${Math.random() + 1.5}s linear forwards;
-                `;
-                effectContainer.appendChild(drop);
-                setTimeout(() => drop.remove(), 2500);
-            }, i * 100);
-        }
-    }
-    
-    function createSqueegeEffect() {
-        const squeegee = document.createElement('div');
-        squeegee.style.cssText = `
-            position: fixed;
-            left: -100px;
-            top: 0;
-            width: 100px;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(100,200,255,0.6), transparent);
-            animation: squeegee-wipe 2s ease-in-out forwards;
-        `;
-        effectContainer.appendChild(squeegee);
-        setTimeout(() => squeegee.remove(), 2000);
-    }
-    
-    function createFallingStars(count) {
-        for (let i = 0; i < count * 3; i++) {
-            setTimeout(() => {
-                const star = document.createElement('div');
-                star.textContent = '⭐';
-                star.style.cssText = `
-                    position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: -30px;
-                    font-size: ${Math.random() * 25 + 20}px;
-                    animation: star-fall ${Math.random() * 2 + 2}s linear forwards;
-                `;
-                effectContainer.appendChild(star);
-                setTimeout(() => star.remove(), 4000);
-            }, i * 150);
-        }
-    }
-    
-    function createStarExplosion() {
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-        
-        for (let i = 0; i < 40; i++) {
-            setTimeout(() => {
-                const star = document.createElement('div');
-                star.textContent = '⭐';
-                const angle = (Math.PI * 2 * i) / 40;
-                const distance = 300;
-                const endX = centerX + Math.cos(angle) * distance;
-                const endY = centerY + Math.sin(angle) * distance;
-                
-                star.style.cssText = `
-                    position: fixed;
-                    left: ${centerX}px;
-                    top: ${centerY}px;
-                    font-size: 30px;
-                    transition: all 1.5s ease-out;
-                `;
-                effectContainer.appendChild(star);
-                
-                setTimeout(() => {
-                    star.style.left = endX + 'px';
-                    star.style.top = endY + 'px';
-                    star.style.opacity = '0';
-                    star.style.transform = 'scale(1.5) rotate(360deg)';
-                }, 50);
-                
-                setTimeout(() => star.remove(), 2000);
-            }, i * 25);
-        }
     }
     
     // Main click handler
