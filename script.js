@@ -2382,7 +2382,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     statusDiv.textContent = 'Moon Wins!';
                     createConfetti();
                 } else {
-                    statusDiv.textContent = \"It's a Tie!\";\n                }
+                    statusDiv.textContent = "It's a Tie!";
+                }
                 setTimeout(() => {
                     gameContainer.style.opacity = '0';
                     gameContainer.style.transition = 'opacity 0.5s ease';
@@ -2426,7 +2427,7 @@ document.addEventListener('DOMContentLoaded', function() {
             board.appendChild(cell);
         }
         
-        statusDiv.textContent = \"Star's turn\";
+        statusDiv.textContent = "Star's turn";
     }
     
     // QUOTE.HTML - Light Sparkles → Bubble Pop Cleaning Game
