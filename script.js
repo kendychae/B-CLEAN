@@ -842,51 +842,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Easter Egg Functionality for Footer Copyright
+// Page-Specific Easter Egg Functionality for Footer Copyright
 document.addEventListener('DOMContentLoaded', function() {
     const copyrightText = document.getElementById('copyright-text');
     if (!copyrightText) return;
     
+    // Detect current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
     let clickCount = 0;
     let resetTimer = null;
     
-    const messages = [
-        "🧼 Keep clicking...",
-        "🪟 Getting cleaner...",
-        "✨ Almost there...",
-        "💧 Squeaky clean!",
-        "🧽 You found it!",
-        "🎉 Secret unlocked!",
-        "🌟 SPARKLE MODE ACTIVATED! 🌟"
-    ];
-    
-    // Create easter egg message element
-    const easterEggMessage = document.createElement('div');
-    easterEggMessage.id = 'easter-egg-message';
-    easterEggMessage.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 30px 50px;
-        border-radius: 20px;
-        font-size: 28px;
-        font-weight: bold;
-        text-align: center;
-        z-index: 10000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        pointer-events: none;
-    `;
-    document.body.appendChild(easterEggMessage);
-    
-    // Create sparkle container
-    const sparkleContainer = document.createElement('div');
-    sparkleContainer.id = 'sparkle-container';
-    sparkleContainer.style.cssText = `
+    // Create shared container for effects
+    const effectContainer = document.createElement('div');
+    effectContainer.id = 'effect-container';
+    effectContainer.style.cssText = `
         position: fixed;
         top: 0;
         left: 0;
@@ -895,26 +865,152 @@ document.addEventListener('DOMContentLoaded', function() {
         pointer-events: none;
         z-index: 9999;
     `;
-    document.body.appendChild(sparkleContainer);
+    document.body.appendChild(effectContainer);
     
-    // Function to create sparkles
-    function createSparkle(x, y) {
-        const sparkle = document.createElement('div');
-        sparkle.textContent = ['✨', '⭐', '💫', '🌟', '💧', '🧼'][Math.floor(Math.random() * 6)];
-        sparkle.style.cssText = `
-            position: fixed;
-            left: ${x}px;
-            top: ${y}px;
-            font-size: ${Math.random() * 20 + 15}px;
-            pointer-events: none;
-            animation: sparkle-float ${Math.random() * 2 + 1}s ease-out forwards;
-        `;
-        sparkleContainer.appendChild(sparkle);
-        
-        setTimeout(() => sparkle.remove(), 3000);
+    // Create message element
+    const messageBox = document.createElement('div');
+    messageBox.id = 'easter-egg-message';
+    messageBox.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px 50px;
+        border-radius: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        pointer-events: none;
+        max-width: 80%;
+    `;
+    document.body.appendChild(messageBox);
+    
+    // Utility function to show message
+    function showMessage(message, duration = 2000) {
+        messageBox.innerHTML = message;
+        messageBox.style.opacity = '1';
+        setTimeout(() => {
+            messageBox.style.opacity = '0';
+        }, duration);
     }
     
-    // Function to create confetti explosion
+    // INDEX.HTML - Rainbow Sparkle Confetti
+    function indexEasterEgg(clickCount) {
+        if (clickCount <= 5) {
+            const messages = ["🧼 Click again...", "🪟 Keep going...", "✨ Almost...", "💧 One more...", "🎉 Final click!"];
+            showMessage(messages[clickCount - 1], 1000);
+            createSparkle();
+        } else if (clickCount === 6) {
+            showMessage("🌟 RAINBOW SPARKLE MODE! 🌟", 3000);
+            createConfetti();
+            copyrightText.style.animation = 'rainbow 2s linear infinite';
+            setTimeout(() => { copyrightText.style.animation = ''; }, 8000);
+        }
+    }
+    
+    // ABOUT.HTML - Danzen Fun Facts
+    function aboutEasterEgg(clickCount) {
+        const facts = [
+            "👋 Hi! I'm Danzen!",
+            "🎓 I'm a student entrepreneur!",
+            "🧼 I love making windows sparkle!",
+            "🏔️ Proud Cache Valley local!",
+            "⭐ Quality is my priority!",
+            "🎉 Thanks for finding this!"
+        ];
+        if (clickCount <= facts.length) {
+            showMessage(facts[clickCount - 1], 2000);
+            createBouncingEmoji('👨‍💼');
+        }
+    }
+    
+    // BLOG.HTML - Cleaning Tips
+    function blogEasterEgg(clickCount) {
+        const tips = [
+            "💡 TIP: Clean windows on cloudy days!",
+            "💡 TIP: Vacuum carpets before deep cleaning!",
+            "💡 TIP: Use microfiber for streak-free windows!",
+            "💡 TIP: Hard water? We've got you covered!",
+            "💡 TIP: Regular cleaning extends carpet life!",
+            "🎓 You're now a cleaning expert!"
+        ];
+        if (clickCount <= tips.length) {
+            showMessage(tips[clickCount - 1], 2500);
+            createScrollingTip();
+        }
+    }
+    
+    // CARPET-CLEANING.HTML - Vacuum Effect
+    function carpetEasterEgg(clickCount) {
+        if (clickCount <= 5) {
+            showMessage("🧹 Vacuuming dirt...", 1000);
+            createDirtParticles();
+        } else if (clickCount === 6) {
+            showMessage("✨ CARPET PERFECTLY CLEAN! ✨", 3000);
+            createVacuumEffect();
+        }
+    }
+    
+    // WINDOW-WASHING.HTML - Squeegee Effect
+    function windowEasterEgg(clickCount) {
+        if (clickCount <= 5) {
+            showMessage("💧 Spraying window...", 1000);
+            createWaterDroplets();
+        } else if (clickCount === 6) {
+            showMessage("🪟 CRYSTAL CLEAR! 🪟", 3000);
+            createSqueegeEffect();
+        }
+    }
+    
+    // REVIEWS.HTML - Star Rating
+    function reviewsEasterEgg(clickCount) {
+        if (clickCount <= 5) {
+            showMessage(`${'⭐'.repeat(clickCount)} ${clickCount}/5 stars!`, 1000);
+            createFallingStars(clickCount);
+        } else if (clickCount === 6) {
+            showMessage("⭐⭐⭐⭐⭐ 5-STAR SERVICE! Thank you! ⭐⭐⭐⭐⭐", 3000);
+            createStarExplosion();
+        }
+    }
+    
+    // QUOTE.HTML - Discount Code
+    function quoteEasterEgg(clickCount) {
+        if (clickCount <= 4) {
+            showMessage("🎁 Finding your discount...", 1000);
+            createSparkle();
+        } else if (clickCount === 5) {
+            showMessage("🎉 SECRET DISCOUNT: EASTEREGG10<br/>10% OFF YOUR FIRST SERVICE! 🎉", 5000);
+            createConfetti();
+            copyrightText.style.animation = 'pulse 0.5s ease infinite';
+            setTimeout(() => { copyrightText.style.animation = ''; }, 5000);
+        }
+    }
+    
+    // Effect functions
+    function createSparkle() {
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const sparkle = document.createElement('div');
+                sparkle.textContent = ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)];
+                sparkle.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    font-size: ${Math.random() * 30 + 20}px;
+                    animation: sparkle-float 2s ease-out forwards;
+                `;
+                effectContainer.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 2000);
+            }, i * 100);
+        }
+    }
+    
     function createConfetti() {
         const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#ffd700'];
         for (let i = 0; i < 50; i++) {
@@ -929,64 +1025,196 @@ document.addEventListener('DOMContentLoaded', function() {
                     background: ${colors[Math.floor(Math.random() * colors.length)]};
                     border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
                     animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
-                    z-index: 9998;
-                    pointer-events: none;
                 `;
-                sparkleContainer.appendChild(confetti);
+                effectContainer.appendChild(confetti);
                 setTimeout(() => confetti.remove(), 5000);
             }, i * 30);
         }
     }
     
-    // Function to show message
-    function showMessage(message, duration = 1500) {
-        easterEggMessage.textContent = message;
-        easterEggMessage.style.opacity = '1';
-        setTimeout(() => {
-            easterEggMessage.style.opacity = '0';
-        }, duration);
+    function createBouncingEmoji(emoji) {
+        const bouncer = document.createElement('div');
+        bouncer.textContent = emoji;
+        bouncer.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * 80 + 10}%;
+            top: -50px;
+            font-size: 50px;
+            animation: bounce-fall 2s ease-out forwards;
+        `;
+        effectContainer.appendChild(bouncer);
+        setTimeout(() => bouncer.remove(), 2000);
     }
     
-    // Add click event listener
+    function createScrollingTip() {
+        const tip = document.createElement('div');
+        tip.textContent = '💡';
+        tip.style.cssText = `
+            position: fixed;
+            right: -50px;
+            top: ${Math.random() * 80 + 10}%;
+            font-size: 40px;
+            animation: scroll-left 3s linear forwards;
+        `;
+        effectContainer.appendChild(tip);
+        setTimeout(() => tip.remove(), 3000);
+    }
+    
+    function createDirtParticles() {
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const dirt = document.createElement('div');
+                dirt.textContent = ['•', '◦', '∙'][Math.floor(Math.random() * 3)];
+                dirt.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    font-size: ${Math.random() * 15 + 10}px;
+                    color: #8b4513;
+                    animation: vacuum-away 1.5s ease-in forwards;
+                `;
+                effectContainer.appendChild(dirt);
+                setTimeout(() => dirt.remove(), 1500);
+            }, i * 50);
+        }
+    }
+    
+    function createVacuumEffect() {
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.textContent = '•';
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    font-size: 20px;
+                    color: #8b4513;
+                    animation: spiral-in 2s ease-in forwards;
+                `;
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }, i * 20);
+        }
+    }
+    
+    function createWaterDroplets() {
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => {
+                const drop = document.createElement('div');
+                drop.textContent = '💧';
+                drop.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -20px;
+                    font-size: ${Math.random() * 20 + 15}px;
+                    animation: drop-fall ${Math.random() + 1.5}s linear forwards;
+                `;
+                effectContainer.appendChild(drop);
+                setTimeout(() => drop.remove(), 2500);
+            }, i * 100);
+        }
+    }
+    
+    function createSqueegeEffect() {
+        const squeegee = document.createElement('div');
+        squeegee.style.cssText = `
+            position: fixed;
+            left: -100px;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(100,200,255,0.6), transparent);
+            animation: squeegee-wipe 2s ease-in-out forwards;
+        `;
+        effectContainer.appendChild(squeegee);
+        setTimeout(() => squeegee.remove(), 2000);
+    }
+    
+    function createFallingStars(count) {
+        for (let i = 0; i < count * 3; i++) {
+            setTimeout(() => {
+                const star = document.createElement('div');
+                star.textContent = '⭐';
+                star.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -30px;
+                    font-size: ${Math.random() * 25 + 20}px;
+                    animation: star-fall ${Math.random() * 2 + 2}s linear forwards;
+                `;
+                effectContainer.appendChild(star);
+                setTimeout(() => star.remove(), 4000);
+            }, i * 150);
+        }
+    }
+    
+    function createStarExplosion() {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
+        for (let i = 0; i < 40; i++) {
+            setTimeout(() => {
+                const star = document.createElement('div');
+                star.textContent = '⭐';
+                const angle = (Math.PI * 2 * i) / 40;
+                const distance = 300;
+                const endX = centerX + Math.cos(angle) * distance;
+                const endY = centerY + Math.sin(angle) * distance;
+                
+                star.style.cssText = `
+                    position: fixed;
+                    left: ${centerX}px;
+                    top: ${centerY}px;
+                    font-size: 30px;
+                    transition: all 1.5s ease-out;
+                `;
+                effectContainer.appendChild(star);
+                
+                setTimeout(() => {
+                    star.style.left = endX + 'px';
+                    star.style.top = endY + 'px';
+                    star.style.opacity = '0';
+                    star.style.transform = 'scale(1.5) rotate(360deg)';
+                }, 50);
+                
+                setTimeout(() => star.remove(), 2000);
+            }, i * 25);
+        }
+    }
+    
+    // Main click handler
     copyrightText.addEventListener('click', function(e) {
         clickCount++;
-        
-        // Clear any existing reset timer
         clearTimeout(resetTimer);
         
-        // Create sparkle at click position
-        createSparkle(e.clientX, e.clientY);
-        
-        // Add bounce animation to copyright text
+        // Bounce the copyright text
         copyrightText.style.animation = 'none';
         setTimeout(() => {
             copyrightText.style.animation = 'bounce 0.5s ease';
         }, 10);
         
-        // Show progression messages
-        if (clickCount < 7) {
-            showMessage(messages[clickCount - 1], 1000);
-        } else if (clickCount === 7) {
-            // Final easter egg reveal!
-            showMessage(messages[6], 3000);
-            createConfetti();
-            
-            // Add rainbow animation to copyright text
-            copyrightText.style.animation = 'rainbow 2s linear infinite';
-            
-            // Reset after 10 seconds
-            setTimeout(() => {
-                copyrightText.style.animation = '';
-                clickCount = 0;
-            }, 10000);
+        // Route to page-specific easter egg
+        if (currentPage.includes('index.html') || currentPage === '') {
+            indexEasterEgg(clickCount);
+        } else if (currentPage.includes('about.html')) {
+            aboutEasterEgg(clickCount);
+        } else if (currentPage.includes('blog.html')) {
+            blogEasterEgg(clickCount);
+        } else if (currentPage.includes('carpet-cleaning.html')) {
+            carpetEasterEgg(clickCount);
+        } else if (currentPage.includes('window-washing.html')) {
+            windowEasterEgg(clickCount);
+        } else if (currentPage.includes('reviews.html')) {
+            reviewsEasterEgg(clickCount);
+        } else if (currentPage.includes('quote.html')) {
+            quoteEasterEgg(clickCount);
         }
         
-        // Reset counter if no click for 5 seconds
-        if (clickCount < 7) {
-            resetTimer = setTimeout(() => {
-                clickCount = 0;
-            }, 5000);
-        }
+        // Reset counter after 5 seconds of inactivity
+        resetTimer = setTimeout(() => {
+            clickCount = 0;
+        }, 5000);
     });
     
     // Add cursor style
@@ -1038,9 +1266,108 @@ style.textContent = `
         100% { color: #ff0000; }
     }
     
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+            color: inherit;
+        }
+        50% {
+            transform: scale(1.05);
+            color: #ffd700;
+        }
+    }
+    
+    @keyframes bounce-fall {
+        0% {
+            top: -50px;
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.2);
+        }
+        70% {
+            top: 80%;
+        }
+        85% {
+            top: 70%;
+        }
+        100% {
+            top: 80%;
+            transform: scale(1);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes scroll-left {
+        0% {
+            right: -50px;
+            opacity: 1;
+        }
+        100% {
+            right: 110%;
+            opacity: 0;
+        }
+    }
+    
+    @keyframes vacuum-away {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0) translateY(100vh);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes spiral-in {
+        0% {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0) rotate(720deg) translate(50vw, 50vh);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes drop-fall {
+        0% {
+            top: -20px;
+            opacity: 1;
+        }
+        100% {
+            top: 100%;
+            opacity: 0.3;
+        }
+    }
+    
+    @keyframes squeegee-wipe {
+        0% {
+            left: -100px;
+        }
+        100% {
+            left: 100%;
+        }
+    }
+    
+    @keyframes star-fall {
+        0% {
+            top: -30px;
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+        100% {
+            top: 100%;
+            opacity: 0;
+            transform: rotate(360deg);
+        }
+    }
+    
     .easter-egg-trigger:hover {
         opacity: 0.8;
         transition: opacity 0.2s ease;
     }
 `;
 document.head.appendChild(style);
+
