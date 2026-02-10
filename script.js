@@ -842,3 +842,205 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Easter Egg Functionality for Footer Copyright
+document.addEventListener('DOMContentLoaded', function() {
+    const copyrightText = document.getElementById('copyright-text');
+    if (!copyrightText) return;
+    
+    let clickCount = 0;
+    let resetTimer = null;
+    
+    const messages = [
+        "🧼 Keep clicking...",
+        "🪟 Getting cleaner...",
+        "✨ Almost there...",
+        "💧 Squeaky clean!",
+        "🧽 You found it!",
+        "🎉 Secret unlocked!",
+        "🌟 SPARKLE MODE ACTIVATED! 🌟"
+    ];
+    
+    // Create easter egg message element
+    const easterEggMessage = document.createElement('div');
+    easterEggMessage.id = 'easter-egg-message';
+    easterEggMessage.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px 50px;
+        border-radius: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        pointer-events: none;
+    `;
+    document.body.appendChild(easterEggMessage);
+    
+    // Create sparkle container
+    const sparkleContainer = document.createElement('div');
+    sparkleContainer.id = 'sparkle-container';
+    sparkleContainer.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    `;
+    document.body.appendChild(sparkleContainer);
+    
+    // Function to create sparkles
+    function createSparkle(x, y) {
+        const sparkle = document.createElement('div');
+        sparkle.textContent = ['✨', '⭐', '💫', '🌟', '💧', '🧼'][Math.floor(Math.random() * 6)];
+        sparkle.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            font-size: ${Math.random() * 20 + 15}px;
+            pointer-events: none;
+            animation: sparkle-float ${Math.random() * 2 + 1}s ease-out forwards;
+        `;
+        sparkleContainer.appendChild(sparkle);
+        
+        setTimeout(() => sparkle.remove(), 3000);
+    }
+    
+    // Function to create confetti explosion
+    function createConfetti() {
+        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#ffd700'];
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                    animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
+                    z-index: 9998;
+                    pointer-events: none;
+                `;
+                sparkleContainer.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }, i * 30);
+        }
+    }
+    
+    // Function to show message
+    function showMessage(message, duration = 1500) {
+        easterEggMessage.textContent = message;
+        easterEggMessage.style.opacity = '1';
+        setTimeout(() => {
+            easterEggMessage.style.opacity = '0';
+        }, duration);
+    }
+    
+    // Add click event listener
+    copyrightText.addEventListener('click', function(e) {
+        clickCount++;
+        
+        // Clear any existing reset timer
+        clearTimeout(resetTimer);
+        
+        // Create sparkle at click position
+        createSparkle(e.clientX, e.clientY);
+        
+        // Add bounce animation to copyright text
+        copyrightText.style.animation = 'none';
+        setTimeout(() => {
+            copyrightText.style.animation = 'bounce 0.5s ease';
+        }, 10);
+        
+        // Show progression messages
+        if (clickCount < 7) {
+            showMessage(messages[clickCount - 1], 1000);
+        } else if (clickCount === 7) {
+            // Final easter egg reveal!
+            showMessage(messages[6], 3000);
+            createConfetti();
+            
+            // Add rainbow animation to copyright text
+            copyrightText.style.animation = 'rainbow 2s linear infinite';
+            
+            // Reset after 10 seconds
+            setTimeout(() => {
+                copyrightText.style.animation = '';
+                clickCount = 0;
+            }, 10000);
+        }
+        
+        // Reset counter if no click for 5 seconds
+        if (clickCount < 7) {
+            resetTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 5000);
+        }
+    });
+    
+    // Add cursor style
+    copyrightText.style.cursor = 'pointer';
+    copyrightText.style.userSelect = 'none';
+});
+
+// Add necessary CSS animations dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes sparkle-float {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes confetti-fall {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes bounce {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+    
+    @keyframes rainbow {
+        0% { color: #ff0000; }
+        16.6% { color: #ff7f00; }
+        33.3% { color: #ffff00; }
+        50% { color: #00ff00; }
+        66.6% { color: #0000ff; }
+        83.3% { color: #8b00ff; }
+        100% { color: #ff0000; }
+    }
+    
+    .easter-egg-trigger:hover {
+        opacity: 0.8;
+        transition: opacity 0.2s ease;
+    }
+`;
+document.head.appendChild(style);
