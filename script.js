@@ -1168,51 +1168,70 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const dinoSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        dinoSVG.setAttribute('viewBox', '0 0 280 200');
+        dinoSVG.setAttribute('viewBox', '0 0 320 240');
         dinoSVG.style.cssText = 'width: 100%; height: auto; display: block;';
         
-        // Professional coloring-book-style dinosaur parts (matching reference image)
+        // Professional coloring-book-style dinosaur (T-Rex style with open mouth)
         const dinoParts = [
-            // Main body with rounded, natural shape
-            { id: 'body', path: 'M 80 95 Q 75 85 75 75 Q 75 60 82 52 L 100 48 L 140 47 L 180 48 L 195 52 Q 202 60 202 75 Q 202 90 197 100 L 190 115 Q 182 125 170 128 L 140 130 L 100 128 Q 88 125 83 115 Z', color: '#BDC3C7' },
+            // Main body
+            { id: 'body', path: 'M 100 110 Q 95 100 95 88 Q 95 75 100 68 L 120 62 L 160 60 L 200 62 L 220 68 Q 225 75 225 88 Q 225 100 220 115 L 215 135 Q 210 145 200 148 L 160 150 L 120 148 Q 105 145 100 135 Z', color: '#D5DBDB' },
             
-            // Head with proper proportions and snout
-            { id: 'head', path: 'M 195 75 L 205 70 Q 215 65 225 65 L 240 68 Q 248 72 250 80 L 248 92 Q 245 100 238 105 L 225 108 Q 215 108 208 105 L 202 95 Q 197 85 197 78 Z', color: '#BDC3C7' },
+            // Belly/chest with horizontal lines
+            { id: 'belly', path: 'M 110 115 Q 108 105 110 95 L 130 93 L 160 92 L 190 93 L 210 95 Q 212 105 210 115 L 205 130 Q 200 138 190 140 L 160 142 L 130 140 Q 115 138 112 130 Z', color: '#ECF0F1' },
             
-            // Snout/mouth area
-            { id: 'snout', path: 'M 238 88 Q 245 88 250 90 L 252 95 Q 250 98 245 98 L 238 97 Q 235 95 235 92 Z', color: '#D5DBDB' },
+            // Head/face
+            { id: 'head', path: 'M 220 88 L 235 82 Q 245 78 255 78 L 270 80 Q 280 85 283 95 L 280 108 Q 275 115 268 118 L 255 120 Q 245 118 238 112 L 228 100 Q 222 92 222 88 Z', color: '#D5DBDB' },
             
-            // Neck connecting head to body
-            { id: 'neck', path: 'M 195 52 Q 200 48 207 50 L 210 65 L 205 72 Q 200 75 195 72 Z', color: '#BDC3C7' },
+            // Upper jaw/snout
+            { id: 'upper_jaw', path: 'M 268 95 Q 275 92 282 92 L 295 95 Q 300 98 300 103 L 298 108 Q 295 112 288 114 L 275 115 Q 268 112 268 108 Z', color: '#D5DBDB' },
             
-            // Tail with natural taper
-            { id: 'tail', path: 'M 80 85 Q 65 85 50 88 L 35 92 Q 20 96 12 98 L 8 100 Q 10 102 15 104 L 30 108 Q 45 112 60 115 L 75 117 L 80 110 L 82 100 Z', color: '#BDC3C7' },
+            // Lower jaw/mouth area
+            { id: 'lower_jaw', path: 'M 268 108 L 275 115 Q 282 118 290 118 L 298 115 Q 300 112 298 108 L 290 105 Q 282 105 275 108 Z', color: '#D5DBDB' },
             
-            // Front leg with toes
-            { id: 'front_leg', path: 'M 170 128 L 168 145 L 167 162 Q 167 172 170 178 L 172 182 L 178 185 L 182 182 L 184 178 Q 186 172 186 162 L 185 145 L 183 128 Z', color: '#BDC3C7' },
+            // Neck
+            { id: 'neck', path: 'M 220 68 Q 225 62 232 64 L 238 78 L 235 88 Q 230 92 225 88 Z', color: '#D5DBDB' },
             
-            // Back leg with toes  
-            { id: 'back_leg', path: 'M 100 128 L 98 145 L 97 162 Q 97 172 100 178 L 102 182 L 108 185 L 112 182 L 114 178 Q 116 172 116 162 L 115 145 L 113 128 Z', color: '#BDC3C7' },
+            // Tail - thicker at base
+            { id: 'tail', path: 'M 100 100 Q 85 100 70 103 L 50 108 Q 35 112 25 116 L 15 120 Q 10 122 15 125 L 25 130 Q 40 135 55 140 L 75 145 L 90 148 Q 98 148 100 140 L 102 120 Z', color: '#D5DBDB' },
             
-            // Front foot/toes
-            { id: 'front_foot', path: 'M 172 182 Q 170 188 172 190 L 176 192 L 182 190 Q 184 188 182 182 Z M 174 190 L 174 194 M 178 191 L 178 195 M 181 190 L 181 193', color: '#95A5A6' },
+            // Front left leg
+            { id: 'front_left_leg', path: 'M 185 148 L 183 168 L 182 188 Q 182 198 185 205 L 187 210 L 193 214 L 197 210 L 199 205 Q 201 198 201 188 L 200 168 L 198 148 Z', color: '#D5DBDB' },
             
-            // Back foot/toes
-            { id: 'back_foot', path: 'M 102 182 Q 100 188 102 190 L 106 192 L 112 190 Q 114 188 112 182 Z M 104 190 L 104 194 M 108 191 L 108 195 M 111 190 L 111 193', color: '#95A5A6' },
+            // Front right leg
+            { id: 'front_right_leg', path: 'M 210 148 L 208 168 L 207 188 Q 207 198 210 205 L 212 210 L 218 214 L 222 210 L 224 205 Q 226 198 226 188 L 225 168 L 223 148 Z', color: '#D5DBDB' },
             
-            // Back plates (stegosaurus style) - 5 distinct plates
-            { id: 'plate1', path: 'M 95 47 Q 97 38 100 28 L 103 18 L 106 28 Q 108 38 110 47 Z', color: '#7F8C8D' },
-            { id: 'plate2', path: 'M 115 47 Q 117 35 120 22 L 123 10 L 126 22 Q 128 35 130 47 Z', color: '#7F8C8D' },
-            { id: 'plate3', path: 'M 140 47 Q 142 32 145 18 L 148 8 L 151 18 Q 153 32 155 47 Z', color: '#7F8C8D' },
-            { id: 'plate4', path: 'M 165 47 Q 167 35 170 22 L 173 12 L 176 22 Q 178 35 180 47 Z', color: '#7F8C8D' },
-            { id: 'plate5', path: 'M 185 48 Q 187 38 190 28 L 193 20 L 196 28 Q 198 38 200 48 Z', color: '#7F8C8D' },
+            // Back left leg
+            { id: 'back_left_leg', path: 'M 120 148 L 118 168 L 117 188 Q 117 198 120 205 L 122 210 L 128 214 L 132 210 L 134 205 Q 136 198 136 188 L 135 168 L 133 148 Z', color: '#D5DBDB' },
             
-            // Body spots/patterns
-            { id: 'spot1', path: 'M 110 75 Q 108 70 110 68 Q 115 66 120 68 Q 122 70 120 75 Q 115 77 110 75 Z', color: '#95A5A6' },
-            { id: 'spot2', path: 'M 135 80 Q 133 76 135 74 Q 140 72 145 74 Q 147 76 145 80 Q 140 82 135 80 Z', color: '#95A5A6' },
-            { id: 'spot3', path: 'M 160 72 Q 158 68 160 66 Q 165 64 170 66 Q 172 68 170 72 Q 165 74 160 72 Z', color: '#95A5A6' },
-            { id: 'spot4', path: 'M 115 95 Q 113 92 115 90 Q 120 88 125 90 Q 127 92 125 95 Q 120 97 115 95 Z', color: '#95A5A6' },
-            { id: 'spot5', path: 'M 150 100 Q 148 96 150 94 Q 155 92 160 94 Q 162 96 160 100 Q 155 102 150 100 Z', color: '#95A5A6' }
+            // Back right leg
+            { id: 'back_right_leg', path: 'M 145 148 L 143 168 L 142 188 Q 142 198 145 205 L 147 210 L 153 214 L 157 210 L 159 205 Q 161 198 161 188 L 160 168 L 158 148 Z', color: '#D5DBDB' },
+            
+            // Back spikes/plates - 8 of them
+            { id: 'spike1', path: 'M 115 60 L 118 42 L 122 36 L 126 42 L 128 60 Z', color: '#95A5A6' },
+            { id: 'spike2', path: 'M 135 60 L 138 38 L 142 30 L 146 38 L 148 60 Z', color: '#95A5A6' },
+            { id: 'spike3', path: 'M 155 60 L 158 35 L 162 28 L 166 35 L 168 60 Z', color: '#95A5A6' },
+            { id: 'spike4', path: 'M 175 60 L 178 38 L 182 32 L 186 38 L 188 60 Z', color: '#95A5A6' },
+            { id: 'spike5', path: 'M 195 62 L 198 42 L 202 36 L 206 42 L 208 62 Z', color: '#95A5A6' },
+            { id: 'spike6', path: 'M 105 105 L 107 90 L 110 86 L 113 90 L 115 105 Z', color: '#95A5A6' },
+            { id: 'spike7', path: 'M 95 115 L 97 102 L 100 98 L 103 102 L 105 115 Z', color: '#95A5A6' },
+            { id: 'spike8', path: 'M 88 125 L 90 112 L 93 108 L 96 112 L 98 125 Z', color: '#95A5A6' },
+            
+            // Body spots - multiple circles on body and tail
+            { id: 'spot1', path: 'M 130 80 Q 128 76 130 74 Q 135 72 140 74 Q 142 76 140 80 Q 135 82 130 80 Z', color: '#BDC3C7' },
+            { id: 'spot2', path: 'M 155 85 Q 153 81 155 79 Q 160 77 165 79 Q 167 81 165 85 Q 160 87 155 85 Z', color: '#BDC3C7' },
+            { id: 'spot3', path: 'M 180 78 Q 178 74 180 72 Q 185 70 190 72 Q 192 74 190 78 Q 185 80 180 78 Z', color: '#BDC3C7' },
+            { id: 'spot4', path: 'M 205 82 Q 203 78 205 76 Q 210 74 215 76 Q 217 78 215 82 Q 210 84 205 82 Z', color: '#BDC3C7' },
+            { id: 'spot5', path: 'M 125 105 Q 123 101 125 99 Q 130 97 135 99 Q 137 101 135 105 Q 130 107 125 105 Z', color: '#BDC3C7' },
+            { id: 'spot6', path: 'M 150 110 Q 148 106 150 104 Q 155 102 160 104 Q 162 106 160 110 Q 155 112 150 110 Z', color: '#BDC3C7' },
+            { id: 'spot7', path: 'M 175 108 Q 173 104 175 102 Q 180 100 185 102 Q 187 104 185 108 Q 180 110 175 108 Z', color: '#BDC3C7' },
+            { id: 'spot8', path: 'M 200 112 Q 198 108 200 106 Q 205 104 210 106 Q 212 108 210 112 Q 205 114 200 112 Z', color: '#BDC3C7' },
+            { id: 'spot9', path: 'M 140 125 Q 138 121 140 119 Q 145 117 150 119 Q 152 121 150 125 Q 145 127 140 125 Z', color: '#BDC3C7' },
+            { id: 'spot10', path: 'M 165 130 Q 163 126 165 124 Q 170 122 175 124 Q 177 126 175 130 Q 170 132 165 130 Z', color: '#BDC3C7' },
+            { id: 'spot11', path: 'M 190 127 Q 188 123 190 121 Q 195 119 200 121 Q 202 123 200 127 Q 195 129 190 127 Z', color: '#BDC3C7' },
+            { id: 'spot12', path: 'M 75 115 Q 73 112 75 110 Q 79 108 83 110 Q 85 112 83 115 Q 79 117 75 115 Z', color: '#BDC3C7' },
+            { id: 'spot13', path: 'M 60 120 Q 58 117 60 115 Q 64 113 68 115 Q 70 117 68 120 Q 64 122 60 120 Z', color: '#BDC3C7' },
+            { id: 'spot14', path: 'M 45 128 Q 43 125 45 123 Q 49 121 53 123 Q 55 125 53 128 Q 49 130 45 128 Z', color: '#BDC3C7' },
+            { id: 'spot15', path: 'M 30 135 Q 28 132 30 130 Q 34 128 38 130 Q 40 132 38 135 Q 34 137 30 135 Z', color: '#BDC3C7' }
         ];
         
         let paintedParts = new Set();
@@ -1244,8 +1263,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             const splash = document.createElement('div');
                             splash.style.cssText = `
                                 position: fixed;
-                                left: ${svgRect.left + (bbox.x + bbox.width / 2) / 200 * svgRect.width + (Math.random() - 0.5) * 30}px;
-                                top: ${svgRect.top + (bbox.y + bbox.height / 2) / 180 * svgRect.height + (Math.random() - 0.5) * 30}px;
+                                left: ${svgRect.left + (bbox.x + bbox.width / 2) / 320 * svgRect.width + (Math.random() - 0.5) * 30}px;
+                                top: ${svgRect.top + (bbox.y + bbox.height / 2) / 240 * svgRect.height + (Math.random() - 0.5) * 30}px;
                                 width: 8px;
                                 height: 8px;
                                 background: ${currentColor};
@@ -1276,47 +1295,56 @@ document.addEventListener('DOMContentLoaded', function() {
             dinoSVG.appendChild(pathElement);
         });
         
-        // Add facial features
-        // Large expressive eye
+        // Add facial features (matching reference image)
+        // Large expressive eye with pupil and highlight
         const eyeWhite = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-        eyeWhite.setAttribute('cx', '230');
-        eyeWhite.setAttribute('cy', '78');
-        eyeWhite.setAttribute('rx', '8');
-        eyeWhite.setAttribute('ry', '10');
+        eyeWhite.setAttribute('cx', '265');
+        eyeWhite.setAttribute('cy', '85');
+        eyeWhite.setAttribute('rx', '10');
+        eyeWhite.setAttribute('ry', '12');
         eyeWhite.setAttribute('fill', 'white');
         eyeWhite.setAttribute('stroke', '#2C3E50');
-        eyeWhite.setAttribute('stroke-width', '2');
+        eyeWhite.setAttribute('stroke-width', '2.5');
         dinoSVG.appendChild(eyeWhite);
         
         // Pupil
         const pupil = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        pupil.setAttribute('cx', '231');
-        pupil.setAttribute('cy', '80');
-        pupil.setAttribute('r', '4');
+        pupil.setAttribute('cx', '268');
+        pupil.setAttribute('cy', '88');
+        pupil.setAttribute('r', '5');
         pupil.setAttribute('fill', '#2C3E50');
         dinoSVG.appendChild(pupil);
         
         // Eye shine/highlight
         const shine = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        shine.setAttribute('cx', '229');
-        shine.setAttribute('cy', '77');
-        shine.setAttribute('r', '2');
+        shine.setAttribute('cx', '263');
+        shine.setAttribute('cy', '83');
+        shine.setAttribute('r', '3');
         shine.setAttribute('fill', 'white');
         dinoSVG.appendChild(shine);
         
         // Nostril
         const nostril = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        nostril.setAttribute('cx', '245');
-        nostril.setAttribute('cy', '90');
-        nostril.setAttribute('r', '2');
+        nostril.setAttribute('cx', '290');
+        nostril.setAttribute('cy', '95');
+        nostril.setAttribute('r', '2.5');
         nostril.setAttribute('fill', '#2C3E50');
         dinoSVG.appendChild(nostril);
         
-        // Smile line
+        // Teeth along open mouth (reference image shows visible teeth)
+        const teethPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        teethPath.setAttribute('d', 'M 280 100 L 282 106 L 284 100 M 286 100 L 288 106 L 290 100 M 292 100 L 294 106 L 296 100');
+        teethPath.setAttribute('stroke', '#2C3E50');
+        teethPath.setAttribute('stroke-width', '1.5');
+        teethPath.setAttribute('fill', 'none');
+        teethPath.setAttribute('stroke-linecap', 'round');
+        dinoSVG.appendChild(teethPath);
+        
+        // Smile/mouth line
         const smile = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        smile.setAttribute('d', 'M 238 98 Q 242 102 246 100');
+        smile.setAttribute('d', 'M 280 110 Q 285 113 292 114');
         smile.setAttribute('stroke', '#2C3E50');
-        smile.setAttribute('stroke-width', '2');
+        smile.setAttribute('stroke-width', '2.5');
         smile.setAttribute('fill', 'none');
         smile.setAttribute('stroke-linecap', 'round');
         dinoSVG.appendChild(smile);
