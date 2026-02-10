@@ -867,129 +867,748 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.body.appendChild(effectContainer);
     
-    // Create message element
-    const messageBox = document.createElement('div');
-    messageBox.id = 'easter-egg-message';
-    messageBox.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 30px 50px;
-        border-radius: 20px;
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-        z-index: 10000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        pointer-events: none;
-        max-width: 80%;
-    `;
-    document.body.appendChild(messageBox);
-    
-    // Utility function to show message
-    function showMessage(message, duration = 2000) {
-        messageBox.innerHTML = message;
-        messageBox.style.opacity = '1';
-        setTimeout(() => {
-            messageBox.style.opacity = '0';
-        }, duration);
-    }
-    
-    // INDEX.HTML - Rainbow Sparkle Confetti
+    // INDEX.HTML - Rainbow Ripples → Color Matching Game
     function indexEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            const messages = ["🧼 Click again...", "🪟 Keep going...", "✨ Almost...", "💧 One more...", "🎉 Final click!"];
-            showMessage(messages[clickCount - 1], 1000);
-            createSparkle();
-        } else if (clickCount === 6) {
-            showMessage("🌟 RAINBOW SPARKLE MODE! 🌟", 3000);
-            createConfetti();
-            copyrightText.style.animation = 'rainbow 2s linear infinite';
-            setTimeout(() => { copyrightText.style.animation = ''; }, 8000);
+            createRainbowRipple();
+        } else {
+            startColorMatchGame();
         }
     }
     
-    // ABOUT.HTML - Danzen Fun Facts
+    function createRainbowRipple() {
+        const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff'];
+        const ripple = document.createElement('div');
+        ripple.style.cssText = `
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            opacity: 0.6;
+            animation: ripple-expand 2s ease-out forwards;
+        `;
+        effectContainer.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 2000);
+    }
+    
+    function startColorMatchGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        `;
+        
+        const title = document.createElement('div');
+        title.textContent = '🌈 Match the Colors!';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px;';
+        
+        const colorDisplay = document.createElement('div');
+        colorDisplay.style.cssText = `
+            width: 100%;
+            height: 80px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.3);
+        `;
+        
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;';
+        
+        const scoreDiv = document.createElement('div');
+        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '❌';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer;';
+        closeBtn.addEventListener('click', () => gameContainer.remove());
+        
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(title);
+        gameContainer.appendChild(colorDisplay);
+        gameContainer.appendChild(buttonContainer);
+        gameContainer.appendChild(scoreDiv);
+        document.body.appendChild(gameContainer);
+        
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        const colorNames = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Cyan'];
+        let score = 0;
+        let targetColor;
+        
+        function newRound() {
+            targetColor = colors[Math.floor(Math.random() * colors.length)];
+            colorDisplay.style.background = targetColor;
+            buttonContainer.innerHTML = '';
+            
+            const options = [...colors].sort(() => Math.random() - 0.5).slice(0, 6);
+            if (!options.includes(targetColor)) options[0] = targetColor;
+            
+            options.forEach((color, index) => {
+                const btn = document.createElement('button');
+                btn.style.cssText = `
+                    background: ${color};
+                    border: 3px solid white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                `;
+                btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.9)');
+                btn.addEventListener('mouseup', () => btn.style.transform = 'scale(1)');
+                btn.addEventListener('click', () => {
+                    if (color === targetColor) {
+                        score++;
+                        scoreDiv.textContent = `Score: ${score} 🎉`;
+                        if (score >= 10) {
+                            title.textContent = '🏆 Color Master!';
+                            createConfetti();
+                            setTimeout(() => gameContainer.remove(), 3000);
+                        } else {
+                            newRound();
+                        }
+                    } else {
+                        btn.style.opacity = '0.3';
+                    }
+                });
+                buttonContainer.appendChild(btn);
+            });
+            
+            scoreDiv.textContent = `Score: ${score}/10`;
+        }
+        
+        newRound();
+    }
+    
+    // ABOUT.HTML - Bouncing Emojis → Catch the Items Game
     function aboutEasterEgg(clickCount) {
-        const facts = [
-            "👋 Hi! I'm Danzen!",
-            "🎓 I'm a student entrepreneur!",
-            "🧼 I love making windows sparkle!",
-            "🏔️ Proud Cache Valley local!",
-            "⭐ Quality is my priority!",
-            "🎉 Thanks for finding this!"
-        ];
-        if (clickCount <= facts.length) {
-            showMessage(facts[clickCount - 1], 2000);
-            createBouncingEmoji('👨‍💼');
+        if (clickCount <= 5) {
+            const emojis = ['👨‍💼', '🧼', '🪟', '⭐', '💼', '🎓'];
+            createBouncingEmoji(emojis[clickCount - 1]);
+        } else {
+            startCatchGame();
         }
     }
     
-    // BLOG.HTML - Cleaning Tips
+    function createBouncingEmoji(emoji) {
+        const bouncer = document.createElement('div');
+        bouncer.textContent = emoji;
+        bouncer.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * 80 + 10}%;
+            top: -50px;
+            font-size: 50px;
+            animation: bounce-fall 2s ease-out forwards;
+        `;
+        effectContainer.appendChild(bouncer);
+        setTimeout(() => bouncer.remove(), 2000);
+    }
+    
+    function startCatchGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 600px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+        `;
+        
+        const title = document.createElement('div');
+        title.textContent = '🧼 Catch the Cleaning Supplies!';
+        title.style.cssText = 'color: white; font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 10px;';
+        
+        const gameArea = document.createElement('div');
+        gameArea.style.cssText = 'width: 100%; height: 450px; position: relative; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;';
+        
+        const basket = document.createElement('div');
+        basket.textContent = '🧺';
+        basket.style.cssText = 'position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 60px; transition: left 0.1s;';
+        
+        const scoreDiv = document.createElement('div');
+        scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '❌';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;';
+        closeBtn.addEventListener('click', () => {
+            document.removeEventListener('mousemove', moveBasket);
+            gameContainer.remove();
+        });
+        
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(title);
+        gameContainer.appendChild(gameArea);
+        gameArea.appendChild(basket);
+        gameContainer.appendChild(scoreDiv);
+        document.body.appendChild(gameContainer);
+        
+        const items = ['🧼', '🪟', '🧽', '🧴', '🪣', '🧹'];
+        let score = 0;
+        let missed = 0;
+        const maxMissed = 5;
+        
+        function moveBasket(e) {
+            const rect = gameArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            basket.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
+        }
+        
+        document.addEventListener('mousemove', moveBasket);
+        
+        function dropItem() {
+            if (missed >= maxMissed) {
+                title.textContent = `Game Over! Score: ${score}`;
+                document.removeEventListener('mousemove', moveBasket);
+                setTimeout(() => gameContainer.remove(), 3000);
+                return;
+            }
+            
+            const item = document.createElement('div');
+            item.textContent = items[Math.floor(Math.random() * items.length)];
+            item.style.cssText = `
+                position: absolute;
+                left: ${Math.random() * 90}%;
+                top: -50px;
+                font-size: 40px;
+                animation: drop-fall 3s linear forwards;
+            `;
+            gameArea.appendChild(item);
+            
+            const checkInterval = setInterval(() => {
+                const itemRect = item.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
+                
+                if (itemRect.bottom >= basketRect.top &&
+                    itemRect.left < basketRect.right &&
+                    itemRect.right > basketRect.left) {
+                    score++;
+                    scoreDiv.textContent = `Score: ${score} | Missed: ${missed}/${maxMissed}`;
+                    item.remove();
+                    clearInterval(checkInterval);
+                    createSparkles(basketRect.left + basketRect.width/2, basketRect.top);
+                    
+                    if (score >= 20) {
+                        title.textContent = '🏆 Cleaning Master!';
+                        document.removeEventListener('mousemove', moveBasket);
+                        createConfetti();
+                        setTimeout(() => gameContainer.remove(), 3000);
+                    }
+                } else if (itemRect.top > window.innerHeight) {
+                    missed++;
+                    scoreDiv.textContent = `Score: ${score} | Missed: ${missed}/${maxMissed}`;
+                    item.remove();
+                    clearInterval(checkInterval);
+                }
+            }, 50);
+            
+            setTimeout(() => {
+                clearInterval(checkInterval);
+                item.remove();
+            }, 3000);
+        }
+        
+        scoreDiv.textContent = `Score: 0 | Missed: 0/${maxMissed}`;
+        const dropInterval = setInterval(() => {
+            if (missed >= maxMissed || score >= 20) {
+                clearInterval(dropInterval);
+            } else {
+                dropItem();
+            }
+        }, 800);
+    }
+    
+    // BLOG.HTML - Floating Icons → Memory Card Game
     function blogEasterEgg(clickCount) {
-        const tips = [
-            "💡 TIP: Clean windows on cloudy days!",
-            "💡 TIP: Vacuum carpets before deep cleaning!",
-            "💡 TIP: Use microfiber for streak-free windows!",
-            "💡 TIP: Hard water? We've got you covered!",
-            "💡 TIP: Regular cleaning extends carpet life!",
-            "🎓 You're now a cleaning expert!"
-        ];
-        if (clickCount <= tips.length) {
-            showMessage(tips[clickCount - 1], 2500);
-            createScrollingTip();
+        if (clickCount <= 5) {
+            createFloatingIcon();
+        } else {
+            startMemoryGame();
         }
     }
     
-    // CARPET-CLEANING.HTML - Vacuum Effect
+    function createFloatingIcon() {
+        const icons = ['💡', '📝', '✨', '🏆', '⭐', '💬'];
+        const icon = document.createElement('div');
+        icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+        icon.style.cssText = `
+            position: fixed;
+            right: -50px;
+            top: ${Math.random() * 80 + 10}%;
+            font-size: 40px;
+            animation: scroll-left 3s linear forwards;
+        `;
+        effectContainer.appendChild(icon);
+        setTimeout(() => icon.remove(), 3000);
+    }
+    
+    function startMemoryGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 520px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        `;
+        
+        const title = document.createElement('div');
+        title.textContent = '🧠 Memory Match!';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px;';
+        
+        const grid = document.createElement('div');
+        grid.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;';
+        
+        const scoreDiv = document.createElement('div');
+        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '❌';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer;';
+        closeBtn.addEventListener('click', () => gameContainer.remove());
+        
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(title);
+        gameContainer.appendChild(grid);
+        gameContainer.appendChild(scoreDiv);
+        document.body.appendChild(gameContainer);
+        
+        const icons = ['🧼', '🪟', '💧', '✨', '⭐', '🧽', '🪣', '💡'];
+        const cards = [...icons, ...icons].sort(() => Math.random() - 0.5);
+        let flipped = [];
+        let matched = 0;
+        let moves = 0;
+        
+        cards.forEach((icon, index) => {
+            const card = document.createElement('div');
+            card.style.cssText = `
+                background: white;
+                height: 80px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+                cursor: pointer;
+                transition: transform 0.3s;
+            `;
+            card.innerHTML = '<span style="opacity: 0;">?</span>';
+            card.dataset.icon = icon;
+            card.dataset.index = index;
+            
+            card.addEventListener('click', function() {
+                if (flipped.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
+                    this.querySelector('span').style.opacity = '1';
+                    this.querySelector('span').textContent = icon;
+                    this.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
+                    this.classList.add('flipped');
+                    flipped.push(this);
+                    
+                    if (flipped.length === 2) {
+                        moves++;
+                        scoreDiv.textContent = `Moves: ${moves} | Matched: ${matched}/8`;
+                        
+                        if (flipped[0].dataset.icon === flipped[1].dataset.icon) {
+                            flipped.forEach(card => card.classList.add('matched'));
+                            matched++;
+                            flipped = [];
+                            
+                            if (matched === 8) {
+                                title.textContent = `🎉 You Win! ${moves} moves!`;
+                                createConfetti();
+                                setTimeout(() => gameContainer.remove(), 3000);
+                            }
+                        } else {
+                            setTimeout(() => {
+                                flipped.forEach(card => {
+                                    card.querySelector('span').style.opacity = '0';
+                                    card.querySelector('span').textContent = '?';
+                                    card.style.background = 'white';
+                                    card.classList.remove('flipped');
+                                });
+                                flipped = [];
+                            }, 800);
+                        }
+                    }
+                }
+            });
+            
+            grid.appendChild(card);
+        });
+        
+        scoreDiv.textContent = 'Moves: 0 | Matched: 0/8';
+    }
+    
+    // CARPET-CLEANING.HTML - Dirt Particles → Whack-a-Spot Game
     function carpetEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            showMessage("🧹 Vacuuming dirt...", 1000);
             createDirtParticles();
-        } else if (clickCount === 6) {
-            showMessage("✨ CARPET PERFECTLY CLEAN! ✨", 3000);
-            createVacuumEffect();
+        } else {
+            startWhackSpotGame();
         }
     }
     
-    // WINDOW-WASHING.HTML - Squeegee Effect
+    function createDirtParticles() {
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const dirt = document.createElement('div');
+                dirt.textContent = ['•', '◦', '∙'][Math.floor(Math.random() * 3)];
+                dirt.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    font-size: ${Math.random() * 15 + 10}px;
+                    color: #8b4513;
+                    animation: vacuum-away 1.5s ease-in forwards;
+                `;
+                effectContainer.appendChild(dirt);
+                setTimeout(() => dirt.remove(), 1500);
+            }, i * 50);
+        }
+    }
+    
+    function startWhackSpotGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            padding: 30px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            border-radius: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        `;
+        
+        const title = document.createElement('div');
+        title.textContent = '🧹 Whack the Dirt Spots!';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px;';
+        
+        const grid = document.createElement('div');
+        grid.style.cssText = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;';
+        
+        const scoreDiv = document.createElement('div');
+        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
+        
+        const timerDiv = document.createElement('div');
+        timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 10px;';
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '❌';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer;';
+        closeBtn.addEventListener('click', () => {
+            clearInterval(gameInterval);
+            clearInterval(timerInterval);
+            gameContainer.remove();
+        });
+        
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(title);
+        gameContainer.appendChild(grid);
+        gameContainer.appendChild(scoreDiv);
+        gameContainer.appendChild(timerDiv);
+        document.body.appendChild(gameContainer);
+        
+        let score = 0;
+        let timeLeft = 30;
+        const spots = [];
+        
+        for (let i = 0; i < 9; i++) {
+            const spot = document.createElement('div');
+            spot.style.cssText = `
+                background: rgba(255,255,255,0.3);
+                height: 100px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 50px;
+                transition: transform 0.1s;
+            `;
+            spot.addEventListener('click', function() {
+                if (this.textContent === '•') {
+                    score++;
+                    scoreDiv.textContent = `Score: ${score}`;
+                    this.textContent = '';
+                    this.style.background = 'rgba(255,255,255,0.3)';
+                    createSparkles(this.getBoundingClientRect().left + 50, this.getBoundingClientRect().top + 50);
+                }
+            });
+            grid.appendChild(spot);
+            spots.push(spot);
+        }
+        
+        function showDirt() {
+            const randomSpot = spots[Math.floor(Math.random() * spots.length)];
+            if (randomSpot.textContent === '') {
+                randomSpot.textContent = '•';
+                randomSpot.style.background = 'radial-gradient(circle, rgba(139,69,19,0.9), rgba(139,69,19,0.4))';
+                setTimeout(() => {
+                    if (randomSpot.textContent === '•') {
+                        randomSpot.textContent = '';
+                        randomSpot.style.background = 'rgba(255,255,255,0.3)';
+                    }
+                }, 1000);
+            }
+        }
+        
+        scoreDiv.textContent = 'Score: 0';
+        const gameInterval = setInterval(showDirt, 600);
+        
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            timerDiv.textContent = `Time: ${timeLeft}s`;
+            if (timeLeft <= 0) {
+                clearInterval(gameInterval);
+                clearInterval(timerInterval);
+                title.textContent = `🏆 Final Score: ${score}`;
+                if (score >= 25) createConfetti();
+                setTimeout(() => gameContainer.remove(), 3000);
+            }
+        }, 1000);
+        
+        timerDiv.textContent = `Time: ${timeLeft}s`;
+    }
+    
+    // WINDOW-WASHING.HTML - Water Droplets → Window Cleaning Game
     function windowEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            showMessage("💧 Spraying window...", 1000);
             createWaterDroplets();
-        } else if (clickCount === 6) {
-            showMessage("🪟 CRYSTAL CLEAR! 🪟", 3000);
-            createSqueegeEffect();
+        } else {
+            startWindowCleaningGame();
         }
     }
     
-    // REVIEWS.HTML - Star Rating
+    function createWaterDroplets() {
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => {
+                const drop = document.createElement('div');
+                drop.textContent = '💧';
+                drop.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -20px;
+                    font-size: ${Math.random() * 20 + 15}px;
+                    animation: drop-fall ${Math.random() + 1.5}s linear forwards;
+                `;
+                effectContainer.appendChild(drop);
+                setTimeout(() => drop.remove(), 2500);
+            }, i * 100);
+        }
+    }
+    
+    // REVIEWS.HTML - Falling Stars → Star Collection Game
     function reviewsEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            showMessage(`${'⭐'.repeat(clickCount)} ${clickCount}/5 stars!`, 1000);
-            createFallingStars(clickCount);
-        } else if (clickCount === 6) {
-            showMessage("⭐⭐⭐⭐⭐ 5-STAR SERVICE! Thank you! ⭐⭐⭐⭐⭐", 3000);
-            createStarExplosion();
+            createFallingStars(clickCount * 3);
+        } else {
+            startStarCollectionGame();
         }
     }
     
-    // QUOTE.HTML - Interactive Window Cleaning Game
+    function createFallingStars(count) {
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const star = document.createElement('div');
+                star.textContent = '⭐';
+                star.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -30px;
+                    font-size: ${Math.random() * 25 + 20}px;
+                    animation: star-fall ${Math.random() * 2 + 2}s linear forwards;
+                `;
+                effectContainer.appendChild(star);
+                setTimeout(() => star.remove(), 4000);
+            }, i * 150);
+        }
+    }
+    
+    function startStarCollectionGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 600px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+        `;
+        
+        const title = document.createElement('div');
+        title.textContent = '⭐ Collect the Stars!';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 10px;';
+        
+        const gameArea = document.createElement('div');
+        gameArea.style.cssText = 'width: 100%; height: 450px; position: relative; background: rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden;';
+        
+        const collector = document.createElement('div');
+        collector.textContent = '🙌';
+        collector.style.cssText = 'position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 60px;';
+        
+        const scoreDiv = document.createElement('div');
+        scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '❌';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;';
+        closeBtn.addEventListener('click', () => {
+            document.removeEventListener('mousemove', moveCollector);
+            gameContainer.remove();
+        });
+        
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(title);
+        gameContainer.appendChild(gameArea);
+        gameArea.appendChild(collector);
+        gameContainer.appendChild(scoreDiv);
+        document.body.appendChild(gameContainer);
+        
+        let score = 0;
+        
+        function moveCollector(e) {
+            const rect = gameArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            collector.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
+        }
+        
+        document.addEventListener('mousemove', moveCollector);
+        
+        function dropStar() {
+            const star = document.createElement('div');
+            star.textContent = '⭐';
+            star.style.cssText = `
+                position: absolute;
+                left: ${Math.random() * 90}%;
+                top: -50px;
+                font-size: 35px;
+                animation: drop-fall 3s linear forwards;
+            `;
+            gameArea.appendChild(star);
+            
+            const checkInterval = setInterval(() => {
+                const starRect = star.getBoundingClientRect();
+                const collectorRect = collector.getBoundingClientRect();
+                
+                if (starRect.bottom >= collectorRect.top &&
+                    starRect.left < collectorRect.right &&
+                    starRect.right > collectorRect.left) {
+                    score++;
+                    scoreDiv.textContent = `⭐ Stars: ${score}`;
+                    star.remove();
+                    clearInterval(checkInterval);
+                    createSparkles(collectorRect.left + collectorRect.width/2, collectorRect.top);
+                    
+                    if (score >= 30) {
+                        title.textContent = '🏆 5-Star Champion!';
+                        document.removeEventListener('mousemove', moveCollector);
+                        createConfetti();
+                        setTimeout(() => gameContainer.remove(), 3000);
+                    }
+                } else if (starRect.top > window.innerHeight) {
+                    star.remove();
+                    clearInterval(checkInterval);
+                }
+            }, 50);
+            
+            setTimeout(() => {
+                clearInterval(checkInterval);
+                star.remove();
+            }, 3000);
+        }
+        
+        scoreDiv.textContent = '⭐ Stars: 0/30';
+        const dropInterval = setInterval(() => {
+            if (score >= 30) {
+                clearInterval(dropInterval);
+            } else {
+                dropStar();
+            }
+        }, 700);
+    }
+    
+    // QUOTE.HTML - Sparkles → Interactive Window Cleaning Game (existing)
     function quoteEasterEgg(clickCount) {
-        if (clickCount === 1) {
-            showMessage("🎮 Starting mini-game...", 1500);
-            setTimeout(() => startWindowCleaningGame(), 1600);
+        if (clickCount <= 5) {
+            createSparkles(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+        } else {
+            startWindowCleaningGame();
         }
     }
     
-    // Window Cleaning Game
+    // Helper functions
+    function createSparkles(x, y) {
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const sparkle = document.createElement('div');
+                sparkle.textContent = ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)];
+                sparkle.style.cssText = `
+                    position: fixed;
+                    left: ${x}px;
+                    top: ${y}px;
+                    font-size: ${Math.random() * 30 + 20}px;
+                    animation: sparkle-float 2s ease-out forwards;
+                `;
+                effectContainer.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 2000);
+            }, i * 100);
+        }
+    }
+    
+    function createConfetti() {
+        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#ffd700'];
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                    animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
+                `;
+                effectContainer.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }, i * 30);
+        }
+    }
+    
+    // Window Cleaning Game (Quote page)
     function startWindowCleaningGame() {
-        // Create game container
         const gameContainer = document.createElement('div');
         gameContainer.id = 'window-game-container';
         gameContainer.style.cssText = `
@@ -998,6 +1617,133 @@ document.addEventListener('DOMContentLoaded', function() {
             left: 50%;
             transform: translate(-50%, -50%);
             width: 400px;
+            height: 500px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        `;
+        
+        const gameTitle = document.createElement('div');
+        gameTitle.textContent = '🪟 Clean the Window! 🧼';
+        gameTitle.style.cssText = `
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        `;
+        
+        const windowPane = document.createElement('div');
+        windowPane.style.cssText = `
+            width: 100%;
+            height: 350px;
+            background: rgba(255,255,255,0.3);
+            border: 8px solid #8B4513;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><text y="20" font-size="20">🧽</text></svg>') 12 12, auto;
+        `;
+        
+        const scoreBoard = document.createElement('div');
+        scoreBoard.style.cssText = `
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        `;
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '❌';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        `;
+        closeBtn.addEventListener('click', () => gameContainer.remove());
+        
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(gameTitle);
+        gameContainer.appendChild(windowPane);
+        gameContainer.appendChild(scoreBoard);
+        document.body.appendChild(gameContainer);
+        
+        let score = 0;
+        const totalSpots = 15;
+        
+        for (let i = 0; i < totalSpots; i++) {
+            const spot = document.createElement('div');
+            const size = Math.random() * 40 + 30;
+            spot.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: radial-gradient(circle, rgba(139,69,19,0.7), rgba(139,69,19,0.3));
+                border-radius: 50%;
+                left: ${Math.random() * 80 + 5}%;
+                top: ${Math.random() * 80 + 5}%;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            `;
+            
+            spot.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.style.transform = 'scale(1.3)';
+                this.style.opacity = '0';
+                
+                score++;
+                scoreBoard.textContent = `Cleaned: ${score}/${totalSpots} spots!`;
+                
+                for (let j = 0; j < 3; j++) {
+                    setTimeout(() => {
+                        const sparkle = document.createElement('div');
+                        sparkle.textContent = '✨';
+                        sparkle.style.cssText = `
+                            position: absolute;
+                            left: ${e.offsetX}px;
+                            top: ${e.offsetY}px;
+                            font-size: 20px;
+                            pointer-events: none;
+                            animation: sparkle-float 1s ease-out forwards;
+                        `;
+                        windowPane.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 1000);
+                    }, j * 100);
+                }
+                
+                setTimeout(() => this.remove(), 300);
+                
+                if (score === totalSpots) {
+                    setTimeout(() => {
+                        windowPane.style.background = 'linear-gradient(135deg, rgba(135,206,250,0.8), rgba(255,255,255,0.9))';
+                        gameTitle.textContent = '🎉 PERFECTLY CLEAN! 🎉';
+                        createConfetti();
+                        
+                        setTimeout(() => {
+                            gameContainer.style.opacity = '0';
+                            gameContainer.style.transition = 'opacity 0.5s ease';
+                            setTimeout(() => gameContainer.remove(), 500);
+                        }, 3000);
+                    }, 500);
+                }
+            });
+            
+            windowPane.appendChild(spot);
+        }
+        
+        scoreBoard.textContent = `Cleaned: 0/${totalSpots} spots!`;
+    }
+
             height: 500px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
@@ -1425,14 +2171,14 @@ style.textContent = `
         100% { color: #ff0000; }
     }
     
-    @keyframes pulse {
-        0%, 100% {
-            transform: scale(1);
-            color: inherit;
+    @keyframes ripple-expand {
+        0% {
+            transform: translateX(-50%) scale(0);
+            opacity: 0.6;
         }
-        50% {
-            transform: scale(1.05);
-            color: #ffd700;
+        100% {
+            transform: translateX(-50%) scale(10);
+            opacity: 0;
         }
     }
     
@@ -1479,17 +2225,6 @@ style.textContent = `
         }
     }
     
-    @keyframes spiral-in {
-        0% {
-            transform: scale(1) rotate(0deg);
-            opacity: 1;
-        }
-        100% {
-            transform: scale(0) rotate(720deg) translate(50vw, 50vh);
-            opacity: 0;
-        }
-    }
-    
     @keyframes drop-fall {
         0% {
             top: -20px;
@@ -1498,15 +2233,6 @@ style.textContent = `
         100% {
             top: 100%;
             opacity: 0.3;
-        }
-    }
-    
-    @keyframes squeegee-wipe {
-        0% {
-            left: -100px;
-        }
-        100% {
-            left: 100%;
         }
     }
     
@@ -1529,4 +2255,3 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
