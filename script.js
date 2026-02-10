@@ -989,31 +989,33 @@ document.addEventListener('DOMContentLoaded', function() {
         newRound();
     }
     
-    // ABOUT.HTML - Bouncing Emojis → Catch the Items Game
+    // ABOUT.HTML - Gentle Fade → Dinosaur Catch Game
     function aboutEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            const emojis = ['👨‍💼', '🧼', '🪟', '⭐', '💼', '🎓'];
-            createBouncingEmoji(emojis[clickCount - 1]);
+            createGentleFade();
         } else {
-            startCatchGame();
+            startDinosaurGame();
         }
     }
     
-    function createBouncingEmoji(emoji) {
-        const bouncer = document.createElement('div');
-        bouncer.textContent = emoji;
-        bouncer.style.cssText = `
+    function createGentleFade() {
+        const fade = document.createElement('div');
+        fade.style.cssText = `
             position: fixed;
-            left: ${Math.random() * 80 + 10}%;
-            top: -50px;
-            font-size: 50px;
-            animation: bounce-fall 2s ease-out forwards;
+            left: 50%;
+            bottom: 50px;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(147,112,219,0.4), transparent);
+            animation: gentle-fade 2s ease-out forwards;
         `;
-        effectContainer.appendChild(bouncer);
-        setTimeout(() => bouncer.remove(), 2000);
+        effectContainer.appendChild(fade);
+        setTimeout(() => fade.remove(), 2000);
     }
     
-    function startCatchGame() {
+    function startDinosaurGame() {
         const gameContainer = document.createElement('div');
         gameContainer.style.cssText = `
             position: fixed;
@@ -1024,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', function() {
             max-width: 500px;
             height: 85vh;
             max-height: 600px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #43a047 0%, #1de9b6 100%);
             border-radius: 20px;
             padding: 20px;
             z-index: 10001;
@@ -1033,144 +1035,172 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const title = document.createElement('div');
-        title.textContent = '🧼 Catch the Cleaning Supplies!';
+        title.textContent = 'Dinosaur Collector';
         title.style.cssText = 'color: white; font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 10px;';
         
-        const gameArea = document.createElement('div');
-        gameArea.style.cssText = 'width: 100%; height: 450px; position: relative; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;';
+        const instruction = document.createElement('div');
+        instruction.textContent = 'Catch the dinosaurs!';
+        instruction.style.cssText = 'color: rgba(255,255,255,0.9); font-size: 16px; text-align: center; margin-bottom: 10px;';
         
-        const basket = document.createElement('div');
-        basket.textContent = '🧺';
-        basket.style.cssText = 'position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 60px; transition: left 0.1s;';
+        const gameArea = document.createElement('div');
+        gameArea.style.cssText = 'width: 100%; height: 420px; position: relative; background: linear-gradient(to bottom, rgba(135,206,235,0.3), rgba(34,139,34,0.3)); border-radius: 10px; overflow: hidden; border: 3px solid rgba(255,255,255,0.3);';
+        
+        const catcher = document.createElement('div');
+        catcher.innerHTML = '🦖';
+        catcher.style.cssText = 'position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 55px; transition: left 0.1s; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));';
         
         const scoreDiv = document.createElement('div');
-        scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
+        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center; margin-top: 10px;';
         
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
         closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => {
-            document.removeEventListener('mousemove', moveBasket);
-            document.removeEventListener('touchmove', moveBasketTouch);
+            document.removeEventListener('mousemove', moveCatcher);
+            document.removeEventListener('touchmove', moveCatcherTouch);
             gameContainer.remove();
         });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
+        gameContainer.appendChild(instruction);
         gameContainer.appendChild(gameArea);
-        gameArea.appendChild(basket);
+        gameArea.appendChild(catcher);
         gameContainer.appendChild(scoreDiv);
         document.body.appendChild(gameContainer);
         
-        const items = ['🧼', '🪟', '🧽', '🧴', '🪣', '🧹'];
+        const dinosaurs = ['🦕', '🦖', '🦴', '🥚'];
         let score = 0;
         let missed = 0;
         const maxMissed = 5;
         
-        function moveBasket(e) {
+        function moveCatcher(e) {
             const rect = gameArea.getBoundingClientRect();
             const x = e.clientX - rect.left;
-            basket.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
+            catcher.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
         }
         
-        function moveBasketTouch(e) {
+        function moveCatcherTouch(e) {
             e.preventDefault();
             const touch = e.touches[0];
             const rect = gameArea.getBoundingClientRect();
             const x = touch.clientX - rect.left;
-            basket.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
+            catcher.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
         }
         
-        document.addEventListener('mousemove', moveBasket);
-        document.addEventListener('touchmove', moveBasketTouch, { passive: false });
+        document.addEventListener('mousemove', moveCatcher);
+        document.addEventListener('touchmove', moveCatcherTouch, { passive: false });
         
-        function dropItem() {
+        function dropDinosaur() {
             if (missed >= maxMissed) {
-                title.textContent = `Game Over! Score: ${score}`;
-                document.removeEventListener('mousemove', moveBasket);
+                title.textContent = 'Dinosaurs Escaped!';
+                instruction.textContent = `Final Score: ${score}`;
+                document.removeEventListener('mousemove', moveCatcher);
+                document.removeEventListener('touchmove', moveCatcherTouch);
                 setTimeout(() => gameContainer.remove(), 3000);
                 return;
             }
             
-            const item = document.createElement('div');
-            item.textContent = items[Math.floor(Math.random() * items.length)];
-            item.style.cssText = `
+            const dino = document.createElement('div');
+            dino.textContent = dinosaurs[Math.floor(Math.random() * dinosaurs.length)];
+            dino.style.cssText = `
                 position: absolute;
-                left: ${Math.random() * 90}%;
+                left: ${Math.random() * 85}%;
                 top: -50px;
-                font-size: 40px;
-                animation: drop-fall 3s linear forwards;
+                font-size: 45px;
+                animation: drop-fall 3.5s linear forwards;
+                filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
             `;
-            gameArea.appendChild(item);
+            gameArea.appendChild(dino);
             
             const checkInterval = setInterval(() => {
-                const itemRect = item.getBoundingClientRect();
-                const basketRect = basket.getBoundingClientRect();
+                const dinoRect = dino.getBoundingClientRect();
+                const catcherRect = catcher.getBoundingClientRect();
                 
-                if (itemRect.bottom >= basketRect.top &&
-                    itemRect.left < basketRect.right &&
-                    itemRect.right > basketRect.left) {
+                if (dinoRect.bottom >= catcherRect.top &&
+                    dinoRect.left < catcherRect.right &&
+                    dinoRect.right > catcherRect.left) {
                     score++;
-                    scoreDiv.textContent = `Score: ${score} | Missed: ${missed}/${maxMissed}`;
-                    item.remove();
+                    scoreDiv.textContent = `Collected: ${score} | Escaped: ${missed}/${maxMissed}`;
+                    dino.remove();
                     clearInterval(checkInterval);
-                    createSparkles(basketRect.left + basketRect.width/2, basketRect.top);
+                    
+                    // Create small dino sparkle effect
+                    for (let i = 0; i < 3; i++) {
+                        setTimeout(() => {
+                            const sparkle = document.createElement('div');
+                            sparkle.textContent = '⭐';
+                            sparkle.style.cssText = `
+                                position: absolute;
+                                left: ${catcherRect.left}px;
+                                top: ${catcherRect.top}px;
+                                font-size: 20px;
+                                animation: sparkle-float 1s ease-out forwards;
+                            `;
+                            effectContainer.appendChild(sparkle);
+                            setTimeout(() => sparkle.remove(), 1000);
+                        }, i * 100);
+                    }
                     
                     if (score >= 20) {
-                        title.textContent = '🏆 Cleaning Master!';
-                        document.removeEventListener('mousemove', moveBasket);
-                        createConfetti();
+                        title.textContent = 'Dinosaur Expert!';
+                        instruction.textContent = 'You collected them all!';
+                        document.removeEventListener('mousemove', moveCatcher);
+                        document.removeEventListener('touchmove', moveCatcherTouch);
+                        createAboutCelebration();
                         setTimeout(() => gameContainer.remove(), 3000);
                     }
-                } else if (itemRect.top > window.innerHeight) {
+                } else if (dinoRect.top > window.innerHeight) {
                     missed++;
-                    scoreDiv.textContent = `Score: ${score} | Missed: ${missed}/${maxMissed}`;
-                    item.remove();
+                    scoreDiv.textContent = `Collected: ${score} | Escaped: ${missed}/${maxMissed}`;
+                    dino.remove();
                     clearInterval(checkInterval);
                 }
             }, 50);
             
             setTimeout(() => {
                 clearInterval(checkInterval);
-                item.remove();
-            }, 3000);
+                dino.remove();
+            }, 3500);
         }
         
-        scoreDiv.textContent = `Score: 0 | Missed: 0/${maxMissed}`;
+        scoreDiv.textContent = `Collected: 0 | Escaped: 0/${maxMissed}`;
         const dropInterval = setInterval(() => {
             if (missed >= maxMissed || score >= 20) {
                 clearInterval(dropInterval);
             } else {
-                dropItem();
+                dropDinosaur();
             }
-        }, 800);
+        }, 900);
     }
     
-    // BLOG.HTML - Floating Icons → Memory Card Game
+    // BLOG.HTML - Shimmer Effect → Word Association Game
     function blogEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            createFloatingIcon();
+            createShimmerEffect();
         } else {
-            startMemoryGame();
+            startWordGame();
         }
     }
     
-    function createFloatingIcon() {
-        const icons = ['💡', '📝', '✨', '🏆', '⭐', '💬'];
-        const icon = document.createElement('div');
-        icon.textContent = icons[Math.floor(Math.random() * icons.length)];
-        icon.style.cssText = `
+    function createShimmerEffect() {
+        const shimmer = document.createElement('div');
+        shimmer.style.cssText = `
             position: fixed;
-            right: -50px;
-            top: ${Math.random() * 80 + 10}%;
-            font-size: 40px;
-            animation: scroll-left 3s linear forwards;
+            left: 50%;
+            bottom: 50px;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.3), transparent);
+            animation: shimmer-pulse 2s ease-out forwards;
         `;
-        effectContainer.appendChild(icon);
-        setTimeout(() => icon.remove(), 3000);
+        effectContainer.appendChild(shimmer);
+        setTimeout(() => shimmer.remove(), 2000);
     }
     
-    function startMemoryGame() {
+    function startWordGame() {
         const gameContainer = document.createElement('div');
         gameContainer.style.cssText = `
             position: fixed;
@@ -1182,18 +1212,22 @@ document.addEventListener('DOMContentLoaded', function() {
             max-height: 90vh;
             overflow-y: auto;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             border-radius: 20px;
             z-index: 10001;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         `;
         
         const title = document.createElement('div');
-        title.textContent = '🧠 Memory Match!';
-        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px;';
+        title.textContent = 'Word Association';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;';
+        
+        const instruction = document.createElement('div');
+        instruction.textContent = 'Match related cleaning terms';
+        instruction.style.cssText = 'color: rgba(255,255,255,0.9); font-size: 16px; text-align: center; margin-bottom: 20px;';
         
         const grid = document.createElement('div');
-        grid.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;';
+        grid.style.cssText = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;';
         
         const scoreDiv = document.createElement('div');
         scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
@@ -1205,64 +1239,90 @@ document.addEventListener('DOMContentLoaded', function() {
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
+        gameContainer.appendChild(instruction);
         gameContainer.appendChild(grid);
         gameContainer.appendChild(scoreDiv);
         document.body.appendChild(gameContainer);
         
-        const icons = ['🧼', '🪟', '💧', '✨', '⭐', '🧽', '🪣', '💡'];
-        const cards = [...icons, ...icons].sort(() => Math.random() - 0.5);
-        let flipped = [];
-        let matched = 0;
-        let moves = 0;
+        const pairs = [
+            ['Window', 'Glass'],
+            ['Carpet', 'Fiber'],
+            ['Clean', 'Spotless'],
+            ['Water', 'Rinse'],
+            ['Shine', 'Polish'],
+            ['Stain', 'Remove'],
+            ['Deep', 'Extract'],
+            ['Fresh', 'Renewed']
+        ];
         
-        cards.forEach((icon, index) => {
+        const words = pairs.flat().sort(() => Math.random() - 0.5);
+        let selected = [];
+        let matched = 0;
+        let attempts = 0;
+        
+        words.forEach((word) => {
             const card = document.createElement('div');
+            card.textContent = word;
             card.style.cssText = `
-                background: white;
-                height: 80px;
+                background: rgba(255,255,255,0.95);
+                padding: 20px;
                 border-radius: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 40px;
+                font-size: 18px;
+                font-weight: 600;
+                color: #333;
                 cursor: pointer;
-                transition: transform 0.3s;
+                transition: all 0.2s;
+                min-height: 60px;
             `;
-            card.innerHTML = '<span style="opacity: 0;">?</span>';
-            card.dataset.icon = icon;
-            card.dataset.index = index;
             
             card.addEventListener('click', function() {
-                if (flipped.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
-                    this.querySelector('span').style.opacity = '1';
-                    this.querySelector('span').textContent = icon;
-                    this.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
-                    this.classList.add('flipped');
-                    flipped.push(this);
+                if (selected.length < 2 && !this.classList.contains('matched') && !this.classList.contains('selected')) {
+                    this.classList.add('selected');
+                    this.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    this.style.color = 'white';
+                    selected.push(this);
                     
-                    if (flipped.length === 2) {
-                        moves++;
-                        scoreDiv.textContent = `Moves: ${moves} | Matched: ${matched}/8`;
+                    if (selected.length === 2) {
+                        attempts++;
+                        const word1 = selected[0].textContent;
+                        const word2 = selected[1].textContent;
                         
-                        if (flipped[0].dataset.icon === flipped[1].dataset.icon) {
-                            flipped.forEach(card => card.classList.add('matched'));
+                        let isMatch = false;
+                        for (let pair of pairs) {
+                            if ((pair[0] === word1 && pair[1] === word2) || (pair[0] === word2 && pair[1] === word1)) {
+                                isMatch = true;
+                                break;
+                            }
+                        }
+                        
+                        if (isMatch) {
+                            selected.forEach(card => {
+                                card.classList.add('matched');
+                                card.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+                            });
                             matched++;
-                            flipped = [];
+                            selected = [];
+                            
+                            scoreDiv.textContent = `Matched: ${matched}/8 | Tries: ${attempts}`;
                             
                             if (matched === 8) {
-                                title.textContent = `🎉 You Win! ${moves} moves!`;
-                                createConfetti();
+                                title.textContent = 'Excellent!';
+                                instruction.textContent = `Completed in ${attempts} tries!`;
+                                createBlogCelebration();
                                 setTimeout(() => gameContainer.remove(), 3000);
                             }
                         } else {
                             setTimeout(() => {
-                                flipped.forEach(card => {
-                                    card.querySelector('span').style.opacity = '0';
-                                    card.querySelector('span').textContent = '?';
-                                    card.style.background = 'white';
-                                    card.classList.remove('flipped');
+                                selected.forEach(card => {
+                                    card.classList.remove('selected');
+                                    card.style.background = 'rgba(255,255,255,0.95)';
+                                    card.style.color = '#333';
                                 });
-                                flipped = [];
+                                selected = [];
+                                scoreDiv.textContent = `Matched: ${matched}/8 | Tries: ${attempts}`;
                             }, 800);
                         }
                     }
@@ -1272,38 +1332,36 @@ document.addEventListener('DOMContentLoaded', function() {
             grid.appendChild(card);
         });
         
-        scoreDiv.textContent = 'Moves: 0 | Matched: 0/8';
+        scoreDiv.textContent = `Matched: 0/8 | Tries: 0`;
     }
     
-    // CARPET-CLEANING.HTML - Dirt Particles → Whack-a-Spot Game
+    // CARPET-CLEANING.HTML - Ripple Wave → Pattern Recognition Game
     function carpetEasterEgg(clickCount) {
         if (clickCount <= 5) {
-            createDirtParticles();
+            createRippleWave();
         } else {
-            startWhackSpotGame();
+            startPatternGame();
         }
     }
     
-    function createDirtParticles() {
-        for (let i = 0; i < 20; i++) {
-            setTimeout(() => {
-                const dirt = document.createElement('div');
-                dirt.textContent = ['•', '◦', '∙'][Math.floor(Math.random() * 3)];
-                dirt.style.cssText = `
-                    position: fixed;
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    font-size: ${Math.random() * 15 + 10}px;
-                    color: #8b4513;
-                    animation: vacuum-away 1.5s ease-in forwards;
-                `;
-                effectContainer.appendChild(dirt);
-                setTimeout(() => dirt.remove(), 1500);
-            }, i * 50);
-        }
+    function createRippleWave() {
+        const ripple = document.createElement('div');
+        ripple.style.cssText = `
+            position: fixed;
+            left: 50%;
+            bottom: 50px;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(70,130,180,0.4), transparent);
+            animation: ripple-wave 2s ease-out forwards;
+        `;
+        effectContainer.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 2000);
     }
     
-    function startWhackSpotGame() {
+    function startPatternGame() {
         const gameContainer = document.createElement('div');
         gameContainer.style.cssText = `
             position: fixed;
@@ -1315,15 +1373,19 @@ document.addEventListener('DOMContentLoaded', function() {
             max-height: 90vh;
             overflow-y: auto;
             padding: 20px;
-            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            background: linear-gradient(135deg, #4a90e2 0%, #7b68ee 100%);
             border-radius: 20px;
             z-index: 10001;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         `;
         
         const title = document.createElement('div');
-        title.textContent = '🧹 Whack the Dirt Spots!';
+        title.textContent = 'Pattern Recognition';
         title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px;';
+        
+        const instruction = document.createElement('div');
+        instruction.textContent = 'Remember the pattern and repeat it';
+        instruction.style.cssText = 'color: rgba(255,255,255,0.9); font-size: 16px; text-align: center; margin-bottom: 20px;';
         
         const grid = document.createElement('div');
         grid.style.cssText = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;';
@@ -1331,85 +1393,102 @@ document.addEventListener('DOMContentLoaded', function() {
         const scoreDiv = document.createElement('div');
         scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
         
-        const timerDiv = document.createElement('div');
-        timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 10px;';
-        
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
         closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
-        closeBtn.addEventListener('click', () => {
-            clearInterval(gameInterval);
-            clearInterval(timerInterval);
-            gameContainer.remove();
-        });
+        closeBtn.addEventListener('click', () => gameContainer.remove());
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
+        gameContainer.appendChild(instruction);
         gameContainer.appendChild(grid);
         gameContainer.appendChild(scoreDiv);
-        gameContainer.appendChild(timerDiv);
         document.body.appendChild(gameContainer);
         
-        let score = 0;
-        let timeLeft = 30;
-        const spots = [];
+        const tiles = [];
+        let sequence = [];
+        let playerSequence = [];
+        let level = 1;
+        let isPlaying = false;
         
+        // Create 9 tiles
         for (let i = 0; i < 9; i++) {
-            const spot = document.createElement('div');
-            spot.style.cssText = `
-                background: rgba(255,255,255,0.3);
-                height: 100px;
-                border-radius: 50%;
+            const tile = document.createElement('div');
+            tile.dataset.index = i;
+            tile.style.cssText = `
+                background: rgba(255,255,255,0.2);
+                height: 90px;
+                border-radius: 10px;
                 cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 50px;
-                transition: transform 0.1s;
+                transition: all 0.2s;
+                border: 2px solid rgba(255,255,255,0.3);
             `;
-            spot.addEventListener('click', function() {
-                if (this.textContent === '•') {
-                    score++;
-                    scoreDiv.textContent = `Score: ${score}`;
-                    this.textContent = '';
-                    this.style.background = 'rgba(255,255,255,0.3)';
-                    createSparkles(this.getBoundingClientRect().left + 50, this.getBoundingClientRect().top + 50);
-                }
-            });
-            grid.appendChild(spot);
-            spots.push(spot);
+            tile.addEventListener('click', () => handleTileClick(i));
+            grid.appendChild(tile);
+            tiles.push(tile);
         }
         
-        function showDirt() {
-            const randomSpot = spots[Math.floor(Math.random() * spots.length)];
-            if (randomSpot.textContent === '') {
-                randomSpot.textContent = '•';
-                randomSpot.style.background = 'radial-gradient(circle, rgba(139,69,19,0.9), rgba(139,69,19,0.4))';
+        function lightUpTile(index) {
+            return new Promise(resolve => {
+                tiles[index].style.background = 'rgba(255,255,255,0.9)';
+                tiles[index].style.transform = 'scale(0.95)';
                 setTimeout(() => {
-                    if (randomSpot.textContent === '•') {
-                        randomSpot.textContent = '';
-                        randomSpot.style.background = 'rgba(255,255,255,0.3)';
-                    }
-                }, 1000);
+                    tiles[index].style.background = 'rgba(255,255,255,0.2)';
+                    tiles[index].style.transform = 'scale(1)';
+                    setTimeout(resolve, 200);
+                }, 500);
+            });
+        }
+        
+        async function playSequence() {
+            isPlaying = true;
+            instruction.textContent = 'Watch the pattern...';
+            for (let index of sequence) {
+                await lightUpTile(index);
+            }
+            instruction.textContent = 'Now repeat the pattern!';
+            isPlaying = false;
+        }
+        
+        function handleTileClick(index) {
+            if (isPlaying) return;
+            
+            playerSequence.push(index);
+            tiles[index].style.background = 'rgba(255,255,255,0.9)';
+            setTimeout(() => {
+                tiles[index].style.background = 'rgba(255,255,255,0.2)';
+            }, 200);
+            
+            const currentStep = playerSequence.length - 1;
+            if (playerSequence[currentStep] !== sequence[currentStep]) {
+                instruction.textContent = 'Wrong! Game Over';
+                scoreDiv.textContent = `Final Level: ${level - 1}`;
+                setTimeout(() => gameContainer.remove(), 2000);
+                return;
+            }
+            
+            if (playerSequence.length === sequence.length) {
+                if (level >= 10) {
+                    title.textContent = 'Perfect!';
+                    instruction.textContent = 'You completed all levels!';
+                    createCarpetCelebration();
+                    setTimeout(() => gameContainer.remove(), 3000);
+                } else {
+                    level++;
+                    scoreDiv.textContent = `Level: ${level}`;
+                    playerSequence = [];
+                    setTimeout(nextRound, 1000);
+                }
             }
         }
         
-        scoreDiv.textContent = 'Score: 0';
-        const gameInterval = setInterval(showDirt, 600);
+        function nextRound() {
+            sequence.push(Math.floor(Math.random() * 9));
+            playSequence();
+        }
         
-        const timerInterval = setInterval(() => {
-            timeLeft--;
-            timerDiv.textContent = `Time: ${timeLeft}s`;
-            if (timeLeft <= 0) {
-                clearInterval(gameInterval);
-                clearInterval(timerInterval);
-                title.textContent = `🏆 Final Score: ${score}`;
-                if (score >= 25) createConfetti();
-                setTimeout(() => gameContainer.remove(), 3000);
-            }
-        }, 1000);
-        
-        timerDiv.textContent = `Time: ${timeLeft}s`;
+        scoreDiv.textContent = `Level: ${level}`;
+        nextRound();
     }
     
     // WINDOW-WASHING.HTML - Water Droplets → Window Cleaning Game
@@ -1815,6 +1894,79 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Page-Specific Celebration Effects
+    function createCarpetCelebration() {
+        // Blue wave celebration for carpet page
+        const colors = ['#4169e1', '#1e90ff', '#00bfff', '#87ceeb', '#4682b4'];
+        for (let i = 0; i < 60; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    width: ${Math.random() * 12 + 6}px;
+                    height: ${Math.random() * 12 + 6}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: 50%;
+                    box-shadow: 0 0 10px ${colors[Math.floor(Math.random() * colors.length)]};
+                    animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
+                `;
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 5000);
+            }, i * 25);
+        }
+    }
+    
+    function createBlogCelebration() {
+        // Golden shimmer celebration for blog page
+        const colors = ['#ffd700', '#ffed4e', '#ffa500', '#ffb347', '#f4c430'];
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    width: ${Math.random() * 8 + 4}px;
+                    height: ${Math.random() * 8 + 4}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: 50%;
+                    box-shadow: 0 0 15px ${colors[Math.floor(Math.random() * colors.length)]};
+                    animation: confetti-fall ${Math.random() * 2.5 + 2}s linear forwards;
+                    opacity: 0.9;
+                `;
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 4500);
+            }, i * 30);
+        }
+    }
+    
+    function createAboutCelebration() {
+        // Green nature celebration for about/dinosaur page
+        const colors = ['#32cd32', '#00ff7f', '#98fb98', '#90ee90', '#00fa9a'];
+        for (let i = 0; i < 55; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                const isLeaf = Math.random() > 0.7;
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: ${isLeaf ? '50% 0' : '50%'};
+                    transform: rotate(${Math.random() * 360}deg);
+                    box-shadow: 0 0 8px ${colors[Math.floor(Math.random() * colors.length)]};
+                    animation: confetti-fall ${Math.random() * 3 + 2.5}s linear forwards;
+                `;
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 5500);
+            }, i * 28);
+        }
+    }
+    
     function createConfetti() {
         const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#ffd700'];
         for (let i = 0; i < 50; i++) {
@@ -2072,6 +2224,45 @@ style.textContent = `
         }
     }
     
+    @keyframes ripple-wave {
+        0% {
+            transform: translateX(-50%) scale(0);
+            opacity: 0.5;
+        }
+        100% {
+            transform: translateX(-50%) scale(8);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes shimmer-pulse {
+        0% {
+            transform: translateX(-50%) scale(0);
+            opacity: 0.4;
+        }
+        50% {
+            opacity: 0.6;
+        }
+        100% {
+            transform: translateX(-50%) scale(6);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes gentle-fade {
+        0% {
+            transform: translateX(-50%) scale(0);
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 0.6;
+        }
+        100% {
+            transform: translateX(-50%) scale(5);
+            opacity: 0;
+        }
+    }
+    
     @keyframes bounce-fall {
         0% {
             top: -50px;
@@ -2136,6 +2327,26 @@ style.textContent = `
             top: 100%;
             opacity: 0;
             transform: rotate(360deg);
+        }
+    }
+    
+    @keyframes pulse-glow {
+        0%, 100% {
+            filter: brightness(1) drop-shadow(0 0 5px currentColor);
+        }
+        50% {
+            filter: brightness(1.2) drop-shadow(0 0 15px currentColor);
+        }
+    }
+    
+    @keyframes bubble-float {
+        0% {
+            bottom: -80px;
+            opacity: 0.8;
+        }
+        100% {
+            bottom: 120%;
+            opacity: 0;
         }
     }
     
