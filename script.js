@@ -898,8 +898,11 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 450px;
-            padding: 30px;
+            width: 90vw;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
             z-index: 10001;
@@ -926,8 +929,8 @@ document.addEventListener('DOMContentLoaded', function() {
         scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
         
         const closeBtn = document.createElement('button');
-        closeBtn.textContent = '❌';
-        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer;';
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => gameContainer.remove());
         
         gameContainer.appendChild(closeBtn);
@@ -1017,8 +1020,10 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            height: 600px;
+            width: 90vw;
+            max-width: 500px;
+            height: 85vh;
+            max-height: 600px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
             padding: 20px;
@@ -1042,10 +1047,11 @@ document.addEventListener('DOMContentLoaded', function() {
         scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
         
         const closeBtn = document.createElement('button');
-        closeBtn.textContent = '❌';
-        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;';
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => {
             document.removeEventListener('mousemove', moveBasket);
+            document.removeEventListener('touchmove', moveBasketTouch);
             gameContainer.remove();
         });
         
@@ -1067,7 +1073,16 @@ document.addEventListener('DOMContentLoaded', function() {
             basket.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
         }
         
+        function moveBasketTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = gameArea.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            basket.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
+        }
+        
         document.addEventListener('mousemove', moveBasket);
+        document.addEventListener('touchmove', moveBasketTouch, { passive: false });
         
         function dropItem() {
             if (missed >= maxMissed) {
@@ -1162,8 +1177,11 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 520px;
-            padding: 30px;
+            width: 90vw;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
             z-index: 10001;
@@ -1181,8 +1199,8 @@ document.addEventListener('DOMContentLoaded', function() {
         scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
         
         const closeBtn = document.createElement('button');
-        closeBtn.textContent = '❌';
-        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer;';
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => gameContainer.remove());
         
         gameContainer.appendChild(closeBtn);
@@ -1292,8 +1310,11 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            padding: 30px;
+            width: 90vw;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
             background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
             border-radius: 20px;
             z-index: 10001;
@@ -1314,8 +1335,8 @@ document.addEventListener('DOMContentLoaded', function() {
         timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 10px;';
         
         const closeBtn = document.createElement('button');
-        closeBtn.textContent = '❌';
-        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer;';
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => {
             clearInterval(gameInterval);
             clearInterval(timerInterval);
@@ -1418,12 +1439,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // REVIEWS.HTML - Falling Stars → Star Collection Game
+    // REVIEWS.HTML - Falling Stars → Star Burst Tap Game
     function reviewsEasterEgg(clickCount) {
         if (clickCount <= 5) {
             createFallingStars(clickCount * 3);
         } else {
-            startStarCollectionGame();
+            startStarBurstGame();
         }
     }
     
@@ -1445,15 +1466,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function startStarCollectionGame() {
+    function startStarBurstGame() {
         const gameContainer = document.createElement('div');
-        gameContainer.style.cssText = `
+       gameContainer.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            height: 600px;
+            width: 90vw;
+            max-width: 500px;
+            height: 85vh;
+            max-height: 600px;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             border-radius: 20px;
             padding: 20px;
@@ -1463,104 +1486,283 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const title = document.createElement('div');
-        title.textContent = '⭐ Collect the Stars!';
-        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 10px;';
+        title.textContent = '⭐ Star Burst Challenge!';
+        title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 10px;';
+        
+        const instruction = document.createElement('div');
+        instruction.textContent = 'Tap the stars before they disappear!';
+        instruction.style.cssText = 'color: white; font-size: 16px; text-align: center; margin-bottom: 10px;';
         
         const gameArea = document.createElement('div');
-        gameArea.style.cssText = 'width: 100%; height: 450px; position: relative; background: rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden;';
-        
-        const collector = document.createElement('div');
-        collector.textContent = '🙌';
-        collector.style.cssText = 'position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 60px;';
+        gameArea.style.cssText = 'width: 100%; height: calc(100% - 140px); position: relative; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;';
         
         const scoreDiv = document.createElement('div');
         scoreDiv.style.cssText = 'color: white; font-size: 22px; font-weight: bold; text-align: center; margin-top: 10px;';
         
+        const timerDiv = document.createElement('div');
+        timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 5px;';
+        
         const closeBtn = document.createElement('button');
-        closeBtn.textContent = '❌';
-        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; z-index: 10;';
+        closeBtn.textContent = '\u2715';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
         closeBtn.addEventListener('click', () => {
-            document.removeEventListener('mousemove', moveCollector);
+            if (spawnInterval) clearInterval(spawnInterval);
+            if (timerInterval) clearInterval(timerInterval);
             gameContainer.remove();
         });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
+        gameContainer.appendChild(instruction);
         gameContainer.appendChild(gameArea);
-        gameArea.appendChild(collector);
         gameContainer.appendChild(scoreDiv);
+        gameContainer.appendChild(timerDiv);
         document.body.appendChild(gameContainer);
         
         let score = 0;
+        let missed = 0;
+        let timeLeft = 30;
+        let spawnInterval;
+        let timerInterval;
         
-        function moveCollector(e) {
-            const rect = gameArea.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            collector.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
-        }
-        
-        document.addEventListener('mousemove', moveCollector);
-        
-        function dropStar() {
+        function spawnStar() {
             const star = document.createElement('div');
+            const size = Math.random() * 20 + 40;
             star.textContent = '⭐';
             star.style.cssText = `
                 position: absolute;
-                left: ${Math.random() * 90}%;
-                top: -50px;
-                font-size: 35px;
-                animation: drop-fall 3s linear forwards;
+                left: ${Math.random() * 85}%;
+                top: ${Math.random() * 85}%;
+                font-size: ${size}px;
+                cursor: pointer;
+                animation: pulse-glow 0.5s ease-in-out infinite alternate;
+                transition: transform 0.2s;
             `;
-            gameArea.appendChild(star);
             
-            const checkInterval = setInterval(() => {
-                const starRect = star.getBoundingClientRect();
-                const collectorRect = collector.getBoundingClientRect();
-                
-                if (starRect.bottom >= collectorRect.top &&
-                    starRect.left < collectorRect.right &&
-                    starRect.right > collectorRect.left) {
+            let clicked = false;
+            
+            star.addEventListener('click', function() {
+                if (!clicked) {
+                    clicked = true;
                     score++;
-                    scoreDiv.textContent = `⭐ Stars: ${score}`;
-                    star.remove();
-                    clearInterval(checkInterval);
-                    createSparkles(collectorRect.left + collectorRect.width/2, collectorRect.top);
+                    scoreDiv.textContent = `⭐ Stars: ${score} | Missed: ${missed}`;
+                    this.style.transform = 'scale(1.5) rotate(360deg)';
+                    this.style.opacity = '0';
+                    createSparkles(this.getBoundingClientRect().left + size/2, this.getBoundingClientRect().top + size/2);
+                    setTimeout(() => this.remove(), 300);
                     
                     if (score >= 30) {
+                        clearInterval(spawnInterval);
+                        clearInterval(timerInterval);
                         title.textContent = '🏆 5-Star Champion!';
-                        document.removeEventListener('mousemove', moveCollector);
+                        instruction.textContent = `Perfect score: ${score}!`;
                         createConfetti();
                         setTimeout(() => gameContainer.remove(), 3000);
                     }
-                } else if (starRect.top > window.innerHeight) {
-                    star.remove();
-                    clearInterval(checkInterval);
                 }
-            }, 50);
+            });
+            
+            gameArea.appendChild(star);
             
             setTimeout(() => {
-                clearInterval(checkInterval);
-                star.remove();
-            }, 3000);
+                if (!clicked && star.parentNode) {
+                    star.style.opacity = '0';
+                    missed++;
+                    scoreDiv.textContent = `⭐ Stars: ${score} | Missed: ${missed}`;
+                    setTimeout(() => star.remove(), 300);
+                    
+                    if (missed >= 10) {
+                        clearInterval(spawnInterval);
+                        clearInterval(timerInterval);
+                        title.textContent = 'Game Over!';
+                        instruction.textContent = `Final Score: ${score} stars`;
+                        if (score >= 20) createConfetti();
+                        setTimeout(() => gameContainer.remove(), 3000);
+                    }
+                }
+            }, 1500);
         }
         
-        scoreDiv.textContent = '⭐ Stars: 0/30';
-        const dropInterval = setInterval(() => {
-            if (score >= 30) {
-                clearInterval(dropInterval);
-            } else {
-                dropStar();
+        scoreDiv.textContent = '⭐ Stars: 0 | Missed: 0';
+        timerDiv.textContent = `Time: ${timeLeft}s`;
+        
+        spawnInterval = setInterval(() => {
+            if (missed < 10 && score < 30 && timeLeft > 0) {
+                spawnStar();
             }
-        }, 700);
+        }, 800);
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            timerDiv.textContent = `Time: ${timeLeft}s`;
+            if (timeLeft <= 0) {
+                clearInterval(spawnInterval);
+                clearInterval(timerInterval);
+                title.textContent = 'Time Up!';
+                instruction.textContent = `Final Score: ${score} stars!`;
+                if (score >= 20) createConfetti();
+                setTimeout(() => gameContainer.remove(), 3000);
+            }
+        }, 1000);
     }
     
-    // QUOTE.HTML - Sparkles → Interactive Window Cleaning Game (existing)
+    // QUOTE.HTML - Sparkles → Speed Quote Challenge Game
     function quoteEasterEgg(clickCount) {
         if (clickCount <= 5) {
             createSparkles(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
         } else {
-            startWindowCleaningGame();
+            startSpeedQuoteGame();
         }
+    }
+    
+    function startSpeedQuoteGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        `;
+        
+        const title = document.createElement('div');
+        title.textContent = '⚡ Speed Quote Challenge!';
+        title.style.cssText = 'color: white; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 15px;';
+        
+        const instruction = document.createElement('div');
+        instruction.textContent = 'Click the correct service price as fast as you can!';
+        instruction.style.cssText = 'color: white; font-size: 16px; text-align: center; margin-bottom: 20px;';
+        
+        const questionDiv = document.createElement('div');
+        questionDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; min-height: 60px;';
+        
+        const optionsContainer = document.createElement('div');
+        optionsContainer.style.cssText = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;';
+        
+        const scoreDiv = document.createElement('div');
+        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
+        
+        const timerDiv = document.createElement('div');
+        timerDiv.style.cssText = 'color: white; font-size: 18px; text-align: center; margin-top: 10px;';
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '\u2715';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.3); color: white; border: 2px solid white; font-size: 24px; font-weight: bold; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 10002;';
+        closeBtn.addEventListener('click', () => {
+            if (timerInterval) clearInterval(timerInterval);
+            gameContainer.remove();
+        });
+        
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(title);
+        gameContainer.appendChild(instruction);
+        gameContainer.appendChild(questionDiv);
+        gameContainer.appendChild(optionsContainer);
+        gameContainer.appendChild(scoreDiv);
+        gameContainer.appendChild(timerDiv);
+        document.body.appendChild(gameContainer);
+        
+        const services = [
+            { name: 'Window Cleaning', prices: [50, 75, 100, 125, 150] },
+            { name: 'Carpet Cleaning', prices: [80, 100, 120, 150, 200] },
+            { name: 'Inside + Outside Windows', prices: [100, 125, 150, 175, 200] },
+            { name: 'Full House Clean', prices: [150, 200, 250, 300, 350] },
+            { name: 'Office Cleaning', prices: [100, 150, 200, 250, 300] }
+        ];
+        
+        let score = 0;
+        let timeLeft = 30;
+        let timerInterval;
+        
+        function newQuestion() {
+            const service = services[Math.floor(Math.random() * services.length)];
+            const correctPrice = service.prices[Math.floor(Math.random() * service.prices.length)];
+            const allPrices = [...service.prices];
+            
+            // Generate options
+            const options = [correctPrice];
+            while (options.length < 4) {
+                const randomPrice = allPrices[Math.floor(Math.random() * allPrices.length)];
+                if (!options.includes(randomPrice)) {
+                    options.push(randomPrice);
+                }
+            }
+            options.sort(() => Math.random() - 0.5);
+            
+            questionDiv.textContent = `${service.name}: $?`;
+            optionsContainer.innerHTML = '';
+            
+            options.forEach(price => {
+                const btn = document.createElement('button');
+                btn.textContent = `$${price}`;
+                btn.style.cssText = `
+                    background: white;
+                    color: #11998e;
+                    border: none;
+                    padding: 20px;
+                    font-size: 22px;
+                    font-weight: bold;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                `;
+                btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.95)');
+                btn.addEventListener('mouseup', () => btn.style.transform = 'scale(1)');
+                btn.addEventListener('click', () => {
+                    if (price === correctPrice) {
+                        score++;
+                        scoreDiv.textContent = `Score: ${score} 🎯`;
+                        btn.style.background = '#38ef7d';
+                        btn.style.color = 'white';
+                        createSparkles(btn.getBoundingClientRect().left + 50, btn.getBoundingClientRect().top + 20);
+                        
+                        if (score >= 15) {
+                            clearInterval(timerInterval);
+                            title.textContent = '🏆 Quote Expert!';
+                            instruction.textContent = `Perfect! Score: ${score}`;
+                            createConfetti();
+                            setTimeout(() => gameContainer.remove(), 3000);
+                        } else {
+                            setTimeout(newQuestion, 500);
+                        }
+                    } else {
+                        btn.style.background = '#ff6b6b';
+                        btn.style.color = 'white';
+                        setTimeout(() => {
+                            btn.style.background = 'white';
+                            btn.style.color = '#11998e';
+                        }, 300);
+                    }
+                });
+                optionsContainer.appendChild(btn);
+            });
+        }
+        
+        scoreDiv.textContent = 'Score: 0/15';
+        timerDiv.textContent = `Time: ${timeLeft}s`;
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            timerDiv.textContent = `Time: ${timeLeft}s`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                title.textContent = 'Time Up!';
+                instruction.textContent = `Final Score: ${score}/15`;
+                optionsContainer.innerHTML = '';
+                if (score >= 10) createConfetti();
+                setTimeout(() => gameContainer.remove(), 3000);
+            }
+        }, 1000);
+        
+        newQuestion();
     }
     
     // Helper functions
@@ -1603,7 +1805,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Window Cleaning Game (Quote page)
+    // Window Cleaning Game (Window-Washing page)
     function startWindowCleaningGame() {
         const gameContainer = document.createElement('div');
         gameContainer.id = 'window-game-container';
@@ -1612,8 +1814,10 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 400px;
-            height: 500px;
+            width: 90vw;
+            max-width: 400px;
+            height: 85vh;
+            max-height: 500px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
             padding: 20px;
@@ -1653,18 +1857,21 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const closeBtn = document.createElement('button');
-        closeBtn.textContent = '❌';
+        closeBtn.textContent = '✕';
         closeBtn.style.cssText = `
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.3);
             color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            cursor: pointer;
+            border: 2px solid white;
+            font-size: 24px;
             font-weight: bold;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10002;
         `;
         closeBtn.addEventListener('click', () => gameContainer.remove());
         

@@ -2360,3 +2360,14 @@ body {
     }
 }
 
+/* Easter Egg Game Animations */
+@keyframes pulse-glow {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.1);
+        filter: brightness(1.3);
+    }
+}
