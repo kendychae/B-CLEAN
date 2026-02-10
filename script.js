@@ -1144,270 +1144,157 @@ document.addEventListener('DOMContentLoaded', function() {
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90vw;
-            max-width: 600px;
+            max-width: 500px;
             padding: 30px;
-            background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            background: linear-gradient(135deg, #27AE60 0%, #229954 100%);
             border-radius: 20px;
             z-index: 10001;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         `;
         
         const title = document.createElement('div');
-        title.textContent = 'Paint the Dinosaur';
-        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);';
+        title.textContent = 'Catch the Dinosaurs!';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);';
         
-        const canvasContainer = document.createElement('div');
-        canvasContainer.style.cssText = `
+        const scoreDisplay = document.createElement('div');
+        scoreDisplay.textContent = 'Score: 0';
+        scoreDisplay.style.cssText = 'color: white; font-size: 20px; text-align: center; margin-bottom: 15px; font-weight: bold;';
+        
+        const gameArea = document.createElement('div');
+        gameArea.style.cssText = `
+            position: relative;
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
+            height: 350px;
+            background: linear-gradient(180deg, #87CEEB 0%, #F0E68C 100%);
             border-radius: 12px;
-            padding: 20px;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
         `;
         
-        const dinoSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        dinoSVG.setAttribute('viewBox', '0 0 320 240');
-        dinoSVG.style.cssText = 'width: 100%; height: auto; display: block;';
+        const basket = document.createElement('div');
+        basket.textContent = '🧺';
+        basket.style.cssText = `
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            cursor: pointer;
+            transition: left 0.1s;
+        `;
+        gameArea.appendChild(basket);
         
-        // Professional coloring-book-style dinosaur (T-Rex style with open mouth)
-        const dinoParts = [
-            // Main body
-            { id: 'body', path: 'M 100 110 Q 95 100 95 88 Q 95 75 100 68 L 120 62 L 160 60 L 200 62 L 220 68 Q 225 75 225 88 Q 225 100 220 115 L 215 135 Q 210 145 200 148 L 160 150 L 120 148 Q 105 145 100 135 Z', color: '#D5DBDB' },
-            
-            // Belly/chest with horizontal lines
-            { id: 'belly', path: 'M 110 115 Q 108 105 110 95 L 130 93 L 160 92 L 190 93 L 210 95 Q 212 105 210 115 L 205 130 Q 200 138 190 140 L 160 142 L 130 140 Q 115 138 112 130 Z', color: '#ECF0F1' },
-            
-            // Head/face
-            { id: 'head', path: 'M 220 88 L 235 82 Q 245 78 255 78 L 270 80 Q 280 85 283 95 L 280 108 Q 275 115 268 118 L 255 120 Q 245 118 238 112 L 228 100 Q 222 92 222 88 Z', color: '#D5DBDB' },
-            
-            // Upper jaw/snout
-            { id: 'upper_jaw', path: 'M 268 95 Q 275 92 282 92 L 295 95 Q 300 98 300 103 L 298 108 Q 295 112 288 114 L 275 115 Q 268 112 268 108 Z', color: '#D5DBDB' },
-            
-            // Lower jaw/mouth area
-            { id: 'lower_jaw', path: 'M 268 108 L 275 115 Q 282 118 290 118 L 298 115 Q 300 112 298 108 L 290 105 Q 282 105 275 108 Z', color: '#D5DBDB' },
-            
-            // Neck
-            { id: 'neck', path: 'M 220 68 Q 225 62 232 64 L 238 78 L 235 88 Q 230 92 225 88 Z', color: '#D5DBDB' },
-            
-            // Tail - thicker at base
-            { id: 'tail', path: 'M 100 100 Q 85 100 70 103 L 50 108 Q 35 112 25 116 L 15 120 Q 10 122 15 125 L 25 130 Q 40 135 55 140 L 75 145 L 90 148 Q 98 148 100 140 L 102 120 Z', color: '#D5DBDB' },
-            
-            // Front left leg
-            { id: 'front_left_leg', path: 'M 185 148 L 183 168 L 182 188 Q 182 198 185 205 L 187 210 L 193 214 L 197 210 L 199 205 Q 201 198 201 188 L 200 168 L 198 148 Z', color: '#D5DBDB' },
-            
-            // Front right leg
-            { id: 'front_right_leg', path: 'M 210 148 L 208 168 L 207 188 Q 207 198 210 205 L 212 210 L 218 214 L 222 210 L 224 205 Q 226 198 226 188 L 225 168 L 223 148 Z', color: '#D5DBDB' },
-            
-            // Back left leg
-            { id: 'back_left_leg', path: 'M 120 148 L 118 168 L 117 188 Q 117 198 120 205 L 122 210 L 128 214 L 132 210 L 134 205 Q 136 198 136 188 L 135 168 L 133 148 Z', color: '#D5DBDB' },
-            
-            // Back right leg
-            { id: 'back_right_leg', path: 'M 145 148 L 143 168 L 142 188 Q 142 198 145 205 L 147 210 L 153 214 L 157 210 L 159 205 Q 161 198 161 188 L 160 168 L 158 148 Z', color: '#D5DBDB' },
-            
-            // Back spikes/plates - 8 of them
-            { id: 'spike1', path: 'M 115 60 L 118 42 L 122 36 L 126 42 L 128 60 Z', color: '#95A5A6' },
-            { id: 'spike2', path: 'M 135 60 L 138 38 L 142 30 L 146 38 L 148 60 Z', color: '#95A5A6' },
-            { id: 'spike3', path: 'M 155 60 L 158 35 L 162 28 L 166 35 L 168 60 Z', color: '#95A5A6' },
-            { id: 'spike4', path: 'M 175 60 L 178 38 L 182 32 L 186 38 L 188 60 Z', color: '#95A5A6' },
-            { id: 'spike5', path: 'M 195 62 L 198 42 L 202 36 L 206 42 L 208 62 Z', color: '#95A5A6' },
-            { id: 'spike6', path: 'M 105 105 L 107 90 L 110 86 L 113 90 L 115 105 Z', color: '#95A5A6' },
-            { id: 'spike7', path: 'M 95 115 L 97 102 L 100 98 L 103 102 L 105 115 Z', color: '#95A5A6' },
-            { id: 'spike8', path: 'M 88 125 L 90 112 L 93 108 L 96 112 L 98 125 Z', color: '#95A5A6' },
-            
-            // Body spots - multiple circles on body and tail
-            { id: 'spot1', path: 'M 130 80 Q 128 76 130 74 Q 135 72 140 74 Q 142 76 140 80 Q 135 82 130 80 Z', color: '#BDC3C7' },
-            { id: 'spot2', path: 'M 155 85 Q 153 81 155 79 Q 160 77 165 79 Q 167 81 165 85 Q 160 87 155 85 Z', color: '#BDC3C7' },
-            { id: 'spot3', path: 'M 180 78 Q 178 74 180 72 Q 185 70 190 72 Q 192 74 190 78 Q 185 80 180 78 Z', color: '#BDC3C7' },
-            { id: 'spot4', path: 'M 205 82 Q 203 78 205 76 Q 210 74 215 76 Q 217 78 215 82 Q 210 84 205 82 Z', color: '#BDC3C7' },
-            { id: 'spot5', path: 'M 125 105 Q 123 101 125 99 Q 130 97 135 99 Q 137 101 135 105 Q 130 107 125 105 Z', color: '#BDC3C7' },
-            { id: 'spot6', path: 'M 150 110 Q 148 106 150 104 Q 155 102 160 104 Q 162 106 160 110 Q 155 112 150 110 Z', color: '#BDC3C7' },
-            { id: 'spot7', path: 'M 175 108 Q 173 104 175 102 Q 180 100 185 102 Q 187 104 185 108 Q 180 110 175 108 Z', color: '#BDC3C7' },
-            { id: 'spot8', path: 'M 200 112 Q 198 108 200 106 Q 205 104 210 106 Q 212 108 210 112 Q 205 114 200 112 Z', color: '#BDC3C7' },
-            { id: 'spot9', path: 'M 140 125 Q 138 121 140 119 Q 145 117 150 119 Q 152 121 150 125 Q 145 127 140 125 Z', color: '#BDC3C7' },
-            { id: 'spot10', path: 'M 165 130 Q 163 126 165 124 Q 170 122 175 124 Q 177 126 175 130 Q 170 132 165 130 Z', color: '#BDC3C7' },
-            { id: 'spot11', path: 'M 190 127 Q 188 123 190 121 Q 195 119 200 121 Q 202 123 200 127 Q 195 129 190 127 Z', color: '#BDC3C7' },
-            { id: 'spot12', path: 'M 75 115 Q 73 112 75 110 Q 79 108 83 110 Q 85 112 83 115 Q 79 117 75 115 Z', color: '#BDC3C7' },
-            { id: 'spot13', path: 'M 60 120 Q 58 117 60 115 Q 64 113 68 115 Q 70 117 68 120 Q 64 122 60 120 Z', color: '#BDC3C7' },
-            { id: 'spot14', path: 'M 45 128 Q 43 125 45 123 Q 49 121 53 123 Q 55 125 53 128 Q 49 130 45 128 Z', color: '#BDC3C7' },
-            { id: 'spot15', path: 'M 30 135 Q 28 132 30 130 Q 34 128 38 130 Q 40 132 38 135 Q 34 137 30 135 Z', color: '#BDC3C7' }
-        ];
+        let score = 0;
+        let gameActive = true;
+        let fallingDinos = [];
+        const dinoEmojis = ['🦕', '🦖', '🦴'];
         
-        let paintedParts = new Set();
-        let currentColor = '#27AE60';
+        // Mouse and touch controls for basket
+        gameArea.addEventListener('mousemove', (e) => {
+            if (!gameActive) return;
+            const rect = gameArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            basket.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
+        });
         
-        dinoParts.forEach(part => {
-            const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            pathElement.setAttribute('d', part.path);
-            pathElement.setAttribute('fill', part.color);
-            pathElement.setAttribute('stroke', '#2C3E50');
-            pathElement.setAttribute('stroke-width', '2.5');
-            pathElement.setAttribute('stroke-linejoin', 'round');
-            pathElement.setAttribute('stroke-linecap', 'round');
-            pathElement.style.cssText = 'cursor: pointer; transition: fill 0.3s ease;';
-            pathElement.dataset.partId = part.id;
+        gameArea.addEventListener('touchmove', (e) => {
+            if (!gameActive) return;
+            e.preventDefault();
+            const rect = gameArea.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = touch.clientX - rect.left;
+            basket.style.left = Math.max(30, Math.min(rect.width - 30, x)) + 'px';
+        });
+        
+        function createFallingDino() {
+            if (!gameActive) return;
             
-            pathElement.addEventListener('click', function() {
-                if (!paintedParts.has(part.id)) {
-                    this.setAttribute('fill', currentColor);
-                    paintedParts.add(part.id);
+            const dino = document.createElement('div');
+            const dinoType = dinoEmojis[Math.floor(Math.random() * dinoEmojis.length)];
+            dino.textContent = dinoType;
+            dino.style.cssText = `
+                position: absolute;
+                top: -50px;
+                left: ${Math.random() * 90 + 5}%;
+                font-size: 40px;
+                animation: drop-fall 3s linear forwards;
+            `;
+            
+            gameArea.appendChild(dino);
+            fallingDinos.push({ element: dino, caught: false });
+            
+            // Check collision
+            const checkInterval = setInterval(() => {
+                if (!gameActive || !dino.parentElement) {
+                    clearInterval(checkInterval);
+                    return;
+                }
+                
+                const dinoRect = dino.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
+                
+                // Check if dino reaches basket
+                if (dinoRect.bottom >= basketRect.top &&
+                    dinoRect.left < basketRect.right &&
+                    dinoRect.right > basketRect.left &&
+                    !fallingDinos.find(d => d.element === dino).caught) {
                     
-                    // Create paint splash effect
-                    const bbox = this.getBBox();
-                    const containerRect = canvasContainer.getBoundingClientRect();
-                    const svgRect = dinoSVG.getBoundingClientRect();
+                    fallingDinos.find(d => d.element === dino).caught = true;
+                    score++;
+                    scoreDisplay.textContent = `Score: ${score}`;
                     
-                    for (let i = 0; i < 6; i++) {
+                    // Create sparkle effect
+                    for (let i = 0; i < 8; i++) {
                         setTimeout(() => {
-                            const splash = document.createElement('div');
-                            splash.style.cssText = `
+                            const sparkle = document.createElement('div');
+                            sparkle.textContent = '✨';
+                            sparkle.style.cssText = `
                                 position: fixed;
-                                left: ${svgRect.left + (bbox.x + bbox.width / 2) / 320 * svgRect.width + (Math.random() - 0.5) * 30}px;
-                                top: ${svgRect.top + (bbox.y + bbox.height / 2) / 240 * svgRect.height + (Math.random() - 0.5) * 30}px;
-                                width: 8px;
-                                height: 8px;
-                                background: ${currentColor};
-                                border-radius: 50%;
+                                left: ${basketRect.left + basketRect.width / 2}px;
+                                top: ${basketRect.top}px;
+                                font-size: 20px;
                                 animation: sparkle-fade-out 0.8s ease-out forwards;
                                 pointer-events: none;
                                 z-index: 10010;
                             `;
-                            document.body.appendChild(splash);
-                            setTimeout(() => splash.remove(), 800);
+                            document.body.appendChild(sparkle);
+                            setTimeout(() => sparkle.remove(), 800);
                         }, i * 50);
                     }
                     
-                    if (paintedParts.size === dinoParts.length) {
+                    dino.remove();
+                    clearInterval(checkInterval);
+                    
+                    // Win condition
+                    if (score >= 15) {
+                        gameActive = false;
+                        title.textContent = '🎉 Dino Master! 🎉';
+                        createAboutCelebration();
                         setTimeout(() => {
-                            title.textContent = 'Masterpiece Complete!';
-                            createAboutCelebration();
-                            setTimeout(() => {
-                                gameContainer.style.opacity = '0';
-                                gameContainer.style.transition = 'opacity 0.5s ease';
-                                setTimeout(() => gameContainer.remove(), 500);
-                            }, 2500);
-                        }, 300);
+                            gameContainer.style.opacity = '0';
+                            gameContainer.style.transition = 'opacity 0.5s ease';
+                            setTimeout(() => gameContainer.remove(), 500);
+                        }, 2500);
                     }
                 }
-            });
-            
-            dinoSVG.appendChild(pathElement);
-        });
-        
-        // Add facial features (matching reference image)
-        // Large expressive eye with pupil and highlight
-        const eyeWhite = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-        eyeWhite.setAttribute('cx', '265');
-        eyeWhite.setAttribute('cy', '85');
-        eyeWhite.setAttribute('rx', '10');
-        eyeWhite.setAttribute('ry', '12');
-        eyeWhite.setAttribute('fill', 'white');
-        eyeWhite.setAttribute('stroke', '#2C3E50');
-        eyeWhite.setAttribute('stroke-width', '2.5');
-        dinoSVG.appendChild(eyeWhite);
-        
-        // Pupil
-        const pupil = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        pupil.setAttribute('cx', '268');
-        pupil.setAttribute('cy', '88');
-        pupil.setAttribute('r', '5');
-        pupil.setAttribute('fill', '#2C3E50');
-        dinoSVG.appendChild(pupil);
-        
-        // Eye shine/highlight
-        const shine = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        shine.setAttribute('cx', '263');
-        shine.setAttribute('cy', '83');
-        shine.setAttribute('r', '3');
-        shine.setAttribute('fill', 'white');
-        dinoSVG.appendChild(shine);
-        
-        // Nostril
-        const nostril = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        nostril.setAttribute('cx', '290');
-        nostril.setAttribute('cy', '95');
-        nostril.setAttribute('r', '2.5');
-        nostril.setAttribute('fill', '#2C3E50');
-        dinoSVG.appendChild(nostril);
-        
-        // Teeth along open mouth (reference image shows visible teeth)
-        const teethPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        teethPath.setAttribute('d', 'M 280 100 L 282 106 L 284 100 M 286 100 L 288 106 L 290 100 M 292 100 L 294 106 L 296 100');
-        teethPath.setAttribute('stroke', '#2C3E50');
-        teethPath.setAttribute('stroke-width', '1.5');
-        teethPath.setAttribute('fill', 'none');
-        teethPath.setAttribute('stroke-linecap', 'round');
-        dinoSVG.appendChild(teethPath);
-        
-        // Smile/mouth line
-        const smile = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        smile.setAttribute('d', 'M 280 110 Q 285 113 292 114');
-        smile.setAttribute('stroke', '#2C3E50');
-        smile.setAttribute('stroke-width', '2.5');
-        smile.setAttribute('fill', 'none');
-        smile.setAttribute('stroke-linecap', 'round');
-        dinoSVG.appendChild(smile);
-        
-        canvasContainer.appendChild(dinoSVG);
-        
-        // Color palette
-        const paletteContainer = document.createElement('div');
-        paletteContainer.style.cssText = `
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        `;
-        
-        const colors = [
-            '#27AE60', '#E74C3C', '#3498DB', '#F39C12', 
-            '#9B59B6', '#1ABC9C', '#E67E22', '#34495E'
-        ];
-        
-        colors.forEach(color => {
-            const colorBtn = document.createElement('button');
-            colorBtn.style.cssText = `
-                width: 45px;
-                height: 45px;
-                border-radius: 50%;
-                background: ${color};
-                border: 3px solid ${color === currentColor ? 'white' : 'rgba(255,255,255,0.3)'};
-                cursor: pointer;
-                transition: all 0.2s;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            `;
-            
-            colorBtn.addEventListener('click', () => {
-                currentColor = color;
-                paletteContainer.querySelectorAll('button').forEach(btn => {
-                    btn.style.border = '3px solid rgba(255,255,255,0.3)';
-                    btn.style.transform = 'scale(1)';
-                });
-                colorBtn.style.border = '3px solid white';
-                colorBtn.style.transform = 'scale(1.1)';
-            });
-            
-            colorBtn.addEventListener('mouseenter', () => {
-                if (color !== currentColor) {
-                    colorBtn.style.transform = 'scale(1.05)';
+                
+                // Remove if missed
+                if (dinoRect.top > gameArea.getBoundingClientRect().bottom) {
+                    dino.remove();
+                    clearInterval(checkInterval);
                 }
-            });
-            
-            colorBtn.addEventListener('mouseleave', () => {
-                if (color !== currentColor) {
-                    colorBtn.style.transform = 'scale(1)';
-                }
-            });
-            
-            if (color === currentColor) {
-                colorBtn.style.border = '3px solid white';
-                colorBtn.style.transform = 'scale(1.1)';
+            }, 50);
+        }
+        
+        // Spawn dinosaurs
+        const spawnInterval = setInterval(() => {
+            if (!gameActive) {
+                clearInterval(spawnInterval);
+                return;
             }
-            
-            paletteContainer.appendChild(colorBtn);
-        });
+            createFallingDino();
+        }, 800);
         
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
@@ -1427,14 +1314,16 @@ document.addEventListener('DOMContentLoaded', function() {
             z-index: 10002;
         `;
         closeBtn.addEventListener('click', () => {
+            gameActive = false;
+            clearInterval(spawnInterval);
             createQuickCelebration();
             setTimeout(() => gameContainer.remove(), 800);
         });
         
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
-        gameContainer.appendChild(canvasContainer);
-        gameContainer.appendChild(paletteContainer);
+        gameContainer.appendChild(scoreDisplay);
+        gameContainer.appendChild(gameArea);
         document.body.appendChild(gameContainer);
     }
     
