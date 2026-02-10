@@ -1240,10 +1240,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(gameContainer);
         
         const dinoTypes = [
-            { color: '#228b22', size: 45, shape: 'trex' },
-            { color: '#32cd32', size: 40, shape: 'long' },
-            { color: '#3cb371', size: 35, shape: 'stego' },
-            { color: '#00ff7f', size: 38, shape: 'raptor' }
+            { color: '#2C3E50', size: 80, shape: 'trex' },
+            { color: '#34495E', size: 75, shape: 'stego' },
+            { color: '#1C2833', size: 70, shape: 'raptor' }
         ];
         
         let score = 0;
@@ -1272,208 +1271,124 @@ document.addEventListener('DOMContentLoaded', function() {
             dino.style.cssText = `
                 position: absolute;
                 left: ${Math.random() * 85}%;
-                top: -50px;
+                top: -80px;
                 width: ${type.size}px;
                 height: ${type.size}px;
                 animation: drop-fall 3.5s linear forwards;
-                filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.7));
+                filter: drop-shadow(5px 8px 12px rgba(0,0,0,0.5));
             `;
             
-            // Aztec-style colors with earthy tones
-            const baseColor = type.color;
-            const accentColor = type.color === '#8B4513' ? '#D2691E' : 
-                                type.color === '#556B2F' ? '#8B7355' :
-                                type.color === '#A0522D' ? '#CD8500' : '#C19A6B';
-            const outline = '#2C1810';
+            const shadowColor = type.color;
             
             if (type.shape === 'trex') {
-                // Aztec T-Rex with geometric patterns
+                // T-Rex Shadow Silhouette - powerful and imposing
                 dino.innerHTML = `
-                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
-                        <defs>
-                            <pattern id="aztecPattern1" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
-                                <rect width="6" height="6" fill="${baseColor}"/>
-                                <path d="M 0 3 L 3 0 L 6 3 L 3 6 Z" fill="${accentColor}"/>
-                            </pattern>
-                        </defs>
-                        <!-- Body - angular, stamped design -->
-                        <path d="M 28 45 L 20 38 L 18 28 L 22 20 L 30 18 L 36 22 L 38 32 L 35 42 Z" 
-                              fill="url(#aztecPattern1)" stroke="${outline}" stroke-width="3"/>
-                        <!-- Head - geometric and angular -->
-                        <path d="M 22 20 L 18 16 L 16 10 L 20 6 L 30 8 L 34 12 L 32 18 L 28 20 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="3"/>
-                        <!-- Jaw pattern -->
-                        <path d="M 30 12 L 36 10 L 38 13 L 34 15 Z" 
-                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
-                        <!-- Geometric teeth -->
-                        <path d="M 30 14 L 32 14 L 31 16 Z M 33 14 L 35 14 L 34 16 Z" 
-                              fill="${outline}"/>
-                        <!-- Eye - geometric stamp -->
-                        <rect x="24" y="10" width="4" height="4" fill="${outline}"/>
-                        <rect x="25" y="11" width="2" height="2" fill="#FFF"/>
-                        <!-- Legs - angular Aztec style -->
-                        <path d="M 24 42 L 22 52 L 20 58 L 24 58 L 26 52 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <path d="M 32 42 L 30 52 L 28 58 L 32 58 L 34 52 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <!-- Leg patterns -->
-                        <rect x="22" y="48" width="2" height="3" fill="${accentColor}"/>
-                        <rect x="30" y="48" width="2" height="3" fill="${accentColor}"/>
-                        <!-- Arms - small angular -->
-                        <path d="M 24 28 L 20 30 L 18 32 L 20 34 Z" 
-                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
-                        <!-- Tail - geometric segments -->
-                        <path d="M 36 36 L 42 34 L 48 30 L 46 36 L 40 38 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <path d="M 42 32 L 46 32 L 44 34 Z" fill="${accentColor}"/>
-                        <!-- Body patterns -->
-                        <circle cx="28" cy="32" r="2" fill="${accentColor}"/>
-                        <rect x="30" y="28" width="3" height="3" fill="${accentColor}"/>
-                        <path d="M 26 36 L 28 36 L 27 38 Z" fill="${accentColor}"/>
-                    </svg>
-                `;
-            } else if (type.shape === 'long') {
-                // Aztec Long-neck with stepped patterns
-                dino.innerHTML = `
-                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
-                        <defs>
-                            <pattern id="aztecPattern2" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-                                <rect width="8" height="8" fill="${baseColor}"/>
-                                <rect x="2" y="2" width="4" height="4" fill="${accentColor}"/>
-                            </pattern>
-                        </defs>
-                        <!-- Body - rectangular Aztec form -->
-                        <path d="M 38 48 L 30 44 L 26 38 L 30 32 L 44 32 L 52 36 L 54 44 L 48 50 Z" 
-                              fill="url(#aztecPattern2)" stroke="${outline}" stroke-width="3"/>
-                        <!-- Long neck - stepped geometric -->
-                        <path d="M 30 38 L 26 32 L 24 24 L 22 16 L 20 12 L 18 10 L 20 8 L 24 10 L 26 14 L 28 22 L 30 30 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <!-- Neck patterns - stepped design -->
-                        <rect x="24" y="14" width="3" height="3" fill="${accentColor}"/>
-                        <rect x="25" y="22" width="3" height="3" fill="${accentColor}"/>
-                        <rect x="26" y="30" width="3" height="3" fill="${accentColor}"/>
-                        <!-- Head - angular geometric -->
-                        <path d="M 18 10 L 14 8 L 10 8 L 8 10 L 10 14 L 14 14 L 18 12 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <!-- Eye stamp -->
-                        <circle cx="14" cy="10" r="2" fill="${outline}"/>
-                        <circle cx="14" cy="10" r="1" fill="#FFF"/>
-                        <!-- Legs - geometric columns -->
-                        <path d="M 34 46 L 32 54 L 30 60 L 34 60 L 36 54 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
-                        <path d="M 44 46 L 42 54 L 40 60 L 44 60 L 46 54 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
-                        <path d="M 50 46 L 48 54 L 46 60 L 50 60 L 52 54 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
-                        <!-- Leg decoration -->
-                        <rect x="32" y="50" width="2" height="4" fill="${accentColor}"/>
-                        <rect x="42" y="50" width="2" height="4" fill="${accentColor}"/>
-                        <rect x="48" y="50" width="2" height="4" fill="${accentColor}"/>
-                        <!-- Tail - geometric segments -->
-                        <path d="M 52 40 L 58 38 L 62 36 L 60 40 L 54 42 Z" 
-                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
-                        <!-- Body patterns -->
-                        <rect x="36" y="38" width="4" height="4" fill="${accentColor}"/>
-                        <circle cx="44" cy="40" r="2" fill="${accentColor}"/>
+                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                        <!-- Shadow silhouette of T-Rex -->
+                        <path d="
+                            M 35 75 
+                            L 32 62 L 30 50 L 32 38 L 35 30 
+                            L 38 25 L 40 18 L 42 12 
+                            L 45 8 L 50 6 L 55 8 
+                            L 58 12 L 60 18 L 62 25 
+                            L 65 30 L 68 38 L 70 50 
+                            L 68 62 L 65 72 
+                            L 62 78 L 65 88 L 68 96 
+                            L 62 96 L 60 85 L 58 75 
+                            L 55 70 L 52 75 L 50 85 L 48 96 
+                            L 42 96 L 44 88 L 46 78 
+                            L 48 72 L 45 70 
+                            L 40 75 L 38 82 L 36 90 L 34 96 
+                            L 28 96 L 30 88 
+                            Z
+                            M 40 28 
+                            L 38 32 L 35 35 L 32 36 L 30 34 L 32 32 
+                            Z
+                            M 62 18 
+                            L 68 16 L 72 18 L 75 22 L 72 24 L 68 22 L 65 20 
+                            Z
+                        " fill="${shadowColor}" opacity="0.9"/>
                     </svg>
                 `;
             } else if (type.shape === 'stego') {
-                // Aztec Stegosaurus with plate patterns
+                // Stegosaurus Shadow Silhouette - distinctive back plates
                 dino.innerHTML = `
-                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
-                        <defs>
-                            <pattern id="aztecPattern3" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
-                                <rect width="6" height="6" fill="${baseColor}"/>
-                                <path d="M 3 0 L 6 3 L 3 6 L 0 3 Z" fill="${accentColor}"/>
-                            </pattern>
-                        </defs>
-                        <!-- Body - geometric and angular -->
-                        <path d="M 20 46 L 18 40 L 20 34 L 28 32 L 42 32 L 52 36 L 54 44 L 48 48 Z" 
-                              fill="url(#aztecPattern3)" stroke="${outline}" stroke-width="3"/>
-                        <!-- Head - blocky geometric -->
-                        <path d="M 20 40 L 16 34 L 14 28 L 16 24 L 22 26 L 24 32 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <!-- Eye stamp -->
-                        <rect x="17" y="28" width="3" height="3" fill="${outline}"/>
-                        <rect x="18" y="29" width="1" height="1" fill="#FFF"/>
-                        <!-- Iconic back plates - angular Aztec triangles -->
-                        <path d="M 24 32 L 26 14 L 28 32 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <rect x="26" y="20" width="1" height="6" fill="${accentColor}"/>
-                        <path d="M 28 32 L 30 12 L 32 32 Z" 
-                              fill="${accentColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <path d="M 30 18 L 32 18 L 31 22 Z" fill="${baseColor}"/>
-                        <path d="M 32 32 L 34 14 L 36 32 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <rect x="34" y="20" width="1" height="6" fill="${accentColor}"/>
-                        <path d="M 36 32 L 38 16 L 40 32 Z" 
-                              fill="${accentColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <path d="M 38 22 L 40 22 L 39 26 Z" fill="${baseColor}"/>
-                        <path d="M 40 32 L 42 18 L 44 32 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <!-- Legs - geometric columns -->
-                        <path d="M 26 46 L 24 54 L 22 60 L 26 60 L 28 54 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
-                        <path d="M 36 46 L 34 54 L 32 60 L 36 60 L 38 54 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
-                        <path d="M 46 46 L 44 54 L 42 60 L 46 60 L 48 54 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2"/>
-                        <!-- Leg patterns -->
-                        <rect x="24" y="50" width="2" height="3" fill="${accentColor}"/>
-                        <rect x="34" y="50" width="2" height="3" fill="${accentColor}"/>
-                        <rect x="44" y="50" width="2" height="3" fill="${accentColor}"/>
-                        <!-- Tail - geometric with spikes -->
-                        <path d="M 50 40 L 56 38 L 60 36 L 58 40 L 52 42 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <path d="M 56 36 L 58 32 L 60 36 Z" fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
+                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                        <!-- Shadow silhouette of Stegosaurus -->
+                        <path d="
+                            M 15 72 
+                            L 12 65 L 12 58 L 15 52 
+                            L 20 48 L 25 46 L 30 45 
+                            L 35 45 L 40 45 L 45 45 
+                            L 50 45 L 55 45 L 60 46 
+                            L 65 47 L 70 49 L 75 52 
+                            L 78 56 L 80 62 L 78 68 
+                            L 75 72 L 72 76 
+                            L 70 82 L 68 90 L 66 96 
+                            L 60 96 L 62 88 L 64 80 L 65 75 
+                            L 58 75 L 56 82 L 54 90 L 52 96 
+                            L 46 96 L 48 88 L 50 80 L 51 75 
+                            L 44 75 L 42 82 L 40 90 L 38 96 
+                            L 32 96 L 34 88 L 36 80 L 37 75 
+                            L 30 75 L 28 82 L 26 90 L 24 96 
+                            L 18 96 L 20 88 L 22 80 L 23 75 
+                            L 18 72 
+                            Z
+                            M 30 45 L 32 20 L 34 10 L 36 20 L 38 45 Z
+                            M 38 45 L 40 18 L 42 8 L 44 18 L 46 45 Z
+                            M 46 45 L 48 15 L 50 5 L 52 15 L 54 45 Z
+                            M 54 45 L 56 18 L 58 8 L 60 18 L 62 45 Z
+                            M 62 45 L 64 22 L 66 12 L 68 22 L 70 45 Z
+                            M 12 60 
+                            L 8 55 L 6 50 L 8 48 L 12 50 
+                            Z
+                            M 75 55 
+                            L 80 52 L 85 52 L 88 55 L 85 58 L 80 58 
+                            Z
+                        " fill="${shadowColor}" opacity="0.9"/>
                     </svg>
                 `;
             } else {
-                // Aztec Raptor - angular and fierce
+                // Velociraptor Shadow Silhouette - sleek and predatory
                 dino.innerHTML = `
-                    <svg viewBox="0 0 70 70" style="width: 100%; height: 100%;">
-                        <defs>
-                            <pattern id="aztecPattern4" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
-                                <rect width="5" height="5" fill="${baseColor}"/>
-                                <path d="M 0 0 L 5 0 L 2.5 5 Z" fill="${accentColor}"/>
-                            </pattern>
-                        </defs>
-                        <!-- Body - sleek angular form -->
-                        <path d="M 30 44 L 24 38 L 22 30 L 26 22 L 32 20 L 38 24 L 40 34 L 36 42 Z" 
-                              fill="url(#aztecPattern4)" stroke="${outline}" stroke-width="3"/>
-                        <!-- Head - sharp and angular -->
-                        <path d="M 26 22 L 22 18 L 20 12 L 22 8 L 28 6 L 34 8 L 36 14 L 32 20 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <!-- Snout - aggressive angular -->
-                        <path d="M 32 12 L 38 10 L 42 12 L 38 14 L 34 14 Z" 
-                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
-                        <!-- Teeth marks -->
-                        <path d="M 36 12 L 38 12 L 37 14 Z M 38 12 L 40 12 L 39 14 Z" 
-                              fill="${outline}"/>
-                        <!-- Eye - fierce geometric -->
-                        <path d="M 26 12 L 30 10 L 30 14 Z" fill="${outline}"/>
-                        <circle cx="28" cy="12" r="1.5" fill="#FFD700"/>
-                        <circle cx="28" cy="12" r="0.8" fill="#000"/>
-                        <!-- Strong arms with claws -->
-                        <path d="M 28 28 L 24 30 L 20 34 L 22 36 L 26 32 Z" 
-                              fill="${accentColor}" stroke="${outline}" stroke-width="2"/>
-                        <path d="M 20 34 L 18 36 M 20 34 L 18 32" 
-                              stroke="${outline}" stroke-width="2" stroke-linecap="square"/>
-                        <!-- Powerful legs -->
-                        <path d="M 28 42 L 26 52 L 24 60 L 28 60 L 30 52 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <path d="M 36 42 L 34 52 L 32 60 L 36 60 L 38 52 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <!-- Sickle claw - angular and deadly -->
-                        <path d="M 24 58 L 20 60 L 19 58 L 22 56 Z" 
-                              fill="${outline}"/>
-                        <!-- Tail - geometric segments -->
-                        <path d="M 38 36 L 44 34 L 50 30 L 48 34 L 42 36 Z" 
-                              fill="${baseColor}" stroke="${outline}" stroke-width="2.5"/>
-                        <path d="M 44 32 L 48 32 L 46 34 Z" fill="${accentColor}"/>
-                        <!-- Body patterns - angular stripes -->
-                        <path d="M 30 30 L 34 30 L 32 34 Z" fill="${accentColor}"/>
-                        <rect x="28" y="36" width="6" height="2" fill="${accentColor}"/>
+                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                        <!-- Shadow silhouette of Velociraptor -->
+                        <path d="
+                            M 38 70 
+                            L 35 58 L 33 48 L 32 38 
+                            L 33 30 L 35 24 L 38 20 
+                            L 40 15 L 42 10 L 45 7 
+                            L 50 5 L 55 7 L 58 10 
+                            L 60 14 L 62 18 L 64 22 
+                            L 66 26 L 68 32 L 70 40 
+                            L 71 48 L 70 56 L 68 64 
+                            L 65 70 L 62 74 
+                            L 60 80 L 58 88 L 56 96 
+                            L 50 96 L 52 86 L 54 78 L 55 72 
+                            L 48 72 L 46 80 L 44 88 L 42 96 
+                            L 36 96 L 38 86 L 40 78 L 41 72 
+                            Z
+                            M 38 35 
+                            L 35 38 L 30 42 L 26 45 
+                            L 22 47 L 18 48 L 15 46 
+                            L 17 43 L 20 41 L 24 38 
+                            L 28 35 L 32 33 
+                            Z
+                            M 60 18 
+                            L 65 15 L 70 14 L 75 15 
+                            L 78 18 L 76 20 L 72 20 
+                            L 68 19 L 64 19 
+                            Z
+                            M 68 45 
+                            L 73 43 L 78 42 L 82 43 
+                            L 85 46 L 83 48 L 78 48 
+                            L 73 47 L 70 46 
+                            Z
+                            M 36 92 
+                            L 32 88 L 28 86 L 26 88 
+                            L 28 92 L 32 94 
+                            Z
+                        " fill="${shadowColor}" opacity="0.9"/>
                     </svg>
                 `;
             }
