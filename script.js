@@ -1168,22 +1168,51 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const dinoSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        dinoSVG.setAttribute('viewBox', '0 0 240 160');
+        dinoSVG.setAttribute('viewBox', '0 0 280 200');
         dinoSVG.style.cssText = 'width: 100%; height: auto; display: block;';
         
-        // Professional coloring-book-style dinosaur parts
+        // Professional coloring-book-style dinosaur parts (matching reference image)
         const dinoParts = [
-            { id: 'body', path: 'M 40 80 Q 35 70 35 60 Q 35 50 40 45 L 60 40 L 100 38 L 140 40 L 160 45 Q 165 50 165 60 Q 165 70 160 80 L 155 95 Q 150 105 140 108 L 100 110 L 60 108 Q 50 105 45 95 Z', color: '#BDC3C7' },
-            { id: 'head', path: 'M 160 60 L 170 55 Q 180 50 190 50 Q 200 50 208 55 L 215 65 Q 218 75 215 85 L 208 92 Q 200 95 190 95 Q 180 95 172 92 L 165 85 Q 160 75 160 65 Z', color: '#BDC3C7' },
-            { id: 'neck', path: 'M 160 45 Q 165 40 170 42 L 175 50 L 170 58 Q 165 60 160 58 Z', color: '#BDC3C7' },
-            { id: 'tail', path: 'M 40 70 Q 30 70 20 72 Q 10 75 5 78 Q 2 80 5 82 Q 10 85 20 88 Q 30 90 40 90 L 45 80 Z', color: '#BDC3C7' },
-            { id: 'front_leg', path: 'M 140 108 L 138 125 L 137 140 Q 137 148 140 152 L 148 155 Q 152 152 152 148 L 151 140 L 150 125 L 148 108 Z', color: '#BDC3C7' },
-            { id: 'back_leg', path: 'M 70 108 L 68 125 L 67 140 Q 67 148 70 152 L 78 155 Q 82 152 82 148 L 81 140 L 80 125 L 78 108 Z', color: '#BDC3C7' },
-            { id: 'plate1', path: 'M 65 38 L 70 15 L 75 38 Z', color: '#95A5A6' },
-            { id: 'plate2', path: 'M 85 38 L 90 12 L 95 38 Z', color: '#95A5A6' },
-            { id: 'plate3', path: 'M 105 38 L 110 10 L 115 38 Z', color: '#95A5A6' },
-            { id: 'plate4', path: 'M 125 38 L 130 12 L 135 38 Z', color: '#95A5A6' },
-            { id: 'plate5', path: 'M 145 40 L 150 18 L 155 40 Z', color: '#95A5A6' }
+            // Main body with rounded, natural shape
+            { id: 'body', path: 'M 80 95 Q 75 85 75 75 Q 75 60 82 52 L 100 48 L 140 47 L 180 48 L 195 52 Q 202 60 202 75 Q 202 90 197 100 L 190 115 Q 182 125 170 128 L 140 130 L 100 128 Q 88 125 83 115 Z', color: '#BDC3C7' },
+            
+            // Head with proper proportions and snout
+            { id: 'head', path: 'M 195 75 L 205 70 Q 215 65 225 65 L 240 68 Q 248 72 250 80 L 248 92 Q 245 100 238 105 L 225 108 Q 215 108 208 105 L 202 95 Q 197 85 197 78 Z', color: '#BDC3C7' },
+            
+            // Snout/mouth area
+            { id: 'snout', path: 'M 238 88 Q 245 88 250 90 L 252 95 Q 250 98 245 98 L 238 97 Q 235 95 235 92 Z', color: '#D5DBDB' },
+            
+            // Neck connecting head to body
+            { id: 'neck', path: 'M 195 52 Q 200 48 207 50 L 210 65 L 205 72 Q 200 75 195 72 Z', color: '#BDC3C7' },
+            
+            // Tail with natural taper
+            { id: 'tail', path: 'M 80 85 Q 65 85 50 88 L 35 92 Q 20 96 12 98 L 8 100 Q 10 102 15 104 L 30 108 Q 45 112 60 115 L 75 117 L 80 110 L 82 100 Z', color: '#BDC3C7' },
+            
+            // Front leg with toes
+            { id: 'front_leg', path: 'M 170 128 L 168 145 L 167 162 Q 167 172 170 178 L 172 182 L 178 185 L 182 182 L 184 178 Q 186 172 186 162 L 185 145 L 183 128 Z', color: '#BDC3C7' },
+            
+            // Back leg with toes  
+            { id: 'back_leg', path: 'M 100 128 L 98 145 L 97 162 Q 97 172 100 178 L 102 182 L 108 185 L 112 182 L 114 178 Q 116 172 116 162 L 115 145 L 113 128 Z', color: '#BDC3C7' },
+            
+            // Front foot/toes
+            { id: 'front_foot', path: 'M 172 182 Q 170 188 172 190 L 176 192 L 182 190 Q 184 188 182 182 Z M 174 190 L 174 194 M 178 191 L 178 195 M 181 190 L 181 193', color: '#95A5A6' },
+            
+            // Back foot/toes
+            { id: 'back_foot', path: 'M 102 182 Q 100 188 102 190 L 106 192 L 112 190 Q 114 188 112 182 Z M 104 190 L 104 194 M 108 191 L 108 195 M 111 190 L 111 193', color: '#95A5A6' },
+            
+            // Back plates (stegosaurus style) - 5 distinct plates
+            { id: 'plate1', path: 'M 95 47 Q 97 38 100 28 L 103 18 L 106 28 Q 108 38 110 47 Z', color: '#7F8C8D' },
+            { id: 'plate2', path: 'M 115 47 Q 117 35 120 22 L 123 10 L 126 22 Q 128 35 130 47 Z', color: '#7F8C8D' },
+            { id: 'plate3', path: 'M 140 47 Q 142 32 145 18 L 148 8 L 151 18 Q 153 32 155 47 Z', color: '#7F8C8D' },
+            { id: 'plate4', path: 'M 165 47 Q 167 35 170 22 L 173 12 L 176 22 Q 178 35 180 47 Z', color: '#7F8C8D' },
+            { id: 'plate5', path: 'M 185 48 Q 187 38 190 28 L 193 20 L 196 28 Q 198 38 200 48 Z', color: '#7F8C8D' },
+            
+            // Body spots/patterns
+            { id: 'spot1', path: 'M 110 75 Q 108 70 110 68 Q 115 66 120 68 Q 122 70 120 75 Q 115 77 110 75 Z', color: '#95A5A6' },
+            { id: 'spot2', path: 'M 135 80 Q 133 76 135 74 Q 140 72 145 74 Q 147 76 145 80 Q 140 82 135 80 Z', color: '#95A5A6' },
+            { id: 'spot3', path: 'M 160 72 Q 158 68 160 66 Q 165 64 170 66 Q 172 68 170 72 Q 165 74 160 72 Z', color: '#95A5A6' },
+            { id: 'spot4', path: 'M 115 95 Q 113 92 115 90 Q 120 88 125 90 Q 127 92 125 95 Q 120 97 115 95 Z', color: '#95A5A6' },
+            { id: 'spot5', path: 'M 150 100 Q 148 96 150 94 Q 155 92 160 94 Q 162 96 160 100 Q 155 102 150 100 Z', color: '#95A5A6' }
         ];
         
         let paintedParts = new Set();
@@ -1247,13 +1276,50 @@ document.addEventListener('DOMContentLoaded', function() {
             dinoSVG.appendChild(pathElement);
         });
         
-        // Add eye detail
-        const eye = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        eye.setAttribute('cx', '195');
-        eye.setAttribute('cy', '70');
-        eye.setAttribute('r', '5');
-        eye.setAttribute('fill', '#2C3E50');
-        dinoSVG.appendChild(eye);
+        // Add facial features
+        // Large expressive eye
+        const eyeWhite = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        eyeWhite.setAttribute('cx', '230');
+        eyeWhite.setAttribute('cy', '78');
+        eyeWhite.setAttribute('rx', '8');
+        eyeWhite.setAttribute('ry', '10');
+        eyeWhite.setAttribute('fill', 'white');
+        eyeWhite.setAttribute('stroke', '#2C3E50');
+        eyeWhite.setAttribute('stroke-width', '2');
+        dinoSVG.appendChild(eyeWhite);
+        
+        // Pupil
+        const pupil = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        pupil.setAttribute('cx', '231');
+        pupil.setAttribute('cy', '80');
+        pupil.setAttribute('r', '4');
+        pupil.setAttribute('fill', '#2C3E50');
+        dinoSVG.appendChild(pupil);
+        
+        // Eye shine/highlight
+        const shine = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        shine.setAttribute('cx', '229');
+        shine.setAttribute('cy', '77');
+        shine.setAttribute('r', '2');
+        shine.setAttribute('fill', 'white');
+        dinoSVG.appendChild(shine);
+        
+        // Nostril
+        const nostril = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        nostril.setAttribute('cx', '245');
+        nostril.setAttribute('cy', '90');
+        nostril.setAttribute('r', '2');
+        nostril.setAttribute('fill', '#2C3E50');
+        dinoSVG.appendChild(nostril);
+        
+        // Smile line
+        const smile = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        smile.setAttribute('d', 'M 238 98 Q 242 102 246 100');
+        smile.setAttribute('stroke', '#2C3E50');
+        smile.setAttribute('stroke-width', '2');
+        smile.setAttribute('fill', 'none');
+        smile.setAttribute('stroke-linecap', 'round');
+        dinoSVG.appendChild(smile);
         
         canvasContainer.appendChild(dinoSVG);
         
