@@ -1229,54 +1229,180 @@ document.addEventListener('DOMContentLoaded', function() {
                 width: ${type.size}px;
                 height: ${type.size}px;
                 animation: drop-fall 3.5s linear forwards;
-                filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
+                filter: drop-shadow(2px 6px 10px rgba(0,0,0,0.5));
             `;
+            
+            // Color gradient calculations for depth
+            const baseColor = type.color;
+            const darkerShade = type.color === '#8B4513' ? '#5D2E0C' : 
+                                type.color === '#556B2F' ? '#3A4A21' :
+                                type.color === '#A0522D' ? '#6B3619' : '#4A5A3A';
+            const highlightShade = type.color === '#8B4513' ? '#B8651F' : 
+                                   type.color === '#556B2F' ? '#6B8B3D' :
+                                   type.color === '#A0522D' ? '#CD853F' : '#7A9A52';
             
             if (type.shape === 'trex') {
                 dino.innerHTML = `
-                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
-                        <ellipse cx="20" cy="30" rx="15" ry="20" fill="${type.color}"/>
-                        <circle cx="20" cy="15" r="12" fill="${type.color}"/>
-                        <rect x="15" y="45" width="5" height="10" fill="${type.color}" rx="2"/>
-                        <rect x="25" y="45" width="5" height="10" fill="${type.color}" rx="2"/>
-                        <path d="M 32 28 L 45 25 L 42 32 Z" fill="${type.color}"/>
-                        <circle cx="17" cy="12" r="2" fill="#ffffff"/>
-                        <circle cx="17" cy="12" r="1" fill="#000000"/>
+                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                        <defs>
+                            <linearGradient id="trexBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
+                            </linearGradient>
+                            <radialGradient id="trexMuscle">
+                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:0" />
+                            </radialGradient>
+                        </defs>
+                        <!-- Body with gradient and depth -->
+                        <ellipse cx="22" cy="35" rx="16" ry="22" fill="url(#trexBodyGrad)"/>
+                        <!-- Muscle definition -->
+                        <ellipse cx="18" cy="32" rx="8" ry="10" fill="url(#trexMuscle)"/>
+                        <!-- Head with depth -->
+                        <ellipse cx="22" cy="17" rx="13" ry="14" fill="url(#trexBodyGrad)"/>
+                        <!-- Jaw detail -->
+                        <path d="M 22 24 Q 28 25 30 22 Q 28 24 22 24 Z" fill="${darkerShade}" opacity="0.7"/>
+                        <!-- Strong legs -->
+                        <ellipse cx="16" cy="52" rx="5" ry="11" fill="url(#trexBodyGrad)"/>
+                        <ellipse cx="27" cy="52" rx="5" ry="11" fill="url(#trexBodyGrad)"/>
+                        <!-- Feet -->
+                        <ellipse cx="16" cy="56" rx="6" ry="3" fill="${darkerShade}"/>
+                        <ellipse cx="27" cy="56" rx="6" ry="3" fill="${darkerShade}"/>
+                        <!-- Tiny arms -->
+                        <ellipse cx="20" cy="28" rx="2" ry="5" fill="url(#trexBodyGrad)" transform="rotate(-20 20 28)"/>
+                        <ellipse cx="24" cy="28" rx="2" ry="5" fill="url(#trexBodyGrad)" transform="rotate(20 24 28)"/>
+                        <!-- Powerful tail -->
+                        <path d="M 34 35 Q 48 32 52 28 Q 48 34 34 37 Z" fill="url(#trexBodyGrad)"/>
+                        <!-- Eye with depth -->
+                        <circle cx="19" cy="14" r="2.5" fill="${darkerShade}"/>
+                        <circle cx="19" cy="14" r="2" fill="#FFF"/>
+                        <circle cx="19.5" cy="13.5" r="1.2" fill="#000"/>
+                        <circle cx="19.8" cy="13.3" r="0.4" fill="#FFF" opacity="0.8"/>
+                        <!-- Scale texture -->
+                        <circle cx="22" cy="32" r="1.5" fill="${darkerShade}" opacity="0.3"/>
+                        <circle cx="18" cy="38" r="1.5" fill="${darkerShade}" opacity="0.3"/>
+                        <circle cx="26" cy="36" r="1.5" fill="${darkerShade}" opacity="0.3"/>
                     </svg>
                 `;
             } else if (type.shape === 'long') {
                 dino.innerHTML = `
-                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
-                        <ellipse cx="25" cy="35" rx="18" ry="12" fill="${type.color}"/>
-                        <circle cx="15" cy="15" r="8" fill="${type.color}"/>
-                        <rect x="15" y="15" width="4" height="20" fill="${type.color}" rx="2"/>
-                        <rect x="15" y="45" width="4" height="8" fill="${type.color}" rx="2"/>
-                        <rect x="30" y="40" width="4" height="10" fill="${type.color}" rx="2"/>
-                        <circle cx="13" cy="12" r="1.5" fill="#000000"/>
+                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                        <defs>
+                            <linearGradient id="longBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Large body -->
+                        <ellipse cx="30" cy="40" rx="20" ry="14" fill="url(#longBodyGrad)"/>
+                        <!-- Belly highlight -->
+                        <ellipse cx="30" cy="43" rx="16" ry="9" fill="${highlightShade}" opacity="0.3"/>
+                        <!-- Long graceful neck -->
+                        <path d="M 18 35 Q 12 25 12 15 Q 14 25 20 33 Z" fill="url(#longBodyGrad)"/>
+                        <ellipse cx="15" cy="30" rx="4" ry="14" fill="url(#longBodyGrad)" transform="rotate(-15 15 30)"/>
+                        <!-- Head with soft features -->
+                        <ellipse cx="12" cy="15" rx="7" ry="9" fill="url(#longBodyGrad)"/>
+                        <!-- Snout -->
+                        <ellipse cx="10" cy="17" rx="4" ry="3" fill="${baseColor}"/>
+                        <!-- Nostril -->
+                        <circle cx="9" cy="16" r="0.8" fill="${darkerShade}"/>
+                        <!-- Eye -->
+                        <circle cx="12" cy="13" r="2" fill="${darkerShade}"/>
+                        <circle cx="12" cy="13" r="1.5" fill="#000"/>
+                        <circle cx="12.5" cy="12.5" r="0.5" fill="#FFF" opacity="0.9"/>
+                        <!-- Front legs -->
+                        <ellipse cx="20" cy="52" rx="4" ry="10" fill="url(#longBodyGrad)"/>
+                        <ellipse cx="28" cy="52" rx="4" ry="10" fill="url(#longBodyGrad)"/>
+                        <!-- Back legs -->
+                        <ellipse cx="36" cy="51" rx="5" ry="11" fill="url(#longBodyGrad)"/>
+                        <!-- Tail -->
+                        <path d="M 48 40 Q 58 38 60 35 Q 56 40 48 42 Z" fill="url(#longBodyGrad)"/>
+                        <!-- Subtle spots -->
+                        <ellipse cx="28" cy="38" rx="2" ry="3" fill="${darkerShade}" opacity="0.2"/>
+                        <ellipse cx="34" cy="42" rx="2.5" ry="3" fill="${darkerShade}" opacity="0.2"/>
                     </svg>
                 `;
             } else if (type.shape === 'stego') {
                 dino.innerHTML = `
-                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
-                        <ellipse cx="25" cy="35" rx="20" ry="10" fill="${type.color}"/>
-                        <circle cx="15" cy="25" r="8" fill="${type.color}"/>
-                        <polygon points="15,18 20,5 25,18" fill="${type.color}"/>
-                        <polygon points="25,18 30,8 35,18" fill="${type.color}"/>
-                        <rect x="15" y="40" width="4" height="8" fill="${type.color}" rx="2"/>
-                        <rect x="30" y="40" width="4" height="8" fill="${type.color}" rx="2"/>
-                        <circle cx="13" cy="23" r="1.5" fill="#000000"/>
+                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                        <defs>
+                            <linearGradient id="stegoBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="plateGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" style="stop-color:${baseColor};stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:${highlightShade};stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Robust body -->
+                        <ellipse cx="30" cy="42" rx="22" ry="12" fill="url(#stegoBodyGrad)"/>
+                        <!-- Back contour -->
+                        <path d="M 12 38 Q 30 32 48 38 Q 30 40 12 38 Z" fill="${highlightShade}" opacity="0.4"/>
+                        <!-- Head -->
+                        <ellipse cx="16" cy="30" rx="8" ry="10" fill="url(#stegoBodyGrad)"/>
+                        <!-- Eye -->
+                        <circle cx="14" cy="28" r="2" fill="${darkerShade}"/>
+                        <circle cx="14" cy="28" r="1.3" fill="#000"/>
+                        <circle cx="14.4" cy="27.7" r="0.4" fill="#FFF"/>
+                        <!-- Iconic back plates with depth -->
+                        <path d="M 18 28 L 22 10 L 26 28 Z" fill="url(#plateGrad)" stroke="${darkerShade}" stroke-width="0.5"/>
+                        <ellipse cx="22" cy="22" rx="2" ry="6" fill="${highlightShade}" opacity="0.3"/>
+                        <path d="M 26 28 L 30 14 L 34 28 Z" fill="url(#plateGrad)" stroke="${darkerShade}" stroke-width="0.5"/>
+                        <ellipse cx="30" cy="22" rx="2" ry="6" fill="${highlightShade}" opacity="0.3"/>
+                        <path d="M 34 30 L 38 16 L 42 30 Z" fill="url(#plateGrad)" stroke="${darkerShade}" stroke-width="0.5"/>
+                        <ellipse cx="38" cy="24" rx="2" ry="6" fill="${highlightShade}" opacity="0.3"/>
+                        <!-- Legs with muscle definition -->
+                        <ellipse cx="20" cy="52" rx="4" ry="9" fill="url(#stegoBodyGrad)"/>
+                        <ellipse cx="30" cy="52" rx="4" ry="9" fill="url(#stegoBodyGrad)"/>
+                        <ellipse cx="40" cy="52" rx="5" ry="10" fill="url(#stegoBodyGrad)"/>
+                        <!-- Tail with spikes -->
+                        <path d="M 50 42 Q 56 40 58 38" fill="none" stroke="url(#stegoBodyGrad)" stroke-width="6" stroke-linecap="round"/>
+                        <path d="M 54 38 L 56 34 L 58 38 Z" fill="${darkerShade}"/>
                     </svg>
                 `;
             } else {
+                // Raptor - agile and fierce
                 dino.innerHTML = `
-                    <svg viewBox="0 0 50 50" style="width: 100%; height: 100%;">
-                        <ellipse cx="25" cy="30" rx="12" ry="15" fill="${type.color}"/>
-                        <circle cx="22" cy="18" r="9" fill="${type.color}"/>
-                        <path d="M 35 28 L 48 26 L 45 35 L 38 32 Z" fill="${type.color}"/>
-                        <rect x="18" y="42" width="4" height="10" fill="${type.color}" rx="2"/>
-                        <rect x="28" y="42" width="4" height="10" fill="${type.color}" rx="2"/>
-                        <circle cx="20" cy="15" r="2" fill="#ffffff"/>
-                        <circle cx="20" cy="15" r="1" fill="#000000"/>
+                    <svg viewBox="0 0 60 60" style="width: 100%; height: 100%;">
+                        <defs>
+                            <linearGradient id="raptorBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:${highlightShade};stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:${baseColor};stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:${darkerShade};stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Lean athletic body -->
+                        <ellipse cx="28" cy="35" rx="14" ry="18" fill="url(#raptorBodyGrad)"/>
+                        <!-- Muscle definition -->
+                        <ellipse cx="24" cy="32" rx="6" ry="8" fill="${highlightShade}" opacity="0.3"/>
+                        <!-- Head with intelligent features -->
+                        <ellipse cx="25" cy="20" rx="10" ry="11" fill="url(#raptorBodyGrad)"/>
+                        <!-- Snout -->
+                        <path d="M 28 23 Q 35 22 37 20 Q 35 24 28 25 Z" fill="${baseColor}"/>
+                        <!-- Sharp jaw line -->
+                        <path d="M 28 25 L 34 24 L 32 26 Z" fill="${darkerShade}" opacity="0.6"/>
+                        <!-- Intelligent eye -->
+                        <circle cx="23" cy="17" r="2.5" fill="${darkerShade}"/>
+                        <circle cx="23" cy="17" r="2" fill="#FFD700"/>
+                        <circle cx="23.3" cy="17" r="1.2" fill="#000"/>
+                        <circle cx="23.6" cy="16.7" r="0.4" fill="#FFF"/>
+                        <!-- Strong arms with claws -->
+                        <path d="M 24 28 Q 18 30 16 34" fill="none" stroke="url(#raptorBodyGrad)" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M 16 34 L 14 36 M 16 34 L 15 37" stroke="${darkerShade}" stroke-width="1.5" stroke-linecap="round"/>
+                        <!-- Powerful legs -->
+                        <ellipse cx="24" cy="50" rx="5" ry="13" fill="url(#raptorBodyGrad)"/>
+                        <ellipse cx="32" cy="50" rx="5" ry="13" fill="url(#raptorBodyGrad)"/>
+                        <!-- Deadly sickle claw -->
+                        <path d="M 24 56 Q 22 58 20 57" fill="none" stroke="${darkerShade}" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Long balanced tail -->
+                        <path d="M 40 36 Q 52 32 56 28" fill="none" stroke="url(#raptorBodyGrad)" stroke-width="7" stroke-linecap="round"/>
+                        <!-- Stripes for pattern -->
+                        <path d="M 30 30 Q 32 32 30 34" fill="none" stroke="${darkerShade}" stroke-width="1.5" opacity="0.4"/>
+                        <path d="M 26 38 Q 28 40 26 42" fill="none" stroke="${darkerShade}" stroke-width="1.5" opacity="0.4"/>
                     </svg>
                 `;
             }
@@ -1450,7 +1576,7 @@ document.addEventListener('DOMContentLoaded', function() {
             max-width: 520px;
             max-height: 90vh;
             overflow-y: auto;
-            padding: 20px;
+            padding: 30px 20px;
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             border-radius: 20px;
             z-index: 10001;
@@ -1458,18 +1584,18 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const title = document.createElement('div');
-        title.textContent = 'Word Association';
-        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 15px;';
+        title.textContent = 'Color Memory';
+        title.style.cssText = 'color: white; font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 10px;';
         
         const instruction = document.createElement('div');
-        instruction.textContent = 'Match related cleaning terms';
-        instruction.style.cssText = 'color: rgba(255,255,255,0.9); font-size: 16px; text-align: center; margin-bottom: 20px;';
+        instruction.textContent = 'Watch the pattern, then repeat it';
+        instruction.style.cssText = 'color: rgba(255,255,255,0.9); font-size: 16px; text-align: center; margin-bottom: 25px;';
         
-        const grid = document.createElement('div');
-        grid.style.cssText = 'display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;';
+        const colorGrid = document.createElement('div');
+        colorGrid.style.cssText = 'display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; max-width: 400px; margin: 0 auto 20px auto;';
         
         const scoreDiv = document.createElement('div');
-        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center;';
+        scoreDiv.style.cssText = 'color: white; font-size: 20px; font-weight: bold; text-align: center; margin-top: 15px;';
         
         const closeBtn = document.createElement('button');
         closeBtn.textContent = '✕';
@@ -1479,99 +1605,204 @@ document.addEventListener('DOMContentLoaded', function() {
         gameContainer.appendChild(closeBtn);
         gameContainer.appendChild(title);
         gameContainer.appendChild(instruction);
-        gameContainer.appendChild(grid);
+        gameContainer.appendChild(colorGrid);
         gameContainer.appendChild(scoreDiv);
         document.body.appendChild(gameContainer);
         
-        const pairs = [
-            ['Window', 'Glass'],
-            ['Carpet', 'Fiber'],
-            ['Clean', 'Spotless'],
-            ['Water', 'Rinse'],
-            ['Shine', 'Polish'],
-            ['Stain', 'Remove'],
-            ['Deep', 'Extract'],
-            ['Fresh', 'Renewed']
+        // Define vibrant colors for the game
+        const gameColors = [
+            { color: '#FF3B30', name: 'red', glow: 'rgba(255, 59, 48, 0.6)' },
+            { color: '#34C759', name: 'green', glow: 'rgba(52, 199, 89, 0.6)' },
+            { color: '#007AFF', name: 'blue', glow: 'rgba(0, 122, 255, 0.6)' },
+            { color: '#FFD60A', name: 'yellow', glow: 'rgba(255, 214, 10, 0.6)' },
+            { color: '#FF9500', name: 'orange', glow: 'rgba(255, 149, 0, 0.6)' },
+            { color: '#AF52DE', name: 'purple', glow: 'rgba(175, 82, 222, 0.6)' },
+            { color: '#FF2D92', name: 'pink', glow: 'rgba(255, 45, 146, 0.6)' },
+            { color: '#00C7BE', name: 'cyan', glow: 'rgba(0, 199, 190, 0.6)' },
+            { color: '#5E5CE6', name: 'indigo', glow: 'rgba(94, 92, 230, 0.6)' }
         ];
         
-        const words = pairs.flat().sort(() => Math.random() - 0.5);
-        let selected = [];
-        let matched = 0;
-        let attempts = 0;
+        let sequence = [];
+        let playerSequence = [];
+        let level = 1;
+        let isPlaying = false;
+        let canClick = false;
         
-        words.forEach((word) => {
-            const card = document.createElement('div');
-            card.textContent = word;
-            card.style.cssText = `
-                background: rgba(255,255,255,0.95);
-                padding: 20px;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 18px;
-                font-weight: 600;
-                color: #333;
+        // Create color buttons
+        const colorButtons = [];
+        gameColors.forEach((colorData) => {
+            const btn = document.createElement('div');
+            btn.dataset.color = colorData.name;
+            btn.style.cssText = `
+                width: 100%;
+                aspect-ratio: 1;
+                border-radius: 15px;
+                background: ${colorData.color};
                 cursor: pointer;
-                transition: all 0.2s;
-                min-height: 60px;
+                transition: all 0.15s ease;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                position: relative;
+                overflow: hidden;
             `;
             
-            card.addEventListener('click', function() {
-                if (selected.length < 2 && !this.classList.contains('matched') && !this.classList.contains('selected')) {
-                    this.classList.add('selected');
-                    this.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    this.style.color = 'white';
-                    selected.push(this);
-                    
-                    if (selected.length === 2) {
-                        attempts++;
-                        const word1 = selected[0].textContent;
-                        const word2 = selected[1].textContent;
-                        
-                        let isMatch = false;
-                        for (let pair of pairs) {
-                            if ((pair[0] === word1 && pair[1] === word2) || (pair[0] === word2 && pair[1] === word1)) {
-                                isMatch = true;
-                                break;
-                            }
-                        }
-                        
-                        if (isMatch) {
-                            selected.forEach(card => {
-                                card.classList.add('matched');
-                                card.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
-                            });
-                            matched++;
-                            selected = [];
-                            
-                            scoreDiv.textContent = `Matched: ${matched}/8 | Tries: ${attempts}`;
-                            
-                            if (matched === 8) {
-                                title.textContent = 'Excellent!';
-                                instruction.textContent = `Completed in ${attempts} tries!`;
-                                createBlogCelebration();
-                                setTimeout(() => gameContainer.remove(), 3000);
-                            }
-                        } else {
-                            setTimeout(() => {
-                                selected.forEach(card => {
-                                    card.classList.remove('selected');
-                                    card.style.background = 'rgba(255,255,255,0.95)';
-                                    card.style.color = '#333';
-                                });
-                                selected = [];
-                                scoreDiv.textContent = `Matched: ${matched}/8 | Tries: ${attempts}`;
-                            }, 800);
-                        }
-                    }
+            // Add shine effect
+            const shine = document.createElement('div');
+            shine.style.cssText = `
+                position: absolute;
+                top: 10%;
+                left: 10%;
+                width: 40%;
+                height: 40%;
+                background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+                border-radius: 50%;
+                pointer-events: none;
+            `;
+            btn.appendChild(shine);
+            
+            btn.addEventListener('mousedown', () => {
+                if (canClick && !isPlaying) {
+                    btn.style.transform = 'scale(0.95)';
                 }
             });
             
-            grid.appendChild(card);
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            
+            btn.addEventListener('click', () => {
+                if (!isPlaying && canClick) {
+                    handlePlayerClick(colorData.name);
+                    flashButton(btn, colorData);
+                }
+            });
+            
+            colorButtons.push({ btn, data: colorData });
+            colorGrid.appendChild(btn);
         });
         
-        scoreDiv.textContent = `Matched: 0/8 | Tries: 0`;
+        function flashButton(btn, colorData, duration = 400) {
+            btn.style.background = `radial-gradient(circle, #ffffff 0%, ${colorData.color} 100%)`;
+            btn.style.boxShadow = `0 0 30px ${colorData.glow}, 0 4px 15px rgba(0,0,0,0.3)`;
+            btn.style.transform = 'scale(1.05)';
+            
+            // Play a tone (visual indication only, no actual sound)
+            const pulse = document.createElement('div');
+            pulse.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 20px;
+                height: 20px;
+                background: rgba(255, 255, 255, 0.8);
+                border-radius: 50%;
+                animation: color-pulse 0.4s ease-out forwards;
+            `;
+            btn.appendChild(pulse);
+            setTimeout(() => pulse.remove(), 400);
+            
+            setTimeout(() => {
+                btn.style.background = colorData.color;
+                btn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+                btn.style.transform = 'scale(1)';
+            }, duration);
+        }
+        
+        function playSequence() {
+            isPlaying = true;
+            canClick = false;
+            instruction.textContent = 'Watch carefully...';
+            
+            sequence.forEach((colorName, index) => {
+                setTimeout(() => {
+                    const colorBtn = colorButtons.find(cb => cb.data.name === colorName);
+                    if (colorBtn) {
+                        flashButton(colorBtn.btn, colorBtn.data, 600);
+                    }
+                    
+                    if (index === sequence.length - 1) {
+                        setTimeout(() => {
+                            isPlaying = false;
+                            canClick = true;
+                            instruction.textContent = 'Your turn! Repeat the pattern';
+                        }, 700);
+                    }
+                }, index * 900);
+            });
+        }
+        
+        function handlePlayerClick(colorName) {
+            playerSequence.push(colorName);
+            
+            const currentIndex = playerSequence.length - 1;
+            if (playerSequence[currentIndex] !== sequence[currentIndex]) {
+                // Wrong color
+                instruction.textContent = 'Wrong pattern! Try from level 1';
+                instruction.style.color = '#ff6b6b';
+                canClick = false;
+                setTimeout(() => {
+                    instruction.style.color = 'rgba(255,255,255,0.9)';
+                    level = 1;
+                    sequence = [];
+                    playerSequence = [];
+                    nextRound();
+                }, 1500);
+                return;
+            }
+            
+            if (playerSequence.length === sequence.length) {
+                // Completed sequence correctly
+                if (level >= 10) {
+                    title.textContent = 'Perfect Memory!';
+                    instruction.textContent = 'You completed all 10 levels!';
+                    instruction.style.color = '#4ade80';
+                    canClick = false;
+                    createBlogCelebration();
+                    setTimeout(() => gameContainer.remove(), 3000);
+                } else {
+                    level++;
+                    playerSequence = [];
+                    scoreDiv.textContent = `Level: ${level}`;
+                    instruction.textContent = 'Correct! Next pattern...';
+                    instruction.style.color = '#4ade80';
+                    canClick = false;
+                    setTimeout(() => {
+                        instruction.style.color = 'rgba(255,255,255,0.9)';
+                        nextRound();
+                    }, 1200);
+                }
+            }
+        }
+        
+        function nextRound() {
+            // Add one more color to the sequence
+            const randomColor = gameColors[Math.floor(Math.random() * gameColors.length)];
+            sequence.push(randomColor.name);
+            playerSequence = [];
+            playSequence();
+        }
+        
+        // Add animation CSS
+        if (!document.getElementById('color-memory-animations')) {
+            const style = document.createElement('style');
+            style.id = 'color-memory-animations';
+            style.textContent = `
+                @keyframes color-pulse {
+                    0% {
+                        transform: translate(-50%, -50%) scale(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(3);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        scoreDiv.textContent = `Level: ${level}`;
+        setTimeout(() => nextRound(), 500);
     }
     
     // CARPET-CLEANING.HTML - Ripple Wave → Pattern Recognition Game
@@ -1584,20 +1815,155 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function createRippleWave() {
-        const ripple = document.createElement('div');
-        ripple.style.cssText = `
-            position: fixed;
-            left: 50%;
-            bottom: 50px;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(70,130,180,0.4), transparent);
-            animation: ripple-wave 2s ease-out forwards;
-        `;
-        effectContainer.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 2000);
+        // Create multiple layered waves for dramatic impact
+        const centerX = 50;
+        const centerY = window.innerHeight - 50;
+        const colors = [
+            'rgba(70, 130, 180, 0.5)',
+            'rgba(100, 149, 237, 0.5)',
+            'rgba(65, 105, 225, 0.5)',
+            'rgba(30, 144, 255, 0.5)'
+        ];
+        
+        // Create 6 expanding waves for dramatic effect
+        for (let i = 0; i < 6; i++) {
+            setTimeout(() => {
+                const wave = document.createElement('div');
+                wave.style.cssText = `
+                    position: fixed;
+                    left: ${centerX}%;
+                    bottom: 50px;
+                    transform: translateX(-50%);
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 50%;
+                    background: ${colors[i % colors.length]};
+                    box-shadow: 
+                        0 0 30px ${colors[i % colors.length]},
+                        inset 0 0 20px rgba(255, 255, 255, 0.3);
+                    animation: ripple-wave-expand 2.5s ease-out forwards;
+                    pointer-events: none;
+                    z-index: ${9900 + i};
+                `;
+                effectContainer.appendChild(wave);
+                setTimeout(() => wave.remove(), 2500);
+            }, i * 150);
+        }
+        
+        // Add particle burst for extra impact
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                const angle = (Math.PI * 2 * i) / 20;
+                const distance = 150 + Math.random() * 100;
+                const size = Math.random() * 8 + 4;
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${centerX}%;
+                    bottom: 50px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    border-radius: 50%;
+                    background: radial-gradient(circle, 
+                        rgba(135, 206, 250, 1) 0%,
+                        rgba(70, 130, 180, 0.8) 100%);
+                    box-shadow: 0 0 10px rgba(135, 206, 250, 0.8);
+                    pointer-events: none;
+                    z-index: 9950;
+                `;
+                
+                // Animate particle
+                const endX = Math.cos(angle) * distance;
+                const endY = Math.sin(angle) * distance;
+                
+                particle.animate([
+                    { 
+                        transform: 'translate(-50%, -50%) scale(0.3)',
+                        opacity: 1
+                    },
+                    { 
+                        transform: `translate(calc(-50% + ${endX}px), calc(-50% + ${endY}px)) scale(1)`,
+                        opacity: 0.6,
+                        offset: 0.7
+                    },
+                    { 
+                        transform: `translate(calc(-50% + ${endX * 1.2}px), calc(-50% + ${endY * 1.2}px)) scale(0.2)`,
+                        opacity: 0
+                    }
+                ], {
+                    duration: 1500,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+                
+                effectContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }, 300 + i * 30);
+        }
+        
+        // Add sweeping light rays
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const ray = document.createElement('div');
+                const angle = (360 / 8) * i;
+                
+                ray.style.cssText = `
+                    position: fixed;
+                    left: ${centerX}%;
+                    bottom: 50px;
+                    width: 4px;
+                    height: 200px;
+                    background: linear-gradient(to top,
+                        rgba(135, 206, 250, 0.8) 0%,
+                        rgba(100, 149, 237, 0.6) 50%,
+                        transparent 100%);
+                    transform-origin: bottom center;
+                    transform: translateX(-50%) rotate(${angle}deg);
+                    box-shadow: 0 0 15px rgba(135, 206, 250, 0.8);
+                    pointer-events: none;
+                    animation: ray-extend 1.2s ease-out forwards;
+                    z-index: 9940;
+                `;
+                effectContainer.appendChild(ray);
+                setTimeout(() => ray.remove(), 1200);
+            }, 200 + i * 60);
+        }
+        
+        // Add CSS animations if not already present
+        if (!document.getElementById('carpet-wave-animations')) {
+            const style = document.createElement('style');
+            style.id = 'carpet-wave-animations';
+            style.textContent = `
+                @keyframes ripple-wave-expand {
+                    0% {
+                        transform: translateX(-50%) scale(0.2);
+                        opacity: 0.8;
+                    }
+                    50% {
+                        opacity: 0.6;
+                    }
+                    100% {
+                        transform: translateX(-50%) scale(12);
+                        opacity: 0;
+                    }
+                }
+                @keyframes ray-extend {
+                    0% {
+                        height: 0;
+                        opacity: 1;
+                    }
+                    70% {
+                        height: 250px;
+                        opacity: 0.8;
+                    }
+                    100% {
+                        height: 200px;
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
     
     function startPatternGame() {
@@ -1762,58 +2128,173 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => overlay.remove(), 800);
         }, 2000);
         
-        // Create realistic water droplets with increasing intensity
-        const dropCount = 10 + (intensity * 8);
+        // Create ultra-realistic water droplets with depth and refraction
+        const dropCount = 12 + (intensity * 10);
         for (let i = 0; i < dropCount; i++) {
             setTimeout(() => {
                 const drop = document.createElement('div');
-                const size = Math.random() * 8 + 4;
+                const size = Math.random() * 12 + 6;
                 const xPos = Math.random() * 100;
+                const speed = 1.8 - (intensity * 0.15) + Math.random() * 0.6;
                 
+                // Create multi-layered droplet for depth
                 drop.style.cssText = `
                     position: fixed;
                     left: ${xPos}%;
-                    top: -20px;
+                    top: -30px;
                     width: ${size}px;
-                    height: ${size * 2.5}px;
-                    background: linear-gradient(180deg, 
-                        rgba(255, 255, 255, 0.9) 0%,
-                        rgba(135, 206, 250, 0.7) 50%,
-                        rgba(135, 206, 250, 0.9) 100%);
-                    border-radius: ${size}px ${size}px ${size * 1.5}px ${size * 1.5}px;
-                    box-shadow: 
-                        inset 0 -2px 4px rgba(255, 255, 255, 0.6),
-                        0 2px 8px rgba(0, 0, 0, 0.2),
-                        0 0 3px rgba(135, 206, 250, 0.8);
-                    animation: realistic-drop-fall ${2 - (intensity * 0.2) + Math.random() * 0.5}s linear forwards;
-                    filter: blur(0.3px);
+                    height: ${size * 3}px;
                     pointer-events: none;
+                    animation: realistic-drop-fall ${speed}s linear forwards;
+                    z-index: ${9900 + Math.floor(Math.random() * 50)};
                 `;
+                
+                // Main water body with realistic gradient
+                const dropBody = document.createElement('div');
+                dropBody.style.cssText = `
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(165deg, 
+                        rgba(255, 255, 255, 0.95) 0%,
+                        rgba(240, 248, 255, 0.9) 15%,
+                        rgba(176, 224, 230, 0.85) 35%,
+                        rgba(135, 206, 250, 0.9) 65%,
+                        rgba(100, 180, 220, 0.95) 100%);
+                    border-radius: ${size * 0.4}px ${size * 0.4}px ${size * 0.7}px ${size * 0.7}px;
+                    box-shadow: 
+                        inset -${size * 0.15}px ${size * 0.2}px ${size * 0.3}px rgba(255, 255, 255, 0.8),
+                        inset ${size * 0.1}px -${size * 0.15}px ${size * 0.25}px rgba(0, 100, 150, 0.4),
+                        ${size * 0.1}px ${size * 0.3}px ${size * 0.5}px rgba(0, 0, 0, 0.3),
+                        0 0 ${size * 0.4}px rgba(135, 206, 250, 0.6);
+                    filter: blur(0.2px);
+                `;
+                
+                // Light refraction highlight
+                const highlight = document.createElement('div');
+                highlight.style.cssText = `
+                    position: absolute;
+                    top: 10%;
+                    left: 25%;
+                    width: 40%;
+                    height: 25%;
+                    background: radial-gradient(ellipse at top left,
+                        rgba(255, 255, 255, 0.95) 0%,
+                        rgba(255, 255, 255, 0.6) 40%,
+                        transparent 70%);
+                    border-radius: 50%;
+                    filter: blur(0.5px);
+                `;
+                
+                // Secondary highlight for depth
+                const highlight2 = document.createElement('div');
+                highlight2.style.cssText = `
+                    position: absolute;
+                    top: 35%;
+                    right: 20%;
+                    width: 25%;
+                    height: 15%;
+                    background: radial-gradient(ellipse,
+                        rgba(255, 255, 255, 0.7) 0%,
+                        transparent 60%);
+                    border-radius: 50%;
+                    filter: blur(0.4px);
+                `;
+                
+                // Refraction distortion edge
+                const refraction = document.createElement('div');
+                refraction.style.cssText = `
+                    position: absolute;
+                    right: 5%;
+                    top: 20%;
+                    width: 15%;
+                    height: 50%;
+                    background: linear-gradient(to right,
+                        transparent 0%,
+                        rgba(180, 220, 240, 0.5) 50%,
+                        rgba(200, 230, 255, 0.3) 100%);
+                    border-radius: 0 50% 50% 0;
+                    filter: blur(0.3px);
+                `;
+                
+                drop.appendChild(dropBody);
+                dropBody.appendChild(highlight);
+                dropBody.appendChild(highlight2);
+                dropBody.appendChild(refraction);
                 effectContainer.appendChild(drop);
                 
-                // Add splash effect on impact
+                // Enhanced splash effect with realistic spread
                 setTimeout(() => {
                     const splash = document.createElement('div');
                     splash.style.cssText = `
                         position: fixed;
                         left: ${xPos}%;
                         bottom: 0;
-                        width: ${size * 3}px;
-                        height: ${size * 2}px;
-                        background: radial-gradient(ellipse at center, 
-                            rgba(255, 255, 255, 0.6) 0%,
-                            rgba(135, 206, 250, 0.3) 50%,
-                            transparent 100%);
-                        border-radius: 50%;
-                        animation: splash-expand 0.4s ease-out forwards;
+                        width: ${size * 4}px;
+                        height: ${size * 2.5}px;
                         pointer-events: none;
                     `;
+                    
+                    // Main splash ring
+                    const splashRing = document.createElement('div');
+                    splashRing.style.cssText = `
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        background: radial-gradient(ellipse at center, 
+                            rgba(255, 255, 255, 0.8) 0%,
+                            rgba(200, 230, 255, 0.6) 25%,
+                            rgba(135, 206, 250, 0.4) 50%,
+                            transparent 75%);
+                        border-radius: 50%;
+                        animation: splash-expand 0.5s ease-out forwards;
+                    `;
+                    
+                    // Splash droplets
+                    for (let j = 0; j < 6; j++) {
+                        const droplet = document.createElement('div');
+                        const angle = (j * 60) + Math.random() * 30;
+                        const dist = size * 2;
+                        droplet.style.cssText = `
+                            position: absolute;
+                            left: 50%;
+                            top: 50%;
+                            width: ${size * 0.3}px;
+                            height: ${size * 0.5}px;
+                            background: linear-gradient(180deg,
+                                rgba(255, 255, 255, 0.9),
+                                rgba(135, 206, 250, 0.7));
+                            border-radius: 50%;
+                            opacity: 0.8;
+                            animation: splash-particle-${j} 0.4s ease-out forwards;
+                        `;
+                        splash.appendChild(droplet);
+                        
+                        // Add unique animation for each droplet
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes splash-particle-${j} {
+                                0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+                                100% { 
+                                    transform: translate(
+                                        ${Math.cos(angle * Math.PI / 180) * dist}px,
+                                        ${-Math.abs(Math.sin(angle * Math.PI / 180) * dist * 0.8)}px
+                                    ) scale(0.3); 
+                                    opacity: 0; 
+                                }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                        setTimeout(() => style.remove(), 500);
+                    }
+                    
+                    splash.appendChild(splashRing);
                     effectContainer.appendChild(splash);
-                    setTimeout(() => splash.remove(), 400);
-                }, (2 - (intensity * 0.2) + Math.random() * 0.5) * 1000);
+                    setTimeout(() => splash.remove(), 500);
+                }, speed * 1000);
                 
-                setTimeout(() => drop.remove(), 2500);
-            }, i * (80 - intensity * 10));
+                setTimeout(() => drop.remove(), (speed + 0.5) * 1000);
+            }, i * (70 - intensity * 8));
         }
         
         // Add lightning effects at higher intensities
