@@ -421,7 +421,35 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
+    // Dryer Vent Cleaning Page - Airflow sweep animation
+    const brandTextDryer = document.getElementById('brand-text-dryer');
+    if (brandTextDryer) {
+        // Populate airflow icon once
+        const airflowEl = brandTextDryer.querySelector('.airflow');
+        if (airflowEl && !airflowEl.textContent.trim()) {
+            airflowEl.textContent = '💨';
+        }
+        brandTextDryer.addEventListener('click', function() {
+            if (!this.classList.contains('animating')) {
+                this.classList.add('animating');
+                const letters = this.querySelectorAll('.brand-letter');
+
+                // Pop letters as airflow sweeps through
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.classList.add('pop');
+                        setTimeout(() => letter.classList.remove('pop'), 600);
+                    }, index * 180);
+                });
+
+                setTimeout(() => {
+                    this.classList.remove('animating');
+                }, 2200);
+            }
+        });
+    }
+
     // Reviews Page - Star Rating animation
     const brandTextReviews = document.getElementById('brand-text-reviews');
     if (brandTextReviews) {
@@ -3024,7 +3052,314 @@ document.addEventListener('DOMContentLoaded', function() {
             }, i * 300);
         }
     }
-    
+
+    // DRYER-VENT-CLEANING.HTML - Airflow Burst → Clear the Vent Reaction Game
+    function dryerVentEasterEgg(clickCount) {
+        if (clickCount <= 5) {
+            createAirflowBurst(clickCount);
+        } else {
+            startClearTheVentGame();
+        }
+    }
+
+    function createAirflowBurst(intensity) {
+        // Rising streams of clean air from the bottom of the viewport
+        const streamCount = 6 + intensity * 2;
+        for (let i = 0; i < streamCount; i++) {
+            setTimeout(() => {
+                const stream = document.createElement('div');
+                const leftPos = 10 + Math.random() * 80;
+                const width = 20 + Math.random() * 30;
+                const drift = (Math.random() - 0.5) * 60;
+                stream.style.cssText = `
+                    position: fixed;
+                    left: ${leftPos}%;
+                    bottom: 40px;
+                    width: ${width}px;
+                    height: ${20 + Math.random() * 30}px;
+                    background: radial-gradient(circle,
+                        rgba(255, 255, 255, 0.85) 0%,
+                        rgba(202, 240, 248, 0.6) 40%,
+                        rgba(135, 206, 250, 0.15) 70%,
+                        transparent 100%);
+                    border-radius: 50%;
+                    filter: blur(6px);
+                    box-shadow: 0 0 20px rgba(202, 240, 248, 0.7);
+                    pointer-events: none;
+                    z-index: 9900;
+                    opacity: 0;
+                `;
+                effectContainer.appendChild(stream);
+                stream.animate([
+                    { transform: 'translate(0, 0) scale(0.4)', opacity: 0 },
+                    { transform: `translate(${drift * 0.3}px, -30vh) scale(1)`, opacity: 0.9, offset: 0.4 },
+                    { transform: `translate(${drift}px, -95vh) scale(1.4)`, opacity: 0 }
+                ], {
+                    duration: 2200 + Math.random() * 600,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+                setTimeout(() => stream.remove(), 3000);
+            }, i * 90);
+        }
+
+        // Small lint-like particles being swept upward
+        const particleCount = 12 + intensity * 3;
+        for (let i = 0; i < particleCount; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                const leftPos = Math.random() * 100;
+                const size = 3 + Math.random() * 4;
+                const drift = (Math.random() - 0.5) * 120;
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${leftPos}%;
+                    bottom: 50px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: rgba(220, 220, 220, 0.7);
+                    border-radius: 50%;
+                    box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+                    pointer-events: none;
+                    z-index: 9905;
+                `;
+                effectContainer.appendChild(particle);
+                particle.animate([
+                    { transform: 'translate(0, 0)', opacity: 0.9 },
+                    { transform: `translate(${drift}px, -100vh)`, opacity: 0 }
+                ], {
+                    duration: 2500 + Math.random() * 500,
+                    easing: 'ease-out'
+                });
+                setTimeout(() => particle.remove(), 3200);
+            }, i * 60 + 150);
+        }
+    }
+
+    function startClearTheVentGame() {
+        const gameContainer = document.createElement('div');
+        gameContainer.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            max-width: 460px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 20px;
+            z-index: 10001;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        `;
+
+        const title = document.createElement('div');
+        title.textContent = 'Clear the Vent';
+        title.style.cssText = 'color: #ffffff; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 8px; text-shadow: 0 2px 6px rgba(0,0,0,0.4);';
+
+        const instruction = document.createElement('div');
+        instruction.textContent = 'Tap the lint clumps before the vent clogs!';
+        instruction.style.cssText = 'color: rgba(255,255,255,0.9); font-size: 15px; text-align: center; margin-bottom: 18px;';
+
+        const hud = document.createElement('div');
+        hud.style.cssText = 'display: flex; justify-content: space-between; color: #ffffff; font-weight: 600; font-size: 16px; margin-bottom: 12px; padding: 0 6px;';
+        const scoreLabel = document.createElement('span');
+        const timeLabel = document.createElement('span');
+        scoreLabel.textContent = 'Cleared: 0 / 15';
+        timeLabel.textContent = 'Time: 30s';
+        hud.appendChild(scoreLabel);
+        hud.appendChild(timeLabel);
+
+        const grid = document.createElement('div');
+        grid.style.cssText = `
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 12px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+        `;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕';
+        closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.4); font-size: 24px; font-weight: bold; width: 46px; height: 46px; border-radius: 50%; cursor: pointer; z-index: 10002;';
+
+        gameContainer.appendChild(closeBtn);
+        gameContainer.appendChild(title);
+        gameContainer.appendChild(instruction);
+        gameContainer.appendChild(hud);
+        gameContainer.appendChild(grid);
+        document.body.appendChild(gameContainer);
+
+        // Build 9 vent cells
+        const cells = [];
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.style.cssText = `
+                position: relative;
+                aspect-ratio: 1;
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+                border-radius: 10px;
+                border: 2px solid rgba(255,255,255,0.15);
+                box-shadow: inset 0 3px 8px rgba(0,0,0,0.5);
+                cursor: pointer;
+                overflow: hidden;
+            `;
+            // Add subtle vent slats
+            for (let s = 0; s < 4; s++) {
+                const slat = document.createElement('div');
+                slat.style.cssText = `
+                    position: absolute;
+                    left: 8%;
+                    right: 8%;
+                    top: ${18 + s * 18}%;
+                    height: 3px;
+                    background: rgba(0,0,0,0.35);
+                    border-radius: 2px;
+                    box-shadow: 0 1px 0 rgba(255,255,255,0.08);
+                `;
+                cell.appendChild(slat);
+            }
+            grid.appendChild(cell);
+            cells.push(cell);
+        }
+
+        let score = 0;
+        let timeLeft = 30;
+        let gameActive = true;
+        const goal = 15;
+
+        function endGame(win) {
+            if (!gameActive) return;
+            gameActive = false;
+            clearInterval(spawnTimer);
+            clearInterval(countdown);
+            if (win) {
+                title.textContent = 'Vent Cleared!';
+                instruction.textContent = 'Airflow restored — nicely done.';
+                createConfetti();
+            } else {
+                title.textContent = 'Time\'s Up';
+                instruction.textContent = `You cleared ${score} lint clumps. Give it another try!`;
+                createQuickCelebration();
+            }
+            setTimeout(() => {
+                gameContainer.style.opacity = '0';
+                gameContainer.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => gameContainer.remove(), 500);
+            }, 2500);
+        }
+
+        closeBtn.addEventListener('click', () => {
+            if (!gameActive) return;
+            gameActive = false;
+            clearInterval(spawnTimer);
+            clearInterval(countdown);
+            createQuickCelebration();
+            setTimeout(() => gameContainer.remove(), 700);
+        });
+
+        function spawnLint() {
+            if (!gameActive) return;
+            // Find empty cells
+            const empty = cells.filter(c => !c.dataset.hasLint);
+            if (empty.length === 0) return;
+            const cell = empty[Math.floor(Math.random() * empty.length)];
+            cell.dataset.hasLint = 'true';
+
+            const lint = document.createElement('div');
+            lint.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0.2);
+                width: 62%;
+                height: 62%;
+                background: radial-gradient(circle at 35% 35%,
+                    #f5f5f5 0%,
+                    #cfcfcf 40%,
+                    #8a8a8a 100%);
+                border-radius: 50%;
+                box-shadow: 0 0 12px rgba(255,255,255,0.4), inset 0 -4px 8px rgba(0,0,0,0.35);
+                filter: blur(0.3px);
+                transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+                cursor: pointer;
+            `;
+            cell.appendChild(lint);
+            requestAnimationFrame(() => {
+                lint.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+
+            const lifetime = 1400;
+            let removed = false;
+
+            const removeLint = (cleared) => {
+                if (removed) return;
+                removed = true;
+                clearTimeout(expireTimer);
+                if (cleared) {
+                    lint.style.transform = 'translate(-50%, -50%) scale(1.4)';
+                    lint.style.opacity = '0';
+                    setTimeout(() => lint.remove(), 250);
+                } else {
+                    lint.style.opacity = '0';
+                    setTimeout(() => lint.remove(), 200);
+                }
+                delete cell.dataset.hasLint;
+            };
+
+            lint.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!gameActive || removed) return;
+                score++;
+                scoreLabel.textContent = `Cleared: ${score} / ${goal}`;
+
+                // Quick sparkle feedback
+                const spark = document.createElement('div');
+                spark.textContent = '✨';
+                spark.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 22px;
+                    pointer-events: none;
+                    animation: dryer-spark 0.6s ease-out forwards;
+                `;
+                cell.appendChild(spark);
+                setTimeout(() => spark.remove(), 600);
+
+                removeLint(true);
+                if (score >= goal) endGame(true);
+            });
+
+            const expireTimer = setTimeout(() => removeLint(false), lifetime);
+        }
+
+        const spawnTimer = setInterval(spawnLint, 620);
+        spawnLint();
+
+        const countdown = setInterval(() => {
+            timeLeft--;
+            timeLabel.textContent = `Time: ${timeLeft}s`;
+            if (timeLeft <= 0) endGame(false);
+        }, 1000);
+
+        // Inject one-time spark keyframe
+        if (!document.getElementById('dryer-vent-animations')) {
+            const style = document.createElement('style');
+            style.id = 'dryer-vent-animations';
+            style.textContent = `
+                @keyframes dryer-spark {
+                    0% { transform: translate(-50%, -50%) scale(0.4); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
     function createConfetti() {
         const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#ffd700'];
         for (let i = 0; i < 50; i++) {
@@ -3325,6 +3660,8 @@ document.addEventListener('DOMContentLoaded', function() {
             blogEasterEgg(clickCount);
         } else if (currentPage.includes('carpet-cleaning.html')) {
             carpetEasterEgg(clickCount);
+        } else if (currentPage.includes('dryer-vent-cleaning.html')) {
+            dryerVentEasterEgg(clickCount);
         } else if (currentPage.includes('window-washing.html')) {
             windowEasterEgg(clickCount);
         } else if (currentPage.includes('reviews.html')) {

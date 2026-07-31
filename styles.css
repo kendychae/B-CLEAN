@@ -2389,3 +2389,41 @@ body {
         transform: translateX(20px);
     }
 }
+
+/* Dryer Vent Cleaning Page - Airflow Animation */
+.airflow {
+    position: absolute;
+    font-size: 1.3rem;
+    top: 50%;
+    left: -40px;
+    transform: translateY(-50%);
+    opacity: 0;
+    text-shadow: 0 0 8px rgba(202, 240, 248, 0.9);
+    pointer-events: none;
+}
+
+.brand-text.animating .airflow {
+    animation: airflowSweep 1.8s ease-in-out forwards;
+}
+
+@keyframes airflowSweep {
+    0% {
+        left: -40px;
+        opacity: 0;
+        transform: translateY(-50%) scale(0.6);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1);
+    }
+    100% {
+        left: calc(100% + 20px);
+        opacity: 0;
+        transform: translateY(-50%) scale(0.8);
+    }
+}
+
