@@ -425,10 +425,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Dryer Vent Cleaning Page - Airflow sweep animation
     const brandTextDryer = document.getElementById('brand-text-dryer');
     if (brandTextDryer) {
-        // Populate airflow icon once
+        // Populate airflow icon once (professional inline SVG wind gust)
         const airflowEl = brandTextDryer.querySelector('.airflow');
-        if (airflowEl && !airflowEl.textContent.trim()) {
-            airflowEl.textContent = '💨';
+        if (airflowEl && !airflowEl.querySelector('svg')) {
+            airflowEl.textContent = '';
+            airflowEl.innerHTML = `
+                <svg viewBox="0 0 40 24" width="34" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                        <path d="M2 6 H22 Q30 6 30 3" />
+                        <path d="M2 12 H28 Q36 12 36 8" />
+                        <path d="M2 18 H24 Q32 18 32 15" />
+                    </g>
+                </svg>
+            `;
         }
         brandTextDryer.addEventListener('click', function() {
             if (!this.classList.contains('animating')) {

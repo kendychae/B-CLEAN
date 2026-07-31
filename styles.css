@@ -2393,13 +2393,20 @@ body {
 /* Dryer Vent Cleaning Page - Airflow Animation */
 .airflow {
     position: absolute;
-    font-size: 1.3rem;
     top: 50%;
     left: -40px;
     transform: translateY(-50%);
     opacity: 0;
-    text-shadow: 0 0 8px rgba(202, 240, 248, 0.9);
+    color: var(--primary-color);
+    filter: drop-shadow(0 0 6px rgba(202, 240, 248, 0.85));
     pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+}
+
+.airflow svg {
+    display: block;
 }
 
 .brand-text.animating .airflow {
